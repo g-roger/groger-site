@@ -1,0 +1,160 @@
+import { motion } from 'framer-motion'
+import { Mascot, StarBurst, ArrowScribble, LeafSprig, DotGrid, ConcentricRings, Sparkles, BlobShape } from './Illustrations'
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  show: (i = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: 0.15 * i, duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+  }),
+}
+
+export default function Hero() {
+  return (
+    <section id="top" className="relative min-h-[100svh] pt-24 sm:pt-28 pb-16 overflow-hidden">
+      <div className="absolute inset-0 paper-grain opacity-30 pointer-events-none" />
+      <div className="absolute -top-24 -right-24 w-[420px] sm:w-[520px] h-[420px] sm:h-[520px] rounded-full bg-jade/25 blur-3xl pointer-events-none" />
+      <div className="absolute bottom-10 -left-24 w-[320px] sm:w-[420px] h-[320px] sm:h-[420px] rounded-full bg-gold/10 blur-3xl pointer-events-none" />
+
+      {/* decoração desktop */}
+      <div className="absolute top-40 left-6 w-16 h-24 text-jade/40 pointer-events-none hidden md:block">
+        <LeafSprig className="w-full h-full" />
+      </div>
+      <div className="absolute bottom-24 right-10 w-24 h-24 text-mint/25 pointer-events-none hidden md:block">
+        <DotGrid className="w-full h-full" />
+      </div>
+      <div className="absolute top-32 right-1/3 w-16 h-16 text-gold/50 pointer-events-none hidden lg:block">
+        <Sparkles className="w-full h-full" />
+      </div>
+      <div className="absolute top-1/2 right-4 w-20 h-20 text-mint/30 pointer-events-none hidden lg:block">
+        <ConcentricRings className="w-full h-full" />
+      </div>
+      <div className="absolute bottom-8 left-1/3 w-16 h-8 text-jade/30 pointer-events-none hidden lg:block">
+        <BlobShape className="w-full h-full" />
+      </div>
+
+      <div className="relative mx-auto max-w-6xl px-5 sm:px-6 grid lg:grid-cols-[1.4fr_1fr] gap-10 lg:gap-12 items-center">
+        {/* mascote em MOBILE aparece antes, menor */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9, rotate: -4 }}
+          animate={{ opacity: 1, scale: 1, rotate: 0 }}
+          transition={{ delay: 0.2, duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          className="relative mx-auto w-40 sm:w-52 lg:hidden"
+        >
+          <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-jade/40 via-mint/10 to-forest/40 blur-2xl" />
+          <div className="relative rounded-[1.5rem] border border-mint/20 bg-forest/70 p-2">
+            <Mascot className="w-full h-auto" />
+          </div>
+          <StarBurst className="absolute -top-3 -right-3 w-10 h-10 text-gold" />
+        </motion.div>
+
+        <div>
+          <motion.p
+            variants={fadeUp}
+            initial="hidden"
+            animate="show"
+            custom={0}
+            className="uppercase tracking-[0.35em] text-[10px] sm:text-xs text-gold mb-4 sm:mb-6"
+          >
+            olá · sou o Gabriel
+          </motion.p>
+          <motion.h1
+            variants={fadeUp}
+            initial="hidden"
+            animate="show"
+            custom={1}
+            className="section-heading text-[16vw] sm:text-[9vw] lg:text-[6.5rem] text-cream leading-[0.95]"
+          >
+            Dados que
+            <br />
+            <span className="text-mint italic font-normal">viram decisão.</span>
+          </motion.h1>
+
+          <motion.p
+            variants={fadeUp}
+            initial="hidden"
+            animate="show"
+            custom={2}
+            className="mt-6 sm:mt-8 max-w-xl text-base sm:text-lg text-cream/80 leading-relaxed"
+          >
+            Cientista e Engenheiro de Dados. Construo o ciclo de crédito, a
+            segurança da conta, a biometria comportamental e agentes de IA que
+            fazem produtos financeiros aguentarem a vida real.
+          </motion.p>
+
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            animate="show"
+            custom={3}
+            className="mt-8 sm:mt-10 flex flex-wrap items-center gap-4"
+          >
+            <a
+              href="#projetos"
+              className="group inline-flex items-center gap-3 rounded-full bg-jade text-cream px-6 py-3 text-sm font-medium hover:bg-jade/90 transition"
+            >
+              ver projetos
+              <span className="w-6 h-px bg-cream group-hover:w-10 transition-all" />
+            </a>
+            <a
+              href="#expertise"
+              className="inline-flex items-center gap-2 text-sm text-cream/70 hover:text-cream transition"
+            >
+              <span className="w-8 h-px bg-cream/40" />
+              o que eu faço
+            </a>
+          </motion.div>
+
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            animate="show"
+            custom={4}
+            className="mt-10 sm:mt-14 flex flex-wrap items-center gap-x-4 sm:gap-x-6 gap-y-2 text-cream/50 text-[10px] sm:text-xs uppercase tracking-widest"
+          >
+            <span>hoje na CERC</span>
+            <span className="w-6 sm:w-8 h-px bg-cream/20" />
+            <span>ex-PagBank</span>
+            <span className="w-6 sm:w-8 h-px bg-cream/20" />
+            <span>ex-Mastertech</span>
+            <span className="w-6 sm:w-8 h-px bg-cream/20" />
+            <span>MBA · FIAP</span>
+          </motion.div>
+        </div>
+
+        {/* mascote DESKTOP */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9, rotate: -4 }}
+          animate={{ opacity: 1, scale: 1, rotate: 0 }}
+          transition={{ delay: 0.2, duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          className="relative mx-auto w-full max-w-sm hidden lg:block"
+        >
+          <div className="relative">
+            <div className="absolute -inset-6 rounded-[2rem] bg-gradient-to-br from-jade/30 via-mint/10 to-forest/40 blur-2xl" />
+            <div className="relative rounded-[2rem] border border-mint/20 bg-forest/70 p-4 backdrop-blur">
+              <Mascot className="w-full h-auto animate-floaty" />
+            </div>
+            <StarBurst className="absolute -top-6 -right-6 w-16 h-16 text-gold" />
+            <div className="absolute -bottom-8 -right-4 w-20 h-20 text-mint/60">
+              <ConcentricRings className="w-full h-full" />
+            </div>
+          </div>
+          <div className="absolute -bottom-6 -left-6 text-cream/60 flex items-center gap-2">
+            <ArrowScribble className="w-16 h-8 text-mint" />
+            <span className="text-xs italic font-display">retrato ilustrado</span>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center text-cream/40 text-[10px] sm:text-xs">
+        <span className="uppercase tracking-[0.4em]">rolar</span>
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 1.6, repeat: Infinity }}
+          className="mt-2 w-px h-6 sm:h-8 bg-cream/40"
+        />
+      </div>
+    </section>
+  )
+}

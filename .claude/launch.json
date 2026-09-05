@@ -1,0 +1,20 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "groger-site-frontend",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "frontend"],
+      "port": 5173
+    },
+    {
+      "name": "groger-site-backend",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": [
+        "-c",
+        "cd backend && DB_PATH=./local.db STATIC_DIR=./_none ADMIN_USER=admin ADMIN_PASS=troca123 python3 -m uvicorn main:app --host 0.0.0.0 --port 8000"
+      ],
+      "port": 8000
+    }
+  ]
+}

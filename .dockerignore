@@ -1,0 +1,12 @@
+**/node_modules
+**/dist
+**/__pycache__
+**/.venv
+.venv
+.git
+.gitignore
+.env
+.env.*
+*.md
+.DS_Store
+frontend/npm-debug.log*
