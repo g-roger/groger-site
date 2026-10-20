@@ -49,8 +49,9 @@ export default function About() {
             Na CERC sou tech lead e engenheiro de dados sênior. Atuo tanto em ciência quanto em
             engenharia de dados, em projetos de{' '}
             <span className="text-cream">arranjos de pagamento</span> que envolvem grandes clientes
-            de crédito do Brasil. Faço análises e reports para esses clientes, modelagem sobre os
-            dados da CERC, como duplicata e arranjos, e uso{' '}
+            de crédito do Brasil. Desenvolvo{' '}
+            <span className="text-cream">modelos de fraude</span>, faço análises e reports para
+            esses clientes, modelagem sobre os dados da CERC, como duplicata e arranjos, e uso{' '}
             <span className="text-cream">agentes de IA</span> em projetos com LLM.
           </p>
           <p>

@@ -27,6 +27,7 @@ describe('About', () => {
     render(<About />)
     expect(screen.getByText(/Na CERC sou tech lead e engenheiro de dados sênior/)).toBeInTheDocument()
     expect(screen.getByText('arranjos de pagamento')).toBeInTheDocument()
+    expect(screen.getByText('modelos de fraude')).toBeInTheDocument()
     expect(screen.getByText('agentes de IA')).toBeInTheDocument()
   })
 
