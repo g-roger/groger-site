@@ -1,6 +1,6 @@
 # groger-site
 
-Site pessoal one-page do Gabriel Roger, cientista e engenheiro de dados.
+Site pessoal one-page do Gabriel Roger, tech lead, cientista e engenheiro de dados.
 
 Front em React, Vite, TypeScript, Framer Motion e TailwindCSS. Back em FastAPI com SQLite. Tudo roda num container único no Fly.dev. As ilustrações são SVGs animados com Framer Motion.
 

@@ -39,16 +39,17 @@ export default function About() {
           className="space-y-5 sm:space-y-6 text-base sm:text-lg leading-relaxed text-cream/85 font-body"
         >
           <p>
-            Sou cientista e engenheiro de dados. Comecei em 2013 dando aula de informática,
-            passei por desenvolvimento back-end e, em 2021, mudei para a área de dados. Desde
-            então trabalho com <span className="text-cream">crédito e segurança de contas</span>,
-            e hoje com arranjos de pagamento na CERC.
+            Sou <span className="text-cream">tech lead</span>, cientista e engenheiro de dados.
+            Comecei em 2013 dando aula de informática, fui engenheiro de software sênior e, em
+            2021, mudei para a área de dados. Desde então trabalho com{' '}
+            <span className="text-cream">crédito e segurança de contas</span>.
           </p>
           <p>
-            Na CERC, atuo tanto em ciência quanto em engenharia de dados. Os projetos giram em
-            torno de <span className="text-cream">arranjos de pagamento</span> e envolvem grandes
-            clientes de crédito do Brasil. Faço análises e reports para esses clientes, modelagem
-            sobre os dados da CERC, como duplicata e arranjos, e uso{' '}
+            Na CERC sou tech lead e engenheiro de dados sênior. Atuo tanto em ciência quanto em
+            engenharia de dados, em projetos de{' '}
+            <span className="text-cream">arranjos de pagamento</span> que envolvem grandes clientes
+            de crédito do Brasil. Faço análises e reports para esses clientes, modelagem sobre os
+            dados da CERC, como duplicata e arranjos, e uso{' '}
             <span className="text-cream">agentes de IA</span> em projetos com LLM.
           </p>
           <p>

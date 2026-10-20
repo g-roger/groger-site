@@ -167,11 +167,12 @@ export type TimelineItem = {
 export const timeline: TimelineItem[] = [
   {
     period: '2026 até hoje',
-    role: 'Engenheiro de Dados Sênior',
+    role: 'Tech Lead e Engenheiro de Dados Sênior',
     place: 'CERC, Câmara de Registro de Recebíveis',
     detail:
-      'Trabalho com o ciclo de crédito dentro de arranjos de pagamento e atuo tanto em ciência de dados quanto em engenharia. Os projetos envolvem grandes clientes de crédito do Brasil.',
+      'Sou tech lead e atuo tanto em ciência de dados quanto em engenharia. Trabalho com o ciclo de crédito dentro de arranjos de pagamento, em projetos que envolvem grandes clientes de crédito do Brasil.',
     bullets: [
+      'Liderança técnica dos projetos de dados',
       'Análises e reports para grandes clientes de crédito',
       'Modelagem sobre os dados da CERC: duplicata, arranjos e outros ativos',
       'Agentes de IA em projetos com LLM',
@@ -220,7 +221,7 @@ export const timeline: TimelineItem[] = [
   },
   {
     period: '2017 a 2021',
-    role: 'Engenheiro de Software Back-End',
+    role: 'Engenheiro de Software Back-End Sênior',
     place: 'Mastertech',
     detail:
       'Fui o desenvolvedor principal dos softwares da empresa, tanto dos produtos vendidos a clientes quanto dos sistemas internos. No período da noite, dava aulas e treinamentos para empresas.',
