@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { careerStats, expertises, projects, techStack, timeline } from './data'
+import { careerStats, expertises, projectCategories, projects, techStack, timeline } from './data'
 
 // campos que não são texto de tela (identificadores, cores, links e sufixo numérico opcional)
 const NAO_E_TEXTO = new Set(['key', 'color', 'illustration', 'url', 'suffix'])
@@ -82,11 +82,56 @@ describe('projetos', () => {
     )
   })
 
-  it.each(projects.map((p) => [p.name, p] as const))('%s tem descrição, tags e ano válido', (_name, p) => {
+  it.each(projects.map((p) => [p.name, p] as const))('%s tem descrição, tags, origem, tema e ano válido', (_name, p) => {
     expect(p.tagline.length).toBeGreaterThan(5)
     expect(p.description.length).toBeGreaterThan(30)
     expect(p.tags.length).toBeGreaterThan(0)
-    if (p.year) expect(p.year).toMatch(/^\d{4}$/)
+    expect(['CERC', 'PagBank', 'Mastertech', 'GitHub', 'Projeto pessoal']).toContain(p.where)
+    expect(p.categories.length).toBeGreaterThan(0)
+    for (const c of p.categories) expect(projectCategories.map((x) => x.key)).toContain(c)
+    if (p.year) expect(p.year).toMatch(/^\d{4}( a \d{4})?$/)
+  })
+
+  it('o GaJa não aparece, porque ainda não foi para o ar', () => {
+    expect(projects.map((p) => p.name.toLowerCase()).join(' ')).not.toContain('gaja')
+    expect(collectStrings(projects).join(' ')).not.toMatch(/saltitare|ballet/i)
+  })
+
+  it('projetos do trabalho não têm link: o código é das empresas', () => {
+    for (const p of projects.filter((x) => ['CERC', 'PagBank', 'Mastertech'].includes(x.where))) {
+      expect(p.url).toBeUndefined()
+    }
+  })
+
+  it('todo projeto com link é do GitHub e todo projeto do GitHub tem link', () => {
+    for (const p of projects) expect(Boolean(p.url)).toBe(p.where === 'GitHub')
+  })
+
+  it('mostra os projetos bancários do currículo', () => {
+    const nomes = projects.map((p) => p.name)
+    expect(nomes).toEqual(
+      expect.arrayContaining([
+        'Modelos de fraude em arranjos de pagamento',
+        'Modelos do ciclo de crédito',
+        'Previsão de TPV diário',
+        'Score de dispositivo para segurança da conta',
+        'Modelos de biometria comportamental',
+      ]),
+    )
+  })
+
+  it('o projeto de fraude é da CERC, onde ele trabalha hoje', () => {
+    expect(projects.find((p) => p.name === 'Modelos de fraude em arranjos de pagamento')?.where).toBe('CERC')
+  })
+
+  it('os projetos atuais da CERC vêm primeiro', () => {
+    expect(projects.slice(0, 3).every((p) => p.where === 'CERC')).toBe(true)
+  })
+
+  it('cada tema tem pelo menos dois projetos', () => {
+    for (const c of projectCategories) {
+      expect(projects.filter((p) => p.categories.includes(c.key)).length).toBeGreaterThanOrEqual(2)
+    }
   })
 })
 
@@ -109,6 +154,12 @@ describe('trajetória', () => {
     const cerc = timeline.find((t) => t.place.includes('CERC'))
     expect(cerc?.role).toBe('Tech Lead e Engenheiro de Dados Sênior')
     expect(cerc?.bullets).toContain('Liderança técnica dos projetos de dados')
+  })
+
+  it('na CERC aparecem os modelos de fraude em arranjos de pagamento', () => {
+    const cerc = timeline.find((t) => t.place.includes('CERC'))
+    expect(cerc?.detail).toContain('modelos de fraude')
+    expect(cerc?.bullets).toContain('Modelos de fraude em arranjos de pagamento')
   })
 
   it('na Mastertech o cargo é engenheiro de software back-end sênior', () => {

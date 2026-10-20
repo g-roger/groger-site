@@ -13,8 +13,8 @@ describe('Hero', () => {
   it('cumprimenta e conta onde trabalha hoje e onde passou antes', () => {
     render(<Hero />)
     expect(screen.getByText('Olá, eu sou o Gabriel')).toBeInTheDocument()
-    expect(screen.getByText(/Hoje sou tech lead na CERC/)).toBeInTheDocument()
-    expect(screen.getByText(/Antes passei\s+cinco anos no PagBank/)).toBeInTheDocument()
+    expect(screen.getByText(/Hoje sou tech lead na CERC, em projetos de arranjos de pagamento e modelos de\s+fraude/)).toBeInTheDocument()
+    expect(screen.getByText(/Antes passei cinco anos no PagBank/)).toBeInTheDocument()
   })
 
   it('mostra as empresas e a formação', () => {

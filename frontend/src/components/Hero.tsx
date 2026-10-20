@@ -77,8 +77,9 @@ export default function Hero() {
             custom={2}
             className="mt-6 sm:mt-8 max-w-xl text-base sm:text-lg text-cream/80 leading-relaxed"
           >
-            Hoje sou tech lead na CERC, em projetos de arranjos de pagamento. Antes passei
-            cinco anos no PagBank, com dados de segurança de contas e modelos de crédito.
+            Hoje sou tech lead na CERC, em projetos de arranjos de pagamento e modelos de
+            fraude. Antes passei cinco anos no PagBank, com segurança de contas e modelos de
+            crédito.
           </motion.p>
 
           <motion.div
