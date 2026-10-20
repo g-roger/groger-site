@@ -15,8 +15,8 @@ describe('Footer', () => {
     expect(screen.getByText('© 2030 Gabriel Roger')).toBeInTheDocument()
   })
 
-  it('diz como o site foi feito e onde está hospedado', () => {
-    render(<Footer />)
-    expect(screen.getByText('Feito com React e FastAPI, hospedado no Fly.dev')).toBeInTheDocument()
+  it('não conta com que tecnologia o site foi feito nem onde está hospedado', () => {
+    const { container } = render(<Footer />)
+    expect(container.textContent).not.toMatch(/React|FastAPI|Fly|hospedado/i)
   })
 })

@@ -23,6 +23,27 @@ describe('Illustrations', () => {
     expect(container.querySelector('svg')).not.toBeNull()
   })
 
+  it('nenhum desenho fica com path sem forma (d vazio ou "undefined")', () => {
+    const { container } = render(
+      <div>
+        <Mascot />
+        <BlobShape />
+        <CircuitLines />
+        <WaveScribble />
+        <ArrowScribble />
+        <LeafSprig />
+        {expertises.map((e) => (
+          <IllustrationFor key={e.key} kind={e.illustration} />
+        ))}
+      </div>,
+    )
+    const ruins = Array.from(container.querySelectorAll('path')).filter((p) => {
+      const d = p.getAttribute('d')
+      return !d || d === 'undefined' || !/^\s*[Mm]/.test(d)
+    })
+    expect(ruins).toHaveLength(0)
+  })
+
   it('o retrato tem descrição para leitores de tela', () => {
     const { container } = render(<Mascot />)
     expect(container.querySelector('svg')).toHaveAttribute('aria-label', 'Retrato ilustrado')

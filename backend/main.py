@@ -3,12 +3,19 @@ from __future__ import annotations
 
 import hashlib
 import hmac
+import json
+import logging
 import os
+import secrets
 import sqlite3
+import threading
+import time
+from collections import deque
 from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Iterator
+from urllib.parse import urlsplit, urlunsplit
 
 from fastapi import Depends, FastAPI, HTTPException, Request, status
 from fastapi.responses import FileResponse, JSONResponse, Response
@@ -16,11 +23,46 @@ from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
+log = logging.getLogger("groger-site")
+
 DB_PATH = Path(os.environ.get("DB_PATH", "/data/site.db"))
 STATIC_DIR = Path(os.environ.get("STATIC_DIR", "/app/static"))
-ADMIN_USER = os.environ.get("ADMIN_USER", "admin")
-ADMIN_PASS = os.environ.get("ADMIN_PASS", "changeme")
-VISITOR_SALT = os.environ.get("VISITOR_SALT", "groger-salt")
+ADMIN_USER = os.environ.get("ADMIN_USER", "")
+ADMIN_PASS = os.environ.get("ADMIN_PASS", "")
+# Without a configured salt, use a random one per process: hashes stay unlinkable to IPs.
+VISITOR_SALT = os.environ.get("VISITOR_SALT") or secrets.token_hex(16)
+RETENTION_DAYS = int(os.environ.get("RETENTION_DAYS", "365"))
+
+MAX_BODY_BYTES = 16 * 1024
+MIN_ADMIN_PASS_LEN = 12
+WEAK_ADMIN_PASSWORDS = {"changeme", "admin", "password", "troca", "troca123"}
+
+# Security headers sent with every response. The CSP only allows this origin: no inline
+# scripts, no third-party fonts or scripts, no framing.
+CONTENT_SECURITY_POLICY = "; ".join(
+    [
+        "default-src 'self'",
+        "script-src 'self'",
+        "style-src 'self'",
+        "img-src 'self' data:",
+        "font-src 'self'",
+        "connect-src 'self'",
+        "object-src 'none'",
+        "base-uri 'self'",
+        "form-action 'self'",
+        "frame-ancestors 'none'",
+    ]
+)
+SECURITY_HEADERS = {
+    "content-security-policy": CONTENT_SECURITY_POLICY,
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "DENY",
+    "referrer-policy": "strict-origin-when-cross-origin",
+    "permissions-policy": "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+}
 
 # ensure db directory exists
 DB_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -35,6 +77,14 @@ def db() -> Iterator[sqlite3.Connection]:
         conn.commit()
     finally:
         conn.close()
+
+
+def prune_old_rows(now: datetime | None = None) -> None:
+    """Drop visits and events older than RETENTION_DAYS (keep only what the admin needs)."""
+    cutoff = ((now or datetime.now(timezone.utc)) - timedelta(days=RETENTION_DAYS)).isoformat(timespec="seconds")
+    with db() as conn:
+        conn.execute("DELETE FROM pageviews WHERE at < ?", (cutoff,))
+        conn.execute("DELETE FROM events WHERE at < ?", (cutoff,))
 
 
 def init_db() -> None:
@@ -65,12 +115,156 @@ def init_db() -> None:
             CREATE INDEX IF NOT EXISTS idx_events_name ON events(name);
             """
         )
+    prune_old_rows()
 
 
 init_db()
 
-app = FastAPI(title="Gabriel Roger Site")
-security = HTTPBasic()
+if not (ADMIN_USER and ADMIN_PASS):
+    log.warning("ADMIN_USER/ADMIN_PASS not set: the admin endpoint is disabled")
+
+
+class RateLimiter:
+    """Sliding-window counter per key, in memory (the site runs on a single machine)."""
+
+    def __init__(self, limit: int, window_seconds: float, max_keys: int = 10_000) -> None:
+        self.limit = limit
+        self.window = window_seconds
+        self.max_keys = max_keys
+        self._hits: dict[str, deque[float]] = {}
+        self._lock = threading.Lock()
+
+    def _recent(self, key: str, now: float) -> deque[float]:
+        q = self._hits.setdefault(key, deque())
+        while q and q[0] <= now - self.window:
+            q.popleft()
+        return q
+
+    def blocked(self, key: str, now: float | None = None) -> bool:
+        now = time.monotonic() if now is None else now
+        with self._lock:
+            return len(self._recent(key, now)) >= self.limit
+
+    def add(self, key: str, now: float | None = None) -> None:
+        now = time.monotonic() if now is None else now
+        with self._lock:
+            if len(self._hits) >= self.max_keys and key not in self._hits:
+                self._hits.clear()  # crude, but keeps memory bounded under a flood of keys
+            self._recent(key, now).append(now)
+
+    def allow(self, key: str, now: float | None = None) -> bool:
+        """Count a hit and say whether it is within the limit."""
+        now = time.monotonic() if now is None else now
+        with self._lock:
+            if len(self._hits) >= self.max_keys and key not in self._hits:
+                self._hits.clear()
+            q = self._recent(key, now)
+            if len(q) >= self.limit:
+                return False
+            q.append(now)
+            return True
+
+
+tracking_limiter = RateLimiter(limit=60, window_seconds=60)
+admin_failures = RateLimiter(limit=10, window_seconds=15 * 60)
+
+
+class BodySizeLimit:
+    """Reject /api/* requests whose body is larger than `max_bytes` (with or without Content-Length)."""
+
+    def __init__(self, app: Any, max_bytes: int) -> None:
+        self.app = app
+        self.max_bytes = max_bytes
+
+    async def __call__(self, scope: dict, receive: Any, send: Any) -> None:
+        if scope["type"] != "http" or not scope["path"].startswith("/api/"):
+            await self.app(scope, receive, send)
+            return
+
+        declared = dict(scope["headers"]).get(b"content-length")
+        if declared is not None:
+            try:
+                too_big = int(declared) > self.max_bytes
+            except ValueError:
+                too_big = True
+            if too_big:
+                await self._reject(send)
+                return
+
+        chunks: list[bytes] = []
+        size = 0
+        while True:
+            message = await receive()
+            if message["type"] == "http.disconnect":
+                return
+            body = message.get("body", b"")
+            size += len(body)
+            if size > self.max_bytes:
+                await self._reject(send)
+                return
+            chunks.append(body)
+            if not message.get("more_body", False):
+                break
+
+        replayed = False
+
+        async def replay() -> dict:
+            nonlocal replayed
+            if not replayed:
+                replayed = True
+                return {"type": "http.request", "body": b"".join(chunks), "more_body": False}
+            return await receive()
+
+        await self.app(scope, replay, send)
+
+    @staticmethod
+    async def _reject(send: Any) -> None:
+        body = b'{"detail":"payload too large"}'
+        await send(
+            {
+                "type": "http.response.start",
+                "status": 413,
+                "headers": [(b"content-type", b"application/json"), (b"content-length", str(len(body)).encode())],
+            }
+        )
+        await send({"type": "http.response.body", "body": body})
+
+
+class SecurityHeaders:
+    """Add security headers to every response; admin API responses are never cached."""
+
+    def __init__(self, app: Any) -> None:
+        self.app = app
+        self.headers = [(k.encode(), v.encode()) for k, v in SECURITY_HEADERS.items()]
+
+    async def __call__(self, scope: dict, receive: Any, send: Any) -> None:
+        if scope["type"] != "http":
+            await self.app(scope, receive, send)
+            return
+        no_store = scope["path"].startswith("/api/")
+
+        async def send_with_headers(message: dict) -> None:
+            if message["type"] == "http.response.start":
+                present = {k.lower() for k, _ in message.get("headers", [])}
+                extra = [(k, v) for k, v in self.headers if k not in present]
+                if no_store and b"cache-control" not in present:
+                    extra.append((b"cache-control", b"no-store"))
+                message["headers"] = list(message.get("headers", [])) + extra
+            await send(message)
+
+        await self.app(scope, receive, send_with_headers)
+
+
+# no public /docs, /redoc or /openapi.json: they would advertise the admin routes
+app = FastAPI(title="Gabriel Roger Site", docs_url=None, redoc_url=None, openapi_url=None)
+app.add_middleware(BodySizeLimit, max_bytes=MAX_BODY_BYTES)
+app.add_middleware(SecurityHeaders)
+security = HTTPBasic(auto_error=False)
+
+
+def client_ip(request: Request) -> str:
+    """IP used for rate limiting. On Fly, fly-client-ip is set by the proxy."""
+    return request.headers.get("fly-client-ip") or (request.client.host if request.client else "0.0.0.0")
 
 
 def visitor_hash(request: Request) -> str:
@@ -92,21 +286,72 @@ def country_of(request: Request) -> str | None:
     return request.headers.get("fly-region") or request.headers.get("cf-ipcountry") or None
 
 
+def clean_path(path: str) -> str:
+    """Keep only the path: query strings and fragments can carry personal data."""
+    path = path.split("#", 1)[0].split("?", 1)[0]
+    return path if path.startswith("/") else "/" + path
+
+
+def clean_referrer(referrer: str | None) -> str | None:
+    """Keep scheme, host and path of an http(s) referrer; drop credentials, query and fragment."""
+    if not referrer:
+        return None
+    try:
+        parts = urlsplit(referrer.strip())
+        host = parts.hostname
+        port = parts.port
+    except ValueError:
+        return None
+    if parts.scheme not in ("http", "https") or not host:
+        return None
+    netloc = f"{host}:{port}" if port else host
+    return urlunsplit((parts.scheme, netloc, parts.path, "", "")) or None
+
+
 def _same(a: str, b: str) -> bool:
     # compare_digest raises TypeError on non-ASCII str, so compare the UTF-8 bytes instead
     return hmac.compare_digest(a.encode("utf-8"), b.encode("utf-8"))
 
 
-def require_admin(credentials: HTTPBasicCredentials = Depends(security)) -> str:
+def admin_configured() -> bool:
+    return (
+        bool(ADMIN_USER)
+        and len(ADMIN_PASS) >= MIN_ADMIN_PASS_LEN
+        and ADMIN_PASS.lower() not in WEAK_ADMIN_PASSWORDS
+    )
+
+
+def require_admin(request: Request, credentials: HTTPBasicCredentials | None = Depends(security)) -> str:
+    if not admin_configured():
+        # fail closed: never fall back to a default password
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="admin disabled")
+
+    ip = client_ip(request)
+    if admin_failures.blocked(ip):
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail="too many attempts, try again later",
+            headers={"Retry-After": str(int(admin_failures.window))},
+        )
+
+    unauthorized = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="unauthorized",
+        headers={"WWW-Authenticate": 'Basic realm="admin"'},
+    )
+    if credentials is None:
+        raise unauthorized
     user_ok = _same(credentials.username, ADMIN_USER)
     pass_ok = _same(credentials.password, ADMIN_PASS)
     if not (user_ok and pass_ok):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="unauthorized",
-            headers={"WWW-Authenticate": 'Basic realm="admin"'},
-        )
+        admin_failures.add(ip)
+        raise unauthorized
     return credentials.username
+
+
+def limit_tracking(request: Request) -> None:
+    if not tracking_limiter.allow(client_ip(request)):
+        raise HTTPException(status_code=status.HTTP_429_TOO_MANY_REQUESTS, detail="too many requests")
 
 
 class TrackPayload(BaseModel):
@@ -124,15 +369,15 @@ def health() -> dict[str, str]:
     return {"status": "ok"}
 
 
-@app.post("/api/track", status_code=204)
+@app.post("/api/track", status_code=204, dependencies=[Depends(limit_tracking)])
 def track(payload: TrackPayload, request: Request) -> Response:
     with db() as conn:
         conn.execute(
             "INSERT INTO pageviews (at, path, referrer, user_agent, country, visitor_hash) VALUES (?, ?, ?, ?, ?, ?)",
             (
                 datetime.now(timezone.utc).isoformat(timespec="seconds"),
-                payload.path[:500],
-                (payload.referrer or None) and payload.referrer[:500],
+                clean_path(payload.path)[:500],
+                clean_referrer(payload.referrer),
                 (request.headers.get("user-agent") or "")[:400],
                 country_of(request),
                 visitor_hash(request),
@@ -141,10 +386,8 @@ def track(payload: TrackPayload, request: Request) -> Response:
     return Response(status_code=204)
 
 
-@app.post("/api/track/event", status_code=204)
+@app.post("/api/track/event", status_code=204, dependencies=[Depends(limit_tracking)])
 def track_event(payload: EventPayload, request: Request) -> Response:
-    import json
-
     with db() as conn:
         conn.execute(
             "INSERT INTO events (at, name, meta, visitor_hash) VALUES (?, ?, ?, ?)",
@@ -160,6 +403,7 @@ def track_event(payload: EventPayload, request: Request) -> Response:
 
 @app.get("/api/admin/metrics")
 def metrics(_: str = Depends(require_admin)) -> JSONResponse:
+    prune_old_rows()
     now = datetime.now(timezone.utc)
     day_ago = (now - timedelta(hours=24)).isoformat(timespec="seconds")
     thirty_ago = (now - timedelta(days=30)).date().isoformat()

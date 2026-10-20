@@ -12,6 +12,8 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: false,
+    // fontes sempre como arquivo: a CSP do servidor só aceita font-src 'self', não data:
+    assetsInlineLimit: (file) => (/\.(woff2?|ttf|otf)$/.test(file) ? false : undefined),
   },
   test: {
     environment: 'jsdom',

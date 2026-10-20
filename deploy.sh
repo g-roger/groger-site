@@ -37,20 +37,27 @@ fly ips allocate-v6 --app "$APP" || echo "  v6 não alocado (já existe?)"
 
 echo "→ definindo secrets"
 ADMIN_USER=${ADMIN_USER:-gabriel}
-ADMIN_PASS=${ADMIN_PASS:-$(python3 -c 'import secrets;print(secrets.token_urlsafe(18))')}
+if [ -z "${ADMIN_PASS:-}" ]; then
+  # pede a senha sem mostrar na tela; nunca é impressa nem gravada em arquivo
+  read -r -s -p "  senha do admin (mínimo 12 caracteres): " ADMIN_PASS
+  echo
+fi
+if [ "${#ADMIN_PASS}" -lt 12 ]; then
+  echo "  senha curta demais, abortando" >&2
+  exit 1
+fi
 VISITOR_SALT=${VISITOR_SALT:-$(python3 -c 'import secrets;print(secrets.token_urlsafe(24))')}
 
 fly secrets set \
   ADMIN_USER="$ADMIN_USER" \
   ADMIN_PASS="$ADMIN_PASS" \
   VISITOR_SALT="$VISITOR_SALT" \
-  --app "$APP"
+  --app "$APP" >/dev/null
+unset ADMIN_PASS VISITOR_SALT
 
 echo "→ fly deploy"
 fly deploy --app "$APP"
 
 echo ""
 echo "✔ pronto. abra: https://$APP.fly.dev"
-echo "  admin:     https://$APP.fly.dev/admin"
-echo "  usuário:   $ADMIN_USER"
-echo "  senha:     $ADMIN_PASS"
+echo "  admin:     https://$APP.fly.dev/admin (usuário: $ADMIN_USER)"

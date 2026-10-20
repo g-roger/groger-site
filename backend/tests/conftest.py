@@ -20,15 +20,26 @@ ADMIN_PASS = "senha-de-teste"
 VISITOR_SALT = "sal-de-teste"
 
 
-def load_main(monkeypatch, tmp_path, with_static=True):
-    """Importa o `main` do zero com o ambiente de teste e devolve o módulo."""
-    monkeypatch.setenv("DB_PATH", str(tmp_path / "data" / "site.db"))
-    monkeypatch.setenv("ADMIN_USER", ADMIN_USER)
-    monkeypatch.setenv("ADMIN_PASS", ADMIN_PASS)
-    monkeypatch.setenv("VISITOR_SALT", VISITOR_SALT)
+def load_main(monkeypatch, tmp_path, with_static=True, env=None):
+    """Importa o `main` do zero com o ambiente de teste e devolve o módulo.
+
+    `env` sobrescreve variáveis; um valor None remove a variável do ambiente.
+    """
+    valores = {
+        "DB_PATH": str(tmp_path / "data" / "site.db"),
+        "ADMIN_USER": ADMIN_USER,
+        "ADMIN_PASS": ADMIN_PASS,
+        "VISITOR_SALT": VISITOR_SALT,
+        **(env or {}),
+    }
+    for nome, valor in valores.items():
+        if valor is None:
+            monkeypatch.delenv(nome, raising=False)
+        else:
+            monkeypatch.setenv(nome, valor)
 
     static = tmp_path / "static"
-    if with_static:
+    if with_static and not static.exists():
         (static / "assets").mkdir(parents=True)
         (static / "index.html").write_text("<!doctype html><title>spa-index</title>")
         (static / "assets" / "app.js").write_text("console.log('app')")
@@ -57,6 +68,18 @@ def dev_client(monkeypatch, tmp_path):
     """App sem pasta de estáticos, como no desenvolvimento local."""
     module = load_main(monkeypatch, tmp_path, with_static=False)
     yield TestClient(module.app)
+    sys.modules.pop("main", None)
+
+
+@pytest.fixture
+def app_with(monkeypatch, tmp_path):
+    """Sobe o app com variáveis de ambiente diferentes das padrão dos testes."""
+
+    def build(**env):
+        module = load_main(monkeypatch, tmp_path, env=env)
+        return module, TestClient(module.app)
+
+    yield build
     sys.modules.pop("main", None)
 
 

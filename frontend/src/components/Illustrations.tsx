@@ -652,18 +652,14 @@ export function Sparkles({ className = '' }: { className?: string }) {
 export function BlobShape({ className = '' }: { className?: string }) {
   return (
     <svg viewBox="0 0 200 200" className={className} aria-hidden>
+      {/* "respira" com escala e rotação: morph de `d` com keyframes deixava o path com d="undefined" */}
       <motion.path
-        d="M40 100 C 40 40, 160 40, 160 100 C 160 160, 40 160, 40 100 Z"
+        d="M50 90 C 30 30, 170 50, 165 110 C 155 170, 30 170, 50 90 Z"
         fill="currentColor"
         opacity="0.15"
-        animate={{
-          d: [
-            'M40 100 C 40 40, 160 40, 160 100 C 160 160, 40 160, 40 100 Z',
-            'M50 90 C 30 30, 170 50, 165 110 C 155 170, 30 170, 50 90 Z',
-            'M40 100 C 40 40, 160 40, 160 100 C 160 160, 40 160, 40 100 Z',
-          ],
-        }}
+        animate={{ scale: [1, 1.08, 0.96, 1], rotate: [0, 8, -6, 0] }}
         transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+        style={{ transformOrigin: '100px 100px' }}
       />
     </svg>
   )
