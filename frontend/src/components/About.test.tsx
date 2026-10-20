@@ -10,22 +10,35 @@ describe('About', () => {
 
   it('se apresenta como tech lead, cientista e engenheiro de dados', () => {
     render(<About />)
-    expect(screen.getByText(/cientista e engenheiro de dados\. Comecei em 2013/)).toBeInTheDocument()
+    expect(screen.getByText(/cientista e engenheiro de dados, e cheguei aqui passo a passo/)).toBeInTheDocument()
     expect(screen.getAllByText(/tech lead/i).length).toBeGreaterThanOrEqual(2)
   })
 
-  it('conta que passou boa parte da carreira dentro de grandes empresas', () => {
+  it('mostra que chegou à senioridade passando por cada etapa, em ordem', () => {
     render(<About />)
-    expect(
-      screen.getByText(
-        /passei boa parte da carreira dentro de grandes empresas: primeiro como engenheiro de software sênior, em projetos de consultoria, e desde 2021 em dados/,
-      ),
-    ).toBeInTheDocument()
+    const texto = screen.getByText(/cheguei aqui passo a passo/).textContent ?? ''
+    const etapas = [
+      'Comecei em 2013 dando aula de informática',
+      'fiz estágio em desenvolvimento na Ponte21',
+      'na Mastertech, cresci até engenheiro de software sênior',
+      'em projetos de consultoria dentro de grandes empresas',
+      'Em 2021 mudei para dados',
+      'entrei no PagBank como engenheiro de dados pleno',
+      'me tornei cientista de dados sênior',
+    ]
+    const posicoes = etapas.map((e) => texto.indexOf(e))
+    expect(posicoes.every((p) => p >= 0)).toBe(true)
+    expect(posicoes).toEqual([...posicoes].sort((a, b) => a - b))
+  })
+
+  it('não dá a entender que começou sênior', () => {
+    const { container } = render(<About />)
+    expect(container.textContent).not.toMatch(/primeiro como engenheiro de software sênior/)
   })
 
   it('descreve o trabalho na CERC com as palavras certas', () => {
     render(<About />)
-    expect(screen.getByText(/Na CERC sou tech lead e engenheiro de dados sênior/)).toBeInTheDocument()
+    expect(screen.getByText(/Hoje, na CERC, sou tech lead e engenheiro de dados sênior/)).toBeInTheDocument()
     expect(screen.getByText('arranjos de pagamento')).toBeInTheDocument()
     expect(screen.getByText('modelos de fraude')).toBeInTheDocument()
     expect(screen.getByText('agentes de IA')).toBeInTheDocument()

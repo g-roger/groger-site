@@ -422,7 +422,7 @@ export const timeline: TimelineItem[] = [
     role: 'Engenheiro de Software Back-End Sênior',
     place: 'Mastertech',
     detail:
-      'Fui o desenvolvedor principal dos softwares da empresa, tanto dos produtos vendidos a clientes quanto dos sistemas internos. Também atuei em consultoria para grandes empresas, em projetos de software, de dados e de educação. Ficava alocado no cliente, desenvolvendo o projeto como design partner, ou dentro da Mastertech, junto com a empresa, apoiando a equipe nas soluções.',
+      'Entrei como engenheiro de software back-end e cresci até sênior. Fui o desenvolvedor principal dos softwares da empresa, tanto dos produtos vendidos a clientes quanto dos sistemas internos. Também atuei em consultoria para grandes empresas, em projetos de software, de dados e de educação. Ficava alocado no cliente, desenvolvendo o projeto como design partner, ou dentro da Mastertech, junto com a empresa, apoiando a equipe nas soluções.',
     bullets: [
       'Prototipação de produtos em todos os projetos e desenvolvimento nos que pediam',
       'Análises de dados em big data',

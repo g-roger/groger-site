@@ -39,14 +39,15 @@ export default function About() {
           className="space-y-5 sm:space-y-6 text-base sm:text-lg leading-relaxed text-cream/85 font-body"
         >
           <p>
-            Sou <span className="text-cream">tech lead</span>, cientista e engenheiro de dados.
-            Comecei em 2013 dando aula de informática e passei boa parte da carreira dentro de
-            grandes empresas: primeiro como engenheiro de software sênior, em projetos de
-            consultoria, e desde 2021 em dados, com{' '}
-            <span className="text-cream">crédito e segurança de contas</span>.
+            Sou <span className="text-cream">tech lead</span>, cientista e engenheiro de dados, e
+            cheguei aqui passo a passo. Comecei em 2013 dando aula de informática, fiz estágio em
+            desenvolvimento na Ponte21 e, na Mastertech, cresci até engenheiro de software sênior,
+            em projetos de consultoria dentro de grandes empresas. Em 2021 mudei para dados: entrei
+            no PagBank como engenheiro de dados pleno e me tornei cientista de dados sênior,
+            trabalhando com <span className="text-cream">crédito e segurança de contas</span>.
           </p>
           <p>
-            Na CERC sou tech lead e engenheiro de dados sênior. Atuo tanto em ciência quanto em
+            Hoje, na CERC, sou tech lead e engenheiro de dados sênior. Atuo tanto em ciência quanto em
             engenharia de dados, em projetos de{' '}
             <span className="text-cream">arranjos de pagamento</span> que envolvem grandes clientes
             de crédito do Brasil. Desenvolvo{' '}

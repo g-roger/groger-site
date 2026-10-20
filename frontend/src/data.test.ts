@@ -162,9 +162,10 @@ describe('trajetória', () => {
     expect(cerc?.bullets).toContain('Modelos de fraude em arranjos de pagamento')
   })
 
-  it('na Mastertech o cargo é engenheiro de software back-end sênior', () => {
+  it('na Mastertech o cargo é engenheiro de software back-end sênior, alcançado ao longo do tempo', () => {
     const mastertech = timeline.find((t) => t.place === 'Mastertech')
     expect(mastertech?.role).toBe('Engenheiro de Software Back-End Sênior')
+    expect(mastertech?.detail.startsWith('Entrei como engenheiro de software back-end e cresci até sênior.')).toBe(true)
   })
 
   it('no PagBank aparecem os dois cargos, cientista sênior e engenheiro pleno', () => {
