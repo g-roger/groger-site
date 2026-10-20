@@ -22,11 +22,11 @@ export default function About() {
           transition={{ duration: 0.7 }}
           className="md:sticky md:top-32"
         >
-          <span className="block text-gold uppercase tracking-[0.4em] text-[10px] sm:text-xs mb-3">·01</span>
+          <span className="block text-gold uppercase tracking-[0.4em] text-[10px] sm:text-xs mb-3">01</span>
           <h2 className="section-heading text-4xl sm:text-6xl text-cream">
             Sobre
             <br />
-            <span className="italic text-mint">mim.</span>
+            <span className="italic text-mint">mim</span>
           </h2>
           <ArrowScribble className="mt-4 w-20 sm:w-24 h-10 text-cream/40" />
         </motion.div>
@@ -39,39 +39,22 @@ export default function About() {
           className="space-y-5 sm:space-y-6 text-base sm:text-lg leading-relaxed text-cream/85 font-body"
         >
           <p>
-            Comecei minha vida técnica <span className="text-mint">ensinando informática</span> ainda adolescente,
-            no Grupo All Net — Excel, hardware, lógica. Fui pra estágio de software na Ponte21 (C#, .NET),
-            virei engenheiro back-end na <span className="text-cream">Mastertech</span>, e ali descobri
-            duas coisas que me acompanham até hoje: <em>escrever software que outras pessoas usam</em> e{' '}
-            <em>ensinar</em>.
+            Sou cientista e engenheiro de dados. Comecei em 2013 dando aula de informática,
+            passei por desenvolvimento back-end e, em 2021, mudei para a área de dados. Desde
+            então trabalho com <span className="text-cream">crédito e segurança de contas</span>,
+            e hoje com arranjos de pagamento na CERC.
           </p>
           <p>
-            Na Mastertech, além dos produtos e sistemas internos, publiquei o SDK aberto{' '}
-            <code className="text-mint">moip-sdk-python</code> e dei treinamentos in-company para
-            times de <span className="text-cream">Santander, Itaú, Facebook (Estação Hack), IBM,
-            Bayer, Icatu, Banco Omni</span> e outros.
+            Na CERC, atuo tanto em ciência quanto em engenharia de dados. Os projetos giram em
+            torno de <span className="text-cream">arranjos de pagamento</span> e envolvem grandes
+            clientes de crédito do Brasil. Faço análises e reports para esses clientes, modelagem
+            sobre os dados da CERC, como duplicata e arranjos, e uso{' '}
+            <span className="text-cream">agentes de IA</span> em projetos com LLM.
           </p>
           <p>
-            Depois vieram quatro anos no PagBank, primeiro como engenheiro de dados (pipelines de
-            login, MFA, OTP e onboarding) e depois como cientista sênior, tocando modelos do{' '}
-            <span className="text-cream">ciclo de crédito</span> (application, behavior, previsão
-            de TPV) e da <span className="text-cream">segurança da conta</span> —{' '}
-            biometria comportamental, device fingerprint, antifraude.
-          </p>
-          <p>
-            Hoje sou <span className="text-cream">Engenheiro de Dados Sênior na CERC</span>. Atuo
-            como profissional de dados ponta a ponta — ciência e engenharia — em torno de{' '}
-            <span className="text-mint">arranjos de pagamento</span>, duplicata e demais ativos
-            registrados na câmara. Toco projetos analíticos e de modelagem para grandes clientes de
-            crédito do Brasil e aplico <span className="text-mint">agentes de IA / LLM</span> em
-            análise e geração de reports.
-          </p>
-          <p>
-            Em paralelo, fui instrutor e mentor na Awari por três anos, orientando dezenas de
-            pessoas em transição para a área de dados.
-          </p>
-          <p className="text-cream/80 italic font-display text-lg sm:text-xl border-l-2 border-jade/50 pl-4">
-            "Modelo bom é o que sobrevive à produção, ao drift e à conversa com o time de negócio."
+            Ensinar sempre fez parte do caminho. Dei aula no Grupo All Net, treinei equipes de
+            empresas como Santander, Itaú, Facebook e IBM pela Mastertech, e fui instrutor e
+            mentor de dados na Awari de 2022 a 2025.
           </p>
         </motion.div>
       </div>

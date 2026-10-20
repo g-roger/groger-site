@@ -17,13 +17,12 @@ export default function TimelineSection() {
 
       <div className="mx-auto max-w-5xl px-5 sm:px-6">
         <div className="mb-10 sm:mb-14 max-w-2xl">
-          <span className="block text-gold uppercase tracking-[0.4em] text-[10px] sm:text-xs mb-3">·05</span>
+          <span className="block text-gold uppercase tracking-[0.4em] text-[10px] sm:text-xs mb-3">04</span>
           <h2 className="section-heading text-4xl sm:text-6xl text-cream">
-            Trajetória <span className="italic text-mint">em capítulos.</span>
+            Minha <span className="italic text-mint">trajetória</span>
           </h2>
           <p className="mt-4 sm:mt-5 text-cream/60 text-sm sm:text-base">
-            Doze anos ensinando e construindo — do quadro-branco do interior até modelos de crédito
-            e antifraude em grandes bancos.
+            Onde trabalhei e o que fiz em cada lugar.
           </p>
         </div>
 
@@ -50,7 +49,7 @@ export default function TimelineSection() {
                 <div className="absolute -left-6 sm:-left-14 top-6 sm:top-8 w-4 sm:w-5 h-4 sm:h-5 rounded-full bg-mint border-2 sm:border-4 border-forest shadow-[0_0_0_3px_rgba(63,122,91,0.35)]" />
                 <div className="flex flex-wrap items-baseline gap-2 sm:gap-3 mb-2">
                   <p className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-gold">{t.period}</p>
-                  <span className="text-cream/30 hidden sm:inline">·</span>
+                  <span className="hidden sm:inline-block w-4 h-px bg-cream/30 self-center" />
                   <p className="text-[10px] sm:text-xs uppercase tracking-widest text-cream/50">{t.place}</p>
                 </div>
                 <h3 className="text-xl sm:text-3xl font-display text-cream">{t.role}</h3>

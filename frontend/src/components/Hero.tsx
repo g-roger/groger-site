@@ -35,7 +35,7 @@ export default function Hero() {
       </div>
 
       <div className="relative mx-auto max-w-6xl px-5 sm:px-6 grid lg:grid-cols-[1.4fr_1fr] gap-10 lg:gap-12 items-center">
-        {/* mascote em MOBILE aparece antes, menor */}
+        {/* no mobile o retrato aparece antes do texto, menor */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9, rotate: -4 }}
           animate={{ opacity: 1, scale: 1, rotate: 0 }}
@@ -55,20 +55,19 @@ export default function Hero() {
             initial="hidden"
             animate="show"
             custom={0}
-            className="uppercase tracking-[0.35em] text-[10px] sm:text-xs text-gold mb-4 sm:mb-6"
+            className="uppercase tracking-[0.3em] text-[10px] sm:text-xs text-gold mb-4 sm:mb-6"
           >
-            olá · sou o Gabriel
+            Olá, eu sou o Gabriel
           </motion.p>
           <motion.h1
             variants={fadeUp}
             initial="hidden"
             animate="show"
             custom={1}
-            className="section-heading text-[16vw] sm:text-[9vw] lg:text-[6.5rem] text-cream leading-[0.95]"
+            className="section-heading text-balance text-[14vw] sm:text-[8vw] lg:text-[5.25rem] text-cream"
           >
-            Dados que
-            <br />
-            <span className="text-mint italic font-normal">viram decisão.</span>
+            Cientista e{' '}
+            <span className="text-mint italic font-normal">engenheiro de dados.</span>
           </motion.h1>
 
           <motion.p
@@ -78,9 +77,8 @@ export default function Hero() {
             custom={2}
             className="mt-6 sm:mt-8 max-w-xl text-base sm:text-lg text-cream/80 leading-relaxed"
           >
-            Cientista e Engenheiro de Dados. Construo o ciclo de crédito, a
-            segurança da conta, a biometria comportamental e agentes de IA que
-            fazem produtos financeiros aguentarem a vida real.
+            Hoje trabalho na CERC, em projetos de arranjos de pagamento. Antes passei
+            cinco anos no PagBank, com dados de segurança de contas e modelos de crédito.
           </motion.p>
 
           <motion.div
@@ -94,7 +92,7 @@ export default function Hero() {
               href="#projetos"
               className="group inline-flex items-center gap-3 rounded-full bg-jade text-cream px-6 py-3 text-sm font-medium hover:bg-jade/90 transition"
             >
-              ver projetos
+              Ver projetos
               <span className="w-6 h-px bg-cream group-hover:w-10 transition-all" />
             </a>
             <a
@@ -102,7 +100,7 @@ export default function Hero() {
               className="inline-flex items-center gap-2 text-sm text-cream/70 hover:text-cream transition"
             >
               <span className="w-8 h-px bg-cream/40" />
-              o que eu faço
+              O que eu faço
             </a>
           </motion.div>
 
@@ -113,17 +111,17 @@ export default function Hero() {
             custom={4}
             className="mt-10 sm:mt-14 flex flex-wrap items-center gap-x-4 sm:gap-x-6 gap-y-2 text-cream/50 text-[10px] sm:text-xs uppercase tracking-widest"
           >
-            <span>hoje na CERC</span>
+            <span>CERC (atual)</span>
             <span className="w-6 sm:w-8 h-px bg-cream/20" />
-            <span>ex-PagBank</span>
+            <span>PagBank</span>
             <span className="w-6 sm:w-8 h-px bg-cream/20" />
-            <span>ex-Mastertech</span>
+            <span>Mastertech</span>
             <span className="w-6 sm:w-8 h-px bg-cream/20" />
-            <span>MBA · FIAP</span>
+            <span>MBA na FIAP</span>
           </motion.div>
         </div>
 
-        {/* mascote DESKTOP */}
+        {/* retrato no desktop */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9, rotate: -4 }}
           animate={{ opacity: 1, scale: 1, rotate: 0 }}
@@ -142,7 +140,7 @@ export default function Hero() {
           </div>
           <div className="absolute -bottom-6 -left-6 text-cream/60 flex items-center gap-2">
             <ArrowScribble className="w-16 h-8 text-mint" />
-            <span className="text-xs italic font-display">retrato ilustrado</span>
+            <span className="text-xs italic font-display">eu, em desenho</span>
           </div>
         </motion.div>
       </div>

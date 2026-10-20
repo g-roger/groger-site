@@ -17,17 +17,17 @@ export default function TechStack() {
 
       <div className="mx-auto max-w-6xl px-5 sm:px-6">
         <div className="mb-10 sm:mb-14 max-w-2xl">
-          <span className="block text-gold uppercase tracking-[0.4em] text-[10px] sm:text-xs mb-3">·04</span>
+          <span className="block text-gold uppercase tracking-[0.4em] text-[10px] sm:text-xs mb-3">03</span>
           <h2 className="section-heading text-4xl sm:text-6xl text-cream">
-            Ferramentas <span className="italic text-mint">do dia a dia.</span>
+            O que eu <span className="italic text-mint">uso</span>
           </h2>
           <WaveScribble className="mt-4 w-32 sm:w-40 text-jade" />
           <p className="mt-4 sm:mt-5 text-cream/60 text-sm sm:text-base">
-            O que uso pra construir, modelar, servir e monitorar — organizado por área.
+            Linguagens, bibliotecas e plataformas com as quais trabalho, separadas por área.
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {techStack.map((cat, i) => (
             <motion.div
               key={cat.name}

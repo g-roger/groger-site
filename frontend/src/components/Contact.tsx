@@ -13,7 +13,7 @@ export default function Contact() {
           transition={{ duration: 0.6 }}
           className="block text-gold uppercase tracking-[0.4em] text-xs mb-3"
         >
-          ·07
+          06
         </motion.span>
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
@@ -22,7 +22,7 @@ export default function Contact() {
           transition={{ duration: 0.8 }}
           className="section-heading text-5xl sm:text-7xl text-cream"
         >
-          Vamos <span className="italic text-mint">conversar?</span>
+          Fale <span className="italic text-mint">comigo</span>
         </motion.h2>
         <WaveScribble className="mt-6 w-56 mx-auto text-jade" />
         <motion.p
@@ -32,8 +32,7 @@ export default function Contact() {
           transition={{ duration: 0.8, delay: 0.15 }}
           className="mt-6 text-cream/70 text-lg max-w-xl mx-auto"
         >
-          Se você trabalha com crédito, segurança ou dados — ou tá pensando em contratar, ensinar
-          junto ou só bater papo — o LinkedIn é o canal.
+          O melhor jeito de falar comigo é pelo LinkedIn. Os projetos abertos estão no GitHub.
         </motion.p>
 
         <motion.div
@@ -77,7 +76,7 @@ export default function Contact() {
           transition={{ delay: 0.6 }}
           className="mt-16 text-cream/40 text-xs uppercase tracking-widest"
         >
-          são paulo · brasil
+          São Paulo, Brasil
         </motion.p>
       </div>
     </section>

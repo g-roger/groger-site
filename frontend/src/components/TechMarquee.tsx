@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 const words = [
   'Python', 'PySpark', 'Databricks', 'Delta Lake', 'Airflow', 'Kafka',
   'FastAPI', 'scikit-learn', 'TensorFlow', 'Keras', 'SHAP', 'AWS SageMaker',
-  'Redshift', 'MongoDB', 'Vertex AI', 'LLM Agents', 'Docker', 'Fly.dev',
+  'Redshift', 'MongoDB', 'Vertex AI', 'Agentes de IA', 'Docker', 'Fly.dev',
   'Power BI', 'React', 'TypeScript',
 ]
 
@@ -24,7 +24,7 @@ export default function TechMarquee() {
             className="text-cream/60 font-display italic text-2xl sm:text-3xl tracking-tight"
           >
             {w}
-            <span className="text-mint/50 ml-8">·</span>
+            <span className="inline-block w-1.5 h-1.5 rounded-full bg-mint/40 ml-8 align-middle" />
           </span>
         ))}
       </motion.div>

@@ -74,8 +74,8 @@ export default function Admin() {
         >
           <div>
             <p className="text-gold uppercase tracking-[0.35em] text-[10px]">admin</p>
-            <h1 className="section-heading text-3xl text-cream mt-2">Métricas.</h1>
-            <p className="text-cream/50 text-sm mt-2">acesso restrito.</p>
+            <h1 className="section-heading text-3xl text-cream mt-2">Métricas</h1>
+            <p className="text-cream/50 text-sm mt-2">Acesso restrito</p>
           </div>
           <div>
             <label className="text-xs uppercase tracking-widest text-cream/50">usuário</label>
@@ -114,7 +114,7 @@ export default function Admin() {
         <div className="flex flex-wrap items-end justify-between gap-3 mb-10">
           <div>
             <p className="text-gold uppercase tracking-[0.35em] text-[10px]">admin</p>
-            <h1 className="section-heading text-4xl text-cream mt-2">Métricas do site.</h1>
+            <h1 className="section-heading text-4xl text-cream mt-2">Métricas do site</h1>
           </div>
           <div className="flex gap-2">
             <button
@@ -201,9 +201,9 @@ export default function Admin() {
                       <tr key={i} className="border-t border-mint/10 text-cream/80">
                         <td className="py-2 pr-4 whitespace-nowrap text-cream/60">{new Date(r.at).toLocaleString('pt-BR')}</td>
                         <td className="py-2 pr-4"><code className="text-cream">{r.path}</code></td>
-                        <td className="py-2 pr-4">{r.country ?? '—'}</td>
-                        <td className="py-2 pr-4 truncate max-w-[240px]">{r.referrer ?? '—'}</td>
-                        <td className="py-2 truncate max-w-[280px] text-cream/50">{r.user_agent ?? '—'}</td>
+                        <td className="py-2 pr-4">{r.country ?? '-'}</td>
+                        <td className="py-2 pr-4 truncate max-w-[240px]">{r.referrer ?? '-'}</td>
+                        <td className="py-2 truncate max-w-[280px] text-cream/50">{r.user_agent ?? '-'}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -245,7 +245,7 @@ function DailyChart({ data }: { data: { day: string; views: number; unique: numb
   return (
     <div className="flex items-end gap-1 h-40">
       {data.map((d) => (
-        <div key={d.day} className="flex-1 flex flex-col items-center gap-1" title={`${d.day} · ${d.views}`}>
+        <div key={d.day} className="flex-1 flex flex-col items-center gap-1" title={`${d.day}: ${d.views}`}>
           <div className="w-full rounded-t bg-mint/10 relative">
             <div
               className="w-full rounded-t bg-jade transition-all"
