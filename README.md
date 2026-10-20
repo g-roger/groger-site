@@ -1,18 +1,18 @@
 # groger-site
 
-Site pessoal one-page do Gabriel Roger — cientista e engenheiro de dados.
+Site pessoal one-page do Gabriel Roger, cientista e engenheiro de dados.
 
-Stack: **React + Vite + TypeScript + Framer Motion + TailwindCSS** no front, **FastAPI + SQLite** no back, deploy num **container único no Fly.dev**. Ilustrações e animações autorais (SVG + Framer).
+Front em React, Vite, TypeScript, Framer Motion e TailwindCSS. Back em FastAPI com SQLite. Tudo roda num container único no Fly.dev. As ilustrações são SVGs animados com Framer Motion.
 
 ## Rodar local
 
 ```bash
-# terminal 1 — frontend (Vite em :5173, proxy /api → :8000)
+# terminal 1: frontend (Vite em :5173, com proxy de /api para :8000)
 cd frontend
 npm install
 npm run dev
 
-# terminal 2 — backend
+# terminal 2: backend
 cd backend
 pip install -r requirements.txt
 DB_PATH=./local.db STATIC_DIR=./_none ADMIN_USER=admin ADMIN_PASS=troca \
@@ -21,8 +21,8 @@ DB_PATH=./local.db STATIC_DIR=./_none ADMIN_USER=admin ADMIN_PASS=troca \
 
 ## Rotas
 
-- `/` — one-page (hero, sobre, números, especialidades, marquee tech, stack, trajetória, projetos, contato)
-- `/admin` — dashboard de métricas protegido por HTTP Basic
+- `/`: a página única (hero, sobre, números, áreas, ferramentas, trajetória, projetos e contato)
+- `/admin`: dashboard de métricas de acesso, protegido por HTTP Basic
 
 ## Build de produção (Docker)
 
@@ -31,14 +31,14 @@ docker build -t groger-site .
 docker run -p 8000:8000 -e ADMIN_PASS=troca -v $(pwd)/data:/data groger-site
 ```
 
-## Deploy Fly.dev
+## Deploy no Fly.dev
 
 ```bash
-./deploy.sh            # primeira vez: cria app, volume, secrets e deploya
-./deploy.sh redeploy   # apenas fly deploy
+./deploy.sh            # primeira vez: cria o app, o volume e os secrets, e faz o deploy
+./deploy.sh redeploy   # só o fly deploy
 ```
 
-Configuração em [fly.toml](fly.toml) e [Dockerfile](Dockerfile). Volume persistente montado em `/data` para o SQLite.
+A configuração está em [fly.toml](fly.toml) e no [Dockerfile](Dockerfile). O SQLite fica num volume persistente montado em `/data`.
 
 ## Estrutura
 
@@ -47,14 +47,14 @@ groger-site/
 ├── frontend/            # Vite + React + TS + Tailwind + Framer Motion
 │   ├── src/
 │   │   ├── App.tsx
-│   │   ├── data.ts      # conteúdo (expertises, projects, timeline, tech)
-│   │   ├── components/  # Hero, About, Expertise, TechStack, Timeline, Projects, Contact, Admin, Illustrations, Spotlight, TechMarquee, Numbers
-│   │   └── lib/track.ts # tracker de pageviews/eventos
+│   │   ├── data.ts      # todo o conteúdo: áreas, projetos, trajetória e ferramentas
+│   │   ├── components/  # Hero, About, Numbers, Expertise, TechStack, Timeline, Projects, Contact, Admin e ilustrações
+│   │   └── lib/track.ts # envio de pageviews e eventos
 │   └── ...
 ├── backend/
-│   ├── main.py          # FastAPI + SQLite (pageviews, events, admin)
+│   ├── main.py          # FastAPI + SQLite (pageviews, eventos e admin)
 │   └── requirements.txt
-├── Dockerfile           # multi-stage: node build → python serve
+├── Dockerfile           # multi-stage: build do front em node, serve em python
 ├── fly.toml
 └── deploy.sh
 ```

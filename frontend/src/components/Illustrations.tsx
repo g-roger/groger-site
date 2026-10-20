@@ -60,7 +60,7 @@ export function Mascot({ className = '' }: { className?: string }) {
         stroke="#0b1a12"
         strokeWidth="1.6"
       />
-      {/* cabelo arrepiado — pontas em ziguezague */}
+      {/* cabelo arrepiado, pontas em ziguezague */}
       <path
         d="M82 178
            L 88 148

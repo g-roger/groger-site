@@ -15,13 +15,12 @@ export default function Projects() {
 
       <div className="mx-auto max-w-6xl px-5 sm:px-6">
         <div className="mb-10 sm:mb-14 max-w-2xl">
-          <span className="block text-gold uppercase tracking-[0.4em] text-[10px] sm:text-xs mb-3">·06</span>
+          <span className="block text-gold uppercase tracking-[0.4em] text-[10px] sm:text-xs mb-3">05</span>
           <h2 className="section-heading text-4xl sm:text-6xl text-cream">
-            Projetos <span className="italic text-mint">no mundo.</span>
+            Alguns <span className="italic text-mint">projetos</span>
           </h2>
           <p className="mt-4 text-cream/60 text-sm sm:text-base">
-            Uma vitrine curada — a maioria do que faço no dia a dia é privado, então o que dá pra
-            mostrar tá aqui.
+            A maior parte do que faço no trabalho é privada. Estes são os projetos que posso mostrar.
           </p>
         </div>
 
@@ -53,13 +52,7 @@ export default function Projects() {
                   <div className="relative">
                     <div className="flex items-start justify-between gap-3">
                       <h4 className="font-mono text-cream text-base sm:text-lg leading-tight">{p.name}</h4>
-                      {p.url ? (
-                        <span className="text-cream/60 text-xl leading-none">↗</span>
-                      ) : (
-                        <span className="text-[10px] uppercase tracking-widest text-cream/50 border border-mint/25 rounded-full px-2 py-0.5">
-                          próprio
-                        </span>
-                      )}
+                      {p.url && <span className="text-cream/60 text-xl leading-none">↗</span>}
                     </div>
                     <p className="mt-1 text-sm text-gold/90 italic">{p.tagline}</p>
                     <p className="mt-3 sm:mt-4 text-sm text-cream/75 leading-relaxed">{p.description}</p>

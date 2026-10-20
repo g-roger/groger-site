@@ -69,7 +69,7 @@ def init_db() -> None:
 
 init_db()
 
-app = FastAPI(title="Gabriel Roger — Site")
+app = FastAPI(title="Gabriel Roger Site")
 security = HTTPBasic()
 
 
@@ -236,4 +236,4 @@ else:
 
     @app.get("/", include_in_schema=False)
     def dev_root() -> dict[str, str]:
-        return {"message": "dev backend — SPA served by Vite on :5173"}
+        return {"message": "dev backend, SPA served by Vite on :5173"}

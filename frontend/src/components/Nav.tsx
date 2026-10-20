@@ -2,8 +2,8 @@ import { motion } from 'framer-motion'
 
 const links = [
   { href: '#about', label: 'sobre' },
-  { href: '#expertise', label: 'especialidades' },
-  { href: '#stack', label: 'stack' },
+  { href: '#expertise', label: 'áreas' },
+  { href: '#stack', label: 'ferramentas' },
   { href: '#trajetoria', label: 'trajetória' },
   { href: '#projetos', label: 'projetos' },
   { href: '#contato', label: 'contato' },
@@ -21,7 +21,7 @@ export default function Nav() {
         <a href="#top" className="flex items-center gap-2 group">
           <span className="text-2xl font-display font-bold tracking-tight text-mint">g·r</span>
           <span className="text-xs uppercase tracking-[0.3em] text-cream/50 hidden sm:inline">
-            dados · crédito · segurança
+            cientista e engenheiro de dados
           </span>
         </a>
         <nav className="hidden md:flex items-center gap-1 sm:gap-3">

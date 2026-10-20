@@ -9,7 +9,7 @@
 #   ./deploy.sh redeploy   # só faz fly deploy
 
 set -euo pipefail
-APP=groger-site
+APP=gabrielroger
 REGION=gru
 
 cd "$(dirname "$0")"
@@ -24,6 +24,10 @@ fly apps create "$APP" --org personal 2>/dev/null || echo "  app já existe, ok.
 
 echo "→ criando volume groger_data em $REGION (1GB)"
 fly volumes create groger_data --region "$REGION" --size 1 --app "$APP" --yes 2>/dev/null || echo "  volume já existe, ok."
+
+echo "→ alocando IPs (v4 compartilhado e v6), porque o primeiro deploy não consegue fazer isso sozinho"
+fly ips allocate-v4 --shared --app "$APP" || echo "  v4 não alocado (já existe?)"
+fly ips allocate-v6 --app "$APP" || echo "  v6 não alocado (já existe?)"
 
 echo "→ definindo secrets"
 ADMIN_USER=${ADMIN_USER:-gabriel}

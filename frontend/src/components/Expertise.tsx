@@ -30,13 +30,13 @@ export default function ExpertiseSection() {
       <div className="mx-auto max-w-6xl px-5 sm:px-6">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-3 sm:gap-6 mb-10 sm:mb-14">
           <div>
-            <span className="block text-gold uppercase tracking-[0.4em] text-[10px] sm:text-xs mb-3">·02</span>
+            <span className="block text-gold uppercase tracking-[0.4em] text-[10px] sm:text-xs mb-3">02</span>
             <h2 className="section-heading text-4xl sm:text-6xl text-cream">
-              Especialidades <span className="italic text-mint">vivas.</span>
+              O que eu <span className="italic text-mint">faço</span>
             </h2>
           </div>
           <p className="text-cream/50 text-sm max-w-xs">
-            clique num card pra ver a animação explicando o tema.
+            Clique em uma área para ver a animação e uma explicação rápida.
           </p>
         </div>
 
@@ -137,7 +137,7 @@ function ExpertiseModal({ item, onClose }: { item: Expertise; onClose: () => voi
               className="uppercase tracking-[0.35em] text-[10px] sm:text-xs mb-2 sm:mb-3"
               style={{ color: item.color }}
             >
-              especialidade
+              área
             </motion.p>
             <motion.h3
               initial={{ opacity: 0, y: 10 }}
