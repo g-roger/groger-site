@@ -64,10 +64,10 @@ export default function Hero() {
             initial="hidden"
             animate="show"
             custom={1}
-            className="section-heading text-balance text-[14vw] sm:text-[8vw] lg:text-[5.25rem] text-cream"
+            className="section-heading text-balance text-[12.5vw] sm:text-[7vw] lg:text-[5.25rem] text-cream"
           >
-            Cientista e{' '}
-            <span className="text-mint italic font-normal">engenheiro de dados.</span>
+            Tech lead,{' '}
+            <span className="text-mint italic font-normal">cientista e engenheiro de dados.</span>
           </motion.h1>
 
           <motion.p
@@ -77,7 +77,7 @@ export default function Hero() {
             custom={2}
             className="mt-6 sm:mt-8 max-w-xl text-base sm:text-lg text-cream/80 leading-relaxed"
           >
-            Hoje trabalho na CERC, em projetos de arranjos de pagamento. Antes passei
+            Hoje sou tech lead na CERC, em projetos de arranjos de pagamento. Antes passei
             cinco anos no PagBank, com dados de segurança de contas e modelos de crédito.
           </motion.p>
 
@@ -111,7 +111,7 @@ export default function Hero() {
             custom={4}
             className="mt-10 sm:mt-14 flex flex-wrap items-center gap-x-4 sm:gap-x-6 gap-y-2 text-cream/50 text-[10px] sm:text-xs uppercase tracking-widest"
           >
-            <span>CERC (atual)</span>
+            <span>Tech lead na CERC</span>
             <span className="w-6 sm:w-8 h-px bg-cream/20" />
             <span>PagBank</span>
             <span className="w-6 sm:w-8 h-px bg-cream/20" />

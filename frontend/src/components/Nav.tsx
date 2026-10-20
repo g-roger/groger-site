@@ -21,7 +21,7 @@ export default function Nav() {
         <a href="#top" className="flex items-center gap-2 group">
           <span className="text-2xl font-display font-bold tracking-tight text-mint">g·r</span>
           <span className="text-xs uppercase tracking-[0.3em] text-cream/50 hidden sm:inline">
-            cientista e engenheiro de dados
+            tech lead e engenheiro de dados
           </span>
         </a>
         <nav className="hidden md:flex items-center gap-1 sm:gap-3">
