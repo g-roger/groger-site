@@ -87,13 +87,19 @@ def visitor_hash(request: Request) -> str:
 
 
 def country_of(request: Request) -> str | None:
-    # Fly injects a region header; if you add a CDN later this can carry the real country
-    return request.headers.get("fly-region") or request.headers.get("cf-ipcountry")
+    # Fly sends the edge region (e.g. "gru"), not the visitor's country. Behind a CDN that
+    # sets cf-ipcountry this becomes the real country.
+    return request.headers.get("fly-region") or request.headers.get("cf-ipcountry") or None
+
+
+def _same(a: str, b: str) -> bool:
+    # compare_digest raises TypeError on non-ASCII str, so compare the UTF-8 bytes instead
+    return hmac.compare_digest(a.encode("utf-8"), b.encode("utf-8"))
 
 
 def require_admin(credentials: HTTPBasicCredentials = Depends(security)) -> str:
-    user_ok = hmac.compare_digest(credentials.username, ADMIN_USER)
-    pass_ok = hmac.compare_digest(credentials.password, ADMIN_PASS)
+    user_ok = _same(credentials.username, ADMIN_USER)
+    pass_ok = _same(credentials.password, ADMIN_PASS)
     if not (user_ok and pass_ok):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -222,15 +228,29 @@ def metrics(_: str = Depends(require_admin)) -> JSONResponse:
 if STATIC_DIR.exists():
     app.mount("/assets", StaticFiles(directory=STATIC_DIR / "assets"), name="assets")
 
+    def static_file(full_path: str) -> Path | None:
+        """Return the file for `full_path` only if it really lives inside STATIC_DIR.
+
+        `..`, absolute paths ("//etc/passwd" reaches us as "/etc/passwd", and joining an
+        absolute path discards the base) and symlinks pointing outside are all rejected.
+        """
+        if not full_path:
+            return None
+        root = STATIC_DIR.resolve()
+        try:
+            candidate = (root / full_path).resolve()
+        except (ValueError, OSError):  # e.g. NUL byte in the path
+            return None
+        if candidate.is_file() and candidate.is_relative_to(root):
+            return candidate
+        return None
+
     @app.get("/{full_path:path}", include_in_schema=False)
     def spa(full_path: str) -> FileResponse:
         # never intercept /api/*
         if full_path.startswith("api/"):
             raise HTTPException(status_code=404)
-        candidate = STATIC_DIR / full_path
-        if full_path and candidate.is_file():
-            return FileResponse(candidate)
-        return FileResponse(STATIC_DIR / "index.html")
+        return FileResponse(static_file(full_path) or STATIC_DIR / "index.html")
 
 else:
 

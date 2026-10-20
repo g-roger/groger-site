@@ -24,7 +24,7 @@ export default function About() {
         >
           <span className="block text-gold uppercase tracking-[0.4em] text-[10px] sm:text-xs mb-3">01</span>
           <h2 className="section-heading text-4xl sm:text-6xl text-cream">
-            Sobre
+            Sobre{' '}
             <br />
             <span className="italic text-mint">mim</span>
           </h2>
@@ -40,8 +40,9 @@ export default function About() {
         >
           <p>
             Sou <span className="text-cream">tech lead</span>, cientista e engenheiro de dados.
-            Comecei em 2013 dando aula de informática, fui engenheiro de software sênior e, em
-            2021, mudei para a área de dados. Desde então trabalho com{' '}
+            Comecei em 2013 dando aula de informática e passei boa parte da carreira dentro de
+            grandes empresas: primeiro como engenheiro de software sênior, em projetos de
+            consultoria, e desde 2021 em dados, com{' '}
             <span className="text-cream">crédito e segurança de contas</span>.
           </p>
           <p>
@@ -53,9 +54,16 @@ export default function About() {
             <span className="text-cream">agentes de IA</span> em projetos com LLM.
           </p>
           <p>
-            Ensinar sempre fez parte do caminho. Dei aula no Grupo All Net, treinei equipes de
-            empresas como Santander, Itaú, Facebook e IBM pela Mastertech, e fui instrutor e
-            mentor de dados na Awari de 2022 a 2025.
+            Na Mastertech, de 2017 a 2021, entrei em projetos de empresas como{' '}
+            <span className="text-cream">Itaú, Santander, Vivo, Globo, Disney, Facebook e IBM</span>.
+            Atuava como design partner, alocado no cliente ou junto com a equipe dele dentro da
+            Mastertech, e os projetos passavam por prototipação de produtos, desenvolvimento,
+            análise de dados em big data, educação e adoção de novas tecnologias pelos profissionais.
+          </p>
+          <p>
+            Ensinar sempre fez parte do caminho. Dei aula no Grupo All Net, fiz projetos de educação
+            e treinamentos pela Mastertech e fui instrutor e mentor de dados na Awari de 2022 a
+            2025.
           </p>
         </motion.div>
       </div>

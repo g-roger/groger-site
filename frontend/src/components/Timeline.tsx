@@ -64,6 +64,23 @@ export default function TimelineSection() {
                     ))}
                   </ul>
                 )}
+                {t.clients && t.clients.length > 0 && (
+                  <div className="mt-5">
+                    <p className="text-[10px] uppercase tracking-[0.3em] text-gold/80 mb-2">
+                      Clientes e parceiros
+                    </p>
+                    <ul className="flex flex-wrap gap-1.5">
+                      {t.clients.map((c) => (
+                        <li
+                          key={c}
+                          className="text-xs text-cream/90 bg-forest/60 border border-gold/25 px-2.5 py-1 rounded-full"
+                        >
+                          {c}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
                 {t.tags && t.tags.length > 0 && (
                   <div className="mt-4 sm:mt-5 flex flex-wrap gap-1.5">
                     {t.tags.map((tag) => (

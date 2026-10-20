@@ -1,5 +1,6 @@
 import { motion, useInView, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { useEffect, useRef } from 'react'
+import { careerStats } from '../data'
 import { ConcentricRings, Sparkles } from './Illustrations'
 
 function Counter({ to, suffix = '' }: { to: number; suffix?: string }) {
@@ -23,16 +24,9 @@ function Counter({ to, suffix = '' }: { to: number; suffix?: string }) {
   )
 }
 
-// Todos os números saem do currículo: 2013 (início no Grupo All Net), PagBank de 2021 a 2026,
-// 7 empresas citadas nos treinamentos da Mastertech e Awari de 2022 a 2025.
-const items = [
-  { n: new Date().getFullYear() - 2013, suffix: '', label: 'anos de carreira, desde 2013' },
-  { n: 5, suffix: '', label: 'anos no PagBank, de 2021 a 2026' },
-  { n: 7, suffix: '+', label: 'empresas em que dei treinamento pela Mastertech' },
-  { n: 3, suffix: '', label: 'anos como instrutor e mentor na Awari' },
-]
-
 export default function Numbers() {
+  const items = careerStats()
+
   return (
     <section className="relative py-24">
       <div className="absolute top-10 left-10 w-24 h-24 text-jade/40 pointer-events-none hidden md:block">
