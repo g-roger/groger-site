@@ -17,9 +17,9 @@ export default {
         rose:   '#c6807a',
       },
       fontFamily: {
-        display: ['"Fraunces"', 'ui-serif', 'Georgia', 'serif'],
-        body: ['"Inter"', 'ui-sans-serif', 'system-ui'],
-        mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+        display: ['"Fraunces Variable"', 'ui-serif', 'Georgia', 'serif'],
+        body: ['"Inter Variable"', 'ui-sans-serif', 'system-ui'],
+        mono: ['"JetBrains Mono Variable"', 'ui-monospace', 'monospace'],
       },
       keyframes: {
         grain: {

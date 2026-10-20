@@ -29,6 +29,15 @@ class TestSpa:
         assert client.get("/assets/nao-existe.js").status_code == 404
 
 
+class TestDocumentacaoDaApiNaoEPublica:
+    @pytest.mark.parametrize("path", ["/docs", "/redoc", "/openapi.json", "/docs/oauth2-redirect"])
+    def test_nao_expoe_a_documentacao(self, client, path):
+        r = client.get(path)
+        assert "swagger" not in r.text.lower()
+        assert "redoc" not in r.text.lower()
+        assert "/api/admin/metrics" not in r.text
+
+
 class TestApiNaoEInterceptada:
     def test_health(self, client):
         r = client.get("/api/health")
