@@ -10,3 +10,7 @@ frontend/.vite/
 data/
 *.db
 .pytest_cache/
+# foto da surpresa: fica só no volume do servidor, nunca no repositório
+**/surpresa*.jpg
+**/surpresa*.jpeg
+**/surpresa*.png

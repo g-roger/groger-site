@@ -23,3 +23,6 @@ frontend/src/test
 **/*.test.tsx
 test.sh
 deploy.sh
+**/surpresa*.jpg
+**/surpresa*.jpeg
+**/surpresa*.png

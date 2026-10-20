@@ -1,5 +1,8 @@
 import { motion } from 'framer-motion'
+import { useCallback, useState } from 'react'
+import { useToquesSecretos } from '../lib/surpresa'
 import { Mascot, StarBurst, ArrowScribble, LeafSprig, DotGrid, ConcentricRings, Sparkles, BlobShape } from './Illustrations'
+import Surprise from './Surprise'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -11,8 +14,15 @@ const fadeUp = {
 }
 
 export default function Hero() {
+  const [surpresa, setSurpresa] = useState(false)
+  const abrir = useCallback(() => setSurpresa(true), [])
+  const fechar = useCallback(() => setSurpresa(false), [])
+  // 5 toques seguidos no retrato abrem a surpresa (celular e computador)
+  const toque = useToquesSecretos(abrir)
+
   return (
     <section id="top" className="relative min-h-[100svh] pt-24 sm:pt-28 pb-16 overflow-hidden">
+      <Surprise aberta={surpresa} onFechar={fechar} />
       <div className="absolute inset-0 paper-grain opacity-30 pointer-events-none" />
       <div className="absolute -top-24 -right-24 w-[420px] sm:w-[520px] h-[420px] sm:h-[520px] rounded-full bg-jade/25 blur-3xl pointer-events-none" />
       <div className="absolute bottom-10 -left-24 w-[320px] sm:w-[420px] h-[320px] sm:h-[420px] rounded-full bg-gold/10 blur-3xl pointer-events-none" />
@@ -43,7 +53,11 @@ export default function Hero() {
           className="relative mx-auto w-40 sm:w-52 lg:hidden"
         >
           <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-jade/40 via-mint/10 to-forest/40 blur-2xl" />
-          <div className="relative rounded-[1.5rem] border border-mint/20 bg-forest/70 p-2">
+          <div
+            data-testid="retrato-mobile"
+            onClick={toque}
+            className="relative rounded-[1.5rem] border border-mint/20 bg-forest/70 p-2 select-none touch-manipulation"
+          >
             <Mascot className="w-full h-auto" />
           </div>
           <StarBurst className="absolute -top-3 -right-3 w-10 h-10 text-gold" />
@@ -131,7 +145,11 @@ export default function Hero() {
         >
           <div className="relative">
             <div className="absolute -inset-6 rounded-[2rem] bg-gradient-to-br from-jade/30 via-mint/10 to-forest/40 blur-2xl" />
-            <div className="relative rounded-[2rem] border border-mint/20 bg-forest/70 p-4 backdrop-blur">
+            <div
+              data-testid="retrato-desktop"
+              onClick={toque}
+              className="relative rounded-[2rem] border border-mint/20 bg-forest/70 p-4 backdrop-blur select-none touch-manipulation"
+            >
               <Mascot className="w-full h-auto animate-floaty" />
             </div>
             <StarBurst className="absolute -top-6 -right-6 w-16 h-16 text-gold" />

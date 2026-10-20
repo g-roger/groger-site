@@ -1,6 +1,7 @@
 """FastAPI backend: serves the SPA + tracks visits + exposes an admin endpoint."""
 from __future__ import annotations
 
+import base64
 import hashlib
 import hmac
 import json
@@ -10,6 +11,7 @@ import secrets
 import sqlite3
 import threading
 import time
+import unicodedata
 from collections import deque
 from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
@@ -32,6 +34,12 @@ ADMIN_PASS = os.environ.get("ADMIN_PASS", "")
 # Without a configured salt, use a random one per process: hashes stay unlinkable to IPs.
 VISITOR_SALT = os.environ.get("VISITOR_SALT") or secrets.token_hex(16)
 RETENTION_DAYS = int(os.environ.get("RETENTION_DAYS", "365"))
+
+# Private surprise: the photo lives on the volume and the passphrase and message are Fly
+# secrets, so nothing personal is in the image or in the public repository.
+SURPRISE_PHOTO = Path(os.environ.get("SURPRISE_PHOTO", "/data/surpresa.jpg"))
+SURPRISE_PASSPHRASE = os.environ.get("SURPRISE_PASSPHRASE", "")
+SURPRISE_MESSAGE = os.environ.get("SURPRISE_MESSAGE", "")
 
 MAX_BODY_BYTES = 16 * 1024
 MIN_ADMIN_PASS_LEN = 12
@@ -167,6 +175,7 @@ class RateLimiter:
 
 tracking_limiter = RateLimiter(limit=60, window_seconds=60)
 admin_failures = RateLimiter(limit=10, window_seconds=15 * 60)
+surprise_failures = RateLimiter(limit=8, window_seconds=15 * 60)
 
 
 class BodySizeLimit:
@@ -464,6 +473,66 @@ def metrics(_: str = Depends(require_admin)) -> JSONResponse:
             "top_events": [dict(r) for r in top_events],
             "daily": [{"day": r["day"], "views": r["views"], "unique": r["uniq"]} for r in daily],
             "recent": [dict(r) for r in recent],
+        }
+    )
+
+
+# --- private surprise -----------------------------------------------------
+def normalize_passphrase(text: str) -> str:
+    """Case, accents and extra spaces don't matter (phone keyboards capitalize and autocorrect)."""
+    no_accents = "".join(
+        c for c in unicodedata.normalize("NFKD", text) if not unicodedata.combining(c)
+    )
+    return " ".join(no_accents.lower().split())
+
+
+def surprise_token() -> str:
+    """Token that lets a device that already typed the passphrase open it again.
+
+    Derived from the passphrase, so changing the passphrase forgets every device.
+    """
+    key = normalize_passphrase(SURPRISE_PASSPHRASE).encode("utf-8")
+    return hmac.new(key, b"lembrar-este-aparelho", hashlib.sha256).hexdigest()
+
+
+def surprise_enabled() -> bool:
+    return bool(normalize_passphrase(SURPRISE_PASSPHRASE)) and bool(SURPRISE_MESSAGE) and SURPRISE_PHOTO.is_file()
+
+
+class SurprisePayload(BaseModel):
+    senha: str | None = Field(None, max_length=200)
+    token: str | None = Field(None, max_length=200)
+
+
+@app.post("/api/surpresa")
+def surprise(payload: SurprisePayload, request: Request) -> JSONResponse:
+    if not surprise_enabled():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+
+    ip = client_ip(request)
+    if surprise_failures.blocked(ip):
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail="too many attempts, try again later",
+            headers={"Retry-After": str(int(surprise_failures.window))},
+        )
+
+    expected = normalize_passphrase(SURPRISE_PASSPHRASE)
+    ok = False
+    if payload.senha is not None:
+        ok = _same(normalize_passphrase(payload.senha), expected)
+    elif payload.token is not None:
+        ok = _same(payload.token, surprise_token())
+    if not ok:
+        surprise_failures.add(ip)
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="unauthorized")
+
+    photo = base64.b64encode(SURPRISE_PHOTO.read_bytes()).decode("ascii")
+    return JSONResponse(
+        {
+            "mensagem": SURPRISE_MESSAGE,
+            "foto": f"data:image/jpeg;base64,{photo}",
+            "token": surprise_token(),
         }
     )
 
