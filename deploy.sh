@@ -14,6 +14,12 @@ REGION=gru
 
 cd "$(dirname "$0")"
 
+# Só publica se os testes passarem. Para pular: SKIP_TESTS=1 ./deploy.sh
+if [ "${SKIP_TESTS:-0}" != "1" ]; then
+  echo "→ rodando os testes"
+  ./test.sh
+fi
+
 if [ "${1:-}" = "redeploy" ]; then
   fly deploy --app "$APP"
   exit 0

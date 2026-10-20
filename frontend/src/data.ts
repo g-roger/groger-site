@@ -161,6 +161,7 @@ export type TimelineItem = {
   place: string
   detail: string
   bullets?: string[]
+  clients?: string[]
   tags?: string[]
 }
 
@@ -224,15 +225,34 @@ export const timeline: TimelineItem[] = [
     role: 'Engenheiro de Software Back-End Sênior',
     place: 'Mastertech',
     detail:
-      'Fui o desenvolvedor principal dos softwares da empresa, tanto dos produtos vendidos a clientes quanto dos sistemas internos. No período da noite, dava aulas e treinamentos para empresas.',
+      'Fui o desenvolvedor principal dos softwares da empresa, tanto dos produtos vendidos a clientes quanto dos sistemas internos. Também atuei em consultoria para grandes empresas, em projetos de software, de dados e de educação. Ficava alocado no cliente, desenvolvendo o projeto como design partner, ou dentro da Mastertech, junto com a empresa, apoiando a equipe nas soluções.',
     bullets: [
-      'APIs REST e microsserviços em Python, com Flask, Django REST Framework e PyMongo',
-      'Scrum e CI/CD',
+      'Prototipação de produtos em todos os projetos e desenvolvimento nos que pediam',
+      'Análises de dados em big data',
+      'Projetos de educação, como plataformas de educação corporativa, e apoio a profissionais para adotar e inserir uma nova tecnologia',
+      'APIs REST e microsserviços em Python, com Flask, Django REST Framework e PyMongo, com Scrum e CI/CD',
       'Autor do moip-sdk-python, um SDK aberto para a API de pagamentos da Moip',
-      'Plataformas de educação corporativa para gestão de aprendizagem',
-      'Treinamentos de Python, PySpark, APIs REST e microsserviços para Santander, Itaú, Facebook (Projeto Estação Hack), Icatu Seguros, Banco Omni, Bayer, IBM e outras empresas',
+      'Treinamentos de Python, PySpark, APIs REST e microsserviços para as equipes dos clientes',
     ],
-    tags: ['Python', 'Flask', 'Django REST', 'PySpark', 'MongoDB', 'CI/CD', 'Scrum'],
+    clients: [
+      'Itaú',
+      'Santander',
+      'Vivo',
+      'Porto',
+      'Globo (Projeto Globo Led)',
+      'Disney',
+      'Facebook (Projeto Estação Hack)',
+      'IBM',
+      'Heineken',
+      'Bayer',
+      'C&A',
+      'Icatu Seguros',
+      'Banco Omni',
+      'Sebrae',
+      'ETEC',
+      'e outros',
+    ],
+    tags: ['Consultoria', 'Design partner', 'Prototipação', 'Big data', 'Python', 'Flask', 'Django REST', 'PySpark', 'MongoDB', 'Scrum', 'CI/CD'],
   },
   {
     period: '2017 a 2018',
@@ -252,6 +272,27 @@ export const timeline: TimelineItem[] = [
     tags: ['Ensino', 'Excel', 'Lógica de programação'],
   },
 ]
+
+export type Stat = {
+  n: number
+  suffix: string
+  label: string
+}
+
+// Todos os números saem do currículo e do que o Gabriel contou: 2013 (início no Grupo All Net),
+// PagBank de 2021 a 2026, as empresas e instituições citadas nos projetos da Mastertech
+// (contadas a partir da própria lista, sem o "e outros") e Awari de 2022 a 2025.
+export function careerStats(now: Date = new Date()): Stat[] {
+  const mastertech = timeline.find((t) => t.place === 'Mastertech')
+  const nomeados = (mastertech?.clients ?? []).filter((c) => c !== 'e outros').length
+
+  return [
+    { n: now.getFullYear() - 2013, suffix: '', label: 'anos de carreira, desde 2013' },
+    { n: 5, suffix: '', label: 'anos no PagBank, de 2021 a 2026' },
+    { n: nomeados, suffix: '+', label: 'empresas e instituições atendidas pela Mastertech' },
+    { n: 3, suffix: '', label: 'anos como instrutor e mentor na Awari' },
+  ]
+}
 
 export type TechCategory = {
   name: string

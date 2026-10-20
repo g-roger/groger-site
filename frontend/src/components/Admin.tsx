@@ -78,21 +78,23 @@ export default function Admin() {
             <p className="text-cream/50 text-sm mt-2">Acesso restrito</p>
           </div>
           <div>
-            <label className="text-xs uppercase tracking-widest text-cream/50">usuário</label>
+            <label htmlFor="admin-user" className="text-xs uppercase tracking-widest text-cream/50">usuário</label>
             <input
               value={user}
               onChange={(e) => setUser(e.target.value)}
               className="mt-1 w-full rounded-xl bg-forest border border-mint/20 px-4 py-2 text-cream focus:outline-none focus:border-mint"
+              id="admin-user"
               autoComplete="username"
             />
           </div>
           <div>
-            <label className="text-xs uppercase tracking-widest text-cream/50">senha</label>
+            <label htmlFor="admin-pass" className="text-xs uppercase tracking-widest text-cream/50">senha</label>
             <input
               type="password"
               value={pass}
               onChange={(e) => setPass(e.target.value)}
               className="mt-1 w-full rounded-xl bg-forest border border-mint/20 px-4 py-2 text-cream focus:outline-none focus:border-mint"
+              id="admin-pass"
               autoComplete="current-password"
             />
           </div>
@@ -191,7 +193,7 @@ export default function Admin() {
                     <tr className="text-left text-cream/50 uppercase tracking-widest text-[10px]">
                       <th className="py-2 pr-4">quando</th>
                       <th className="py-2 pr-4">path</th>
-                      <th className="py-2 pr-4">país</th>
+                      <th className="py-2 pr-4">região</th>
                       <th className="py-2 pr-4">referrer</th>
                       <th className="py-2">agent</th>
                     </tr>

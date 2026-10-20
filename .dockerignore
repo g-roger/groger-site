@@ -10,3 +10,10 @@
 *.md
 .DS_Store
 frontend/npm-debug.log*
+backend/tests
+backend/pytest.ini
+backend/requirements-dev.txt
+frontend/src/test
+**/*.test.ts
+**/*.test.tsx
+test.sh
