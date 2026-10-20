@@ -24,7 +24,7 @@ describe('Timeline', () => {
 
   it('destaca o cargo atual como tech lead', () => {
     render(<TimelineSection />)
-    expect(screen.getByRole('heading', { level: 3, name: 'Tech Lead e Engenheiro de Dados Sênior' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 3, name: 'Tech Lead, Cientista e Engenheiro de Dados' })).toBeInTheDocument()
     expect(screen.getByText('Liderança técnica dos projetos de dados')).toBeInTheDocument()
   })
 

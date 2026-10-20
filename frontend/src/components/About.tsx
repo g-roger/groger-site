@@ -47,8 +47,7 @@ export default function About() {
             trabalhando com <span className="text-cream">crédito e segurança de contas</span>.
           </p>
           <p>
-            Hoje, na CERC, sou tech lead e engenheiro de dados sênior. Atuo tanto em ciência quanto em
-            engenharia de dados, em projetos de{' '}
+            Hoje, na CERC, sou tech lead, cientista e engenheiro de dados, em projetos de{' '}
             <span className="text-cream">arranjos de pagamento</span> que envolvem grandes clientes
             de crédito do Brasil. Desenvolvo{' '}
             <span className="text-cream">modelos de fraude</span>, faço análises e reports para

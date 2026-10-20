@@ -38,7 +38,7 @@ describe('About', () => {
 
   it('descreve o trabalho na CERC com as palavras certas', () => {
     render(<About />)
-    expect(screen.getByText(/Hoje, na CERC, sou tech lead e engenheiro de dados sênior/)).toBeInTheDocument()
+    expect(screen.getByText(/Hoje, na CERC, sou tech lead, cientista e engenheiro de dados, em projetos de/)).toBeInTheDocument()
     expect(screen.getByText('arranjos de pagamento')).toBeInTheDocument()
     expect(screen.getByText('modelos de fraude')).toBeInTheDocument()
     expect(screen.getByText('agentes de IA')).toBeInTheDocument()

@@ -49,6 +49,11 @@ describe('App, a página inteira', () => {
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Tech lead, cientista e engenheiro de dados.')
   })
 
+  it('nunca chama o cargo atual só de "tech lead e engenheiro", sem cientista', () => {
+    render(<App />)
+    expect(document.body.textContent).not.toMatch(/tech lead e engenheiro/i)
+  })
+
   it('não tem travessão nem meia-risca em nenhum texto da página', () => {
     render(<App />)
     expect(document.body.textContent).not.toMatch(/[—–]/)

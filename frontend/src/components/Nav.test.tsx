@@ -5,7 +5,7 @@ import Nav from './Nav'
 describe('Nav', () => {
   it('mostra o cargo ao lado da marca', () => {
     render(<Nav />)
-    expect(screen.getByText('tech lead e engenheiro de dados')).toBeInTheDocument()
+    expect(screen.getByText('tech lead, cientista e engenheiro de dados')).toBeInTheDocument()
   })
 
   it('a marca leva ao topo da página', () => {

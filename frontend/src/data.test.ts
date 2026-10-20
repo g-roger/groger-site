@@ -150,9 +150,9 @@ describe('trajetória', () => {
     expect(timeline[0].place).toContain('CERC')
   })
 
-  it('na CERC o cargo é tech lead e engenheiro de dados sênior', () => {
+  it('na CERC o cargo é tech lead, cientista e engenheiro de dados', () => {
     const cerc = timeline.find((t) => t.place.includes('CERC'))
-    expect(cerc?.role).toBe('Tech Lead e Engenheiro de Dados Sênior')
+    expect(cerc?.role).toBe('Tech Lead, Cientista e Engenheiro de Dados')
     expect(cerc?.bullets).toContain('Liderança técnica dos projetos de dados')
   })
 

@@ -20,8 +20,9 @@ export default function Nav() {
       <div className="mx-auto max-w-6xl px-6 py-4 flex items-center justify-between">
         <a href="#top" className="flex items-center gap-2 group">
           <span className="text-2xl font-display font-bold tracking-tight text-mint">g·r</span>
-          <span className="text-xs uppercase tracking-[0.3em] text-cream/50 hidden sm:inline">
-            tech lead e engenheiro de dados
+          {/* só a partir de lg: abaixo disso o texto quebra e encosta nos links */}
+          <span className="text-xs uppercase tracking-[0.3em] text-cream/50 whitespace-nowrap hidden lg:inline">
+            tech lead, cientista e engenheiro de dados
           </span>
         </a>
         <nav className="hidden md:flex items-center gap-1 sm:gap-3">

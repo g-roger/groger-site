@@ -364,7 +364,7 @@ export type TimelineItem = {
 export const timeline: TimelineItem[] = [
   {
     period: '2026 até hoje',
-    role: 'Tech Lead e Engenheiro de Dados Sênior',
+    role: 'Tech Lead, Cientista e Engenheiro de Dados',
     place: 'CERC, Câmara de Registro de Recebíveis',
     detail:
       'Sou tech lead e atuo tanto em ciência de dados quanto em engenharia. Trabalho com arranjos de pagamento, em projetos de crédito e de modelos de fraude que envolvem grandes clientes de crédito do Brasil.',
