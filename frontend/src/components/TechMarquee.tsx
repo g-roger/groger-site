@@ -10,7 +10,7 @@ const words = [
 export default function TechMarquee() {
   const items = [...words, ...words]
   return (
-    <div className="relative py-8 overflow-hidden border-y border-mint/10 bg-forest/40 backdrop-blur">
+    <div className="relative py-8 overflow-hidden border-y border-mint/10 bg-forest/40 sm:backdrop-blur">
       <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-forest to-transparent z-10" />
       <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-forest to-transparent z-10" />
       <motion.div

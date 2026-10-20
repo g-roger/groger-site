@@ -6,6 +6,23 @@
   color-scheme: dark;
 }
 
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* o menu é fixo: sem isso o título de cada seção ficaria escondido atrás dele ao navegar */
+section[id] {
+  scroll-margin-top: 4rem;
+}
+
 html,
 body,
 #root {
@@ -67,8 +84,4 @@ body {
   font-weight: 500;
   letter-spacing: -0.03em;
   line-height: 0.95;
-}
-
-.chip {
-  @apply text-[10px] uppercase tracking-widest text-cream/70 border border-mint/25 px-2 py-1 rounded-full;
 }

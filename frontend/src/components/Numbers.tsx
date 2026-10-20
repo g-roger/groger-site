@@ -28,7 +28,7 @@ export default function Numbers() {
   const items = careerStats()
 
   return (
-    <section className="relative py-24">
+    <section className="relative py-8 sm:py-24">
       <div className="absolute top-10 left-10 w-24 h-24 text-jade/40 pointer-events-none hidden md:block">
         <ConcentricRings className="w-full h-full" />
       </div>
@@ -43,7 +43,7 @@ export default function Numbers() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
             transition={{ delay: i * 0.1, duration: 0.7 }}
-            className="rounded-2xl border border-mint/15 bg-moss/40 backdrop-blur p-5 sm:p-6"
+            className="rounded-2xl border border-mint/15 bg-moss/40 sm:backdrop-blur p-5 sm:p-6"
           >
             <Counter to={it.n} suffix={it.suffix} />
             <p className="mt-3 text-cream/70 text-[11px] sm:text-xs uppercase tracking-widest leading-relaxed">

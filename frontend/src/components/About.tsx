@@ -3,7 +3,7 @@ import { ArrowScribble, LeafSprig, Sparkles, ConcentricRings } from './Illustrat
 
 export default function About() {
   return (
-    <section id="about" className="relative py-24 sm:py-32">
+    <section id="about" className="relative py-14 sm:py-32">
       <div className="absolute top-10 right-4 w-14 h-20 sm:w-16 sm:h-24 text-jade/40 pointer-events-none">
         <LeafSprig className="w-full h-full" />
       </div>
@@ -22,7 +22,7 @@ export default function About() {
           transition={{ duration: 0.7 }}
           className="md:sticky md:top-32"
         >
-          <span className="block text-gold uppercase tracking-[0.4em] text-[10px] sm:text-xs mb-3">01</span>
+          <span className="block text-gold uppercase tracking-[0.4em] text-[11px] sm:text-xs mb-3">01</span>
           <h2 className="section-heading text-4xl sm:text-6xl text-cream">
             Sobre{' '}
             <br />

@@ -4,7 +4,7 @@ import { CircuitLines, Chip, DotGrid, WaveScribble } from './Illustrations'
 
 export default function TechStack() {
   return (
-    <section id="stack" className="relative py-24 sm:py-32">
+    <section id="stack" className="relative py-14 sm:py-32">
       <div className="absolute top-24 right-4 w-32 h-32 sm:w-40 sm:h-40 text-jade/20 pointer-events-none">
         <DotGrid className="w-full h-full" />
       </div>
@@ -17,7 +17,7 @@ export default function TechStack() {
 
       <div className="mx-auto max-w-6xl px-5 sm:px-6">
         <div className="mb-10 sm:mb-14 max-w-2xl">
-          <span className="block text-gold uppercase tracking-[0.4em] text-[10px] sm:text-xs mb-3">03</span>
+          <span className="block text-gold uppercase tracking-[0.4em] text-[11px] sm:text-xs mb-3">03</span>
           <h2 className="section-heading text-4xl sm:text-6xl text-cream">
             O que eu <span className="italic text-mint">uso</span>
           </h2>
@@ -36,7 +36,7 @@ export default function TechStack() {
               viewport={{ once: true, amount: 0.15 }}
               transition={{ delay: i * 0.05, duration: 0.6 }}
               whileHover={{ y: -4 }}
-              className="relative rounded-2xl border border-mint/15 bg-moss/40 backdrop-blur p-5 overflow-hidden"
+              className="relative rounded-2xl border border-mint/15 bg-moss/40 sm:backdrop-blur p-5 overflow-hidden"
             >
               <div
                 className="absolute -top-10 -right-10 w-32 h-32 rounded-full blur-3xl opacity-30"

@@ -95,7 +95,7 @@ function Conteudo({ onFechar }: { onFechar: () => void }) {
         <button
           onClick={onFechar}
           aria-label="fechar"
-          className="absolute -top-3 -right-1 sm:-right-3 z-20 w-10 h-10 rounded-full border border-mint/30 bg-forest/80 text-cream/80 hover:bg-mint hover:text-forest transition grid place-items-center"
+          className="absolute -top-3 -right-1 sm:-right-3 z-20 w-11 h-11 rounded-full border border-mint/30 bg-forest/80 text-cream/80 hover:bg-mint hover:text-forest transition grid place-items-center"
         >
           ✕
         </button>
@@ -173,7 +173,7 @@ function Banner({ surpresa }: { surpresa: DadosSurpresa }) {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="uppercase tracking-[0.3em] text-[10px] sm:text-xs text-gold"
+            className="uppercase tracking-[0.3em] text-[11px] sm:text-xs text-gold"
           >
             Tech lead, cientista e engenheiro de dados.
           </motion.p>

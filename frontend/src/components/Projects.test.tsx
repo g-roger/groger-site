@@ -89,6 +89,19 @@ describe('Projects', () => {
       expect(titulosVisiveis()).toContain('Score de dispositivo para segurança da conta')
     })
 
+    it('no celular os filtros formam uma fileira que rola para o lado, com botões de 44 px', () => {
+      render(<Projects />)
+      const grupo = screen.getByRole('group', { name: 'Filtrar projetos por tema' })
+      expect(grupo.className).toContain('overflow-x-auto')
+      expect(grupo.className).not.toContain('snap-x')
+      expect(grupo.className).toContain('sm:flex-wrap')
+      for (const b of within(grupo).getAllByRole('button')) {
+        expect(b.className).toContain('min-h-[44px]')
+        expect(b.className).toContain('shrink-0')
+        expect(b.className).toContain('whitespace-nowrap')
+      }
+    })
+
     it('registra o filtro escolhido', async () => {
       const user = userEvent.setup()
       render(<Projects />)

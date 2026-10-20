@@ -17,6 +17,23 @@ describe('Contact', () => {
     expect(screen.getByText(/O melhor jeito de falar comigo é pelo LinkedIn/)).toBeInTheDocument()
   })
 
+  it('no celular o botão mostra um texto curto, e o endereço completo fica para telas maiores', () => {
+    render(<Contact />)
+    const link = screen.getByRole('link', { name: /linkedin\.com\/in\/gabriel-roger/ })
+    const curto = screen.getByText('Abrir meu LinkedIn')
+    const completo = screen.getByText('linkedin.com/in/gabriel-roger')
+    expect(link).toContainElement(curto)
+    expect(curto.className).toContain('sm:hidden')
+    expect(completo.className).toContain('hidden')
+    expect(completo.className).toContain('sm:inline')
+    expect(link.className).toContain('min-h-[56px]')
+  })
+
+  it('o link do GitHub tem área de toque de pelo menos 48 px', () => {
+    render(<Contact />)
+    expect(screen.getByRole('link', { name: /github\.com\/g-roger/ }).className).toContain('min-h-[48px]')
+  })
+
   it('o LinkedIn abre em nova aba', () => {
     render(<Contact />)
     const link = screen.getByRole('link', { name: /linkedin\.com\/in\/gabriel-roger/ })

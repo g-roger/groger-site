@@ -70,10 +70,10 @@ export default function Admin() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           onSubmit={submit}
-          className="w-full max-w-sm rounded-3xl border border-mint/20 bg-moss/50 backdrop-blur p-8 space-y-5"
+          className="w-full max-w-sm rounded-3xl border border-mint/20 bg-moss/50 sm:backdrop-blur p-8 space-y-5"
         >
           <div>
-            <p className="text-gold uppercase tracking-[0.35em] text-[10px]">admin</p>
+            <p className="text-gold uppercase tracking-[0.35em] text-[11px]">admin</p>
             <h1 className="section-heading text-3xl text-cream mt-2">Métricas</h1>
             <p className="text-cream/50 text-sm mt-2">Acesso restrito</p>
           </div>
@@ -115,7 +115,7 @@ export default function Admin() {
       <div className="mx-auto max-w-6xl">
         <div className="flex flex-wrap items-end justify-between gap-3 mb-10">
           <div>
-            <p className="text-gold uppercase tracking-[0.35em] text-[10px]">admin</p>
+            <p className="text-gold uppercase tracking-[0.35em] text-[11px]">admin</p>
             <h1 className="section-heading text-4xl text-cream mt-2">Métricas do site</h1>
           </div>
           <div className="flex gap-2">
@@ -190,7 +190,7 @@ export default function Admin() {
               <div className="overflow-x-auto">
                 <table className="min-w-full text-sm">
                   <thead>
-                    <tr className="text-left text-cream/50 uppercase tracking-widest text-[10px]">
+                    <tr className="text-left text-cream/50 uppercase tracking-widest text-[11px]">
                       <th className="py-2 pr-4">quando</th>
                       <th className="py-2 pr-4">path</th>
                       <th className="py-2 pr-4">região</th>
@@ -234,7 +234,7 @@ function Stat({ label, value, highlight }: { label: string; value: number; highl
 
 function Panel({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-2xl border border-mint/15 bg-moss/40 backdrop-blur p-5">
+    <div className="rounded-2xl border border-mint/15 bg-moss/40 sm:backdrop-blur p-5">
       <p className="text-cream/60 text-xs uppercase tracking-widest mb-3">{title}</p>
       {children}
     </div>
@@ -254,7 +254,7 @@ function DailyChart({ data }: { data: { day: string; views: number; unique: numb
               style={{ height: `${(d.views / max) * 140}px` }}
             />
           </div>
-          <span className="text-[9px] text-cream/40">{d.day.slice(5)}</span>
+          <span className="text-[11px] text-cream/40">{d.day.slice(5)}</span>
         </div>
       ))}
     </div>

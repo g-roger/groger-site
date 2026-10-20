@@ -69,7 +69,7 @@ export default function Hero() {
             initial="hidden"
             animate="show"
             custom={0}
-            className="uppercase tracking-[0.3em] text-[10px] sm:text-xs text-gold mb-4 sm:mb-6"
+            className="uppercase tracking-[0.3em] text-[11px] sm:text-xs text-gold mb-4 sm:mb-6"
           >
             Olá, eu sou o Gabriel
           </motion.p>
@@ -112,28 +112,28 @@ export default function Hero() {
             </a>
             <a
               href="#expertise"
-              className="inline-flex items-center gap-2 text-sm text-cream/70 hover:text-cream transition"
+              className="inline-flex items-center gap-2 min-h-[44px] text-sm text-cream/70 hover:text-cream transition"
             >
               <span className="w-8 h-px bg-cream/40" />
               O que eu faço
             </a>
           </motion.div>
 
-          <motion.div
+          {/* no celular vira uma grade 2x2 sem traços soltos; do sm em diante, uma linha com divisores */}
+          <motion.ul
             variants={fadeUp}
             initial="hidden"
             animate="show"
             custom={4}
-            className="mt-10 sm:mt-14 flex flex-wrap items-center gap-x-4 sm:gap-x-6 gap-y-2 text-cream/50 text-[10px] sm:text-xs uppercase tracking-widest"
+            className="mt-10 sm:mt-14 grid grid-cols-2 gap-x-4 gap-y-3 sm:flex sm:flex-wrap sm:items-center sm:gap-x-6 text-cream/55 text-[11px] sm:text-xs uppercase tracking-widest"
           >
-            <span>Tech lead na CERC</span>
-            <span className="w-6 sm:w-8 h-px bg-cream/20" />
-            <span>PagBank</span>
-            <span className="w-6 sm:w-8 h-px bg-cream/20" />
-            <span>Mastertech</span>
-            <span className="w-6 sm:w-8 h-px bg-cream/20" />
-            <span>MBA na FIAP</span>
-          </motion.div>
+            {['Tech lead na CERC', 'PagBank', 'Mastertech', 'MBA na FIAP'].map((texto, i, todos) => (
+              <li key={texto} className="flex items-center gap-4 sm:gap-6">
+                <span>{texto}</span>
+                {i < todos.length - 1 && <span className="hidden sm:block w-8 h-px bg-cream/20" />}
+              </li>
+            ))}
+          </motion.ul>
         </div>
 
         {/* retrato no desktop */}
@@ -148,7 +148,7 @@ export default function Hero() {
             <div
               data-testid="retrato-desktop"
               onClick={toque}
-              className="relative rounded-[2rem] border border-mint/20 bg-forest/70 p-4 backdrop-blur select-none touch-manipulation"
+              className="relative rounded-[2rem] border border-mint/20 bg-forest/70 p-4 sm:backdrop-blur select-none touch-manipulation"
             >
               <Mascot className="w-full h-auto animate-floaty" />
             </div>
@@ -164,7 +164,8 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      <div className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center text-cream/40 text-[10px] sm:text-xs">
+      {/* no celular o hero já é mais alto que a tela, então o aviso só atrapalharia */}
+      <div className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 hidden sm:flex flex-col items-center text-cream/40 text-xs">
         <span className="uppercase tracking-[0.4em]">rolar</span>
         <motion.div
           animate={{ y: [0, 8, 0] }}

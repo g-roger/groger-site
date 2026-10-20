@@ -1,6 +1,7 @@
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
+import { useCallback, useEffect, useState } from 'react'
 
-const links = [
+export const links = [
   { href: '#about', label: 'sobre' },
   { href: '#expertise', label: 'áreas' },
   { href: '#stack', label: 'ferramentas' },
@@ -9,38 +10,119 @@ const links = [
   { href: '#contato', label: 'contato' },
 ]
 
+// largura a partir da qual o menu de links aparece direto na barra (classe md do Tailwind)
+const LARGURA_MENU_FIXO = 768
+
 export default function Nav() {
+  const [aberto, setAberto] = useState(false)
+  const fechar = useCallback(() => setAberto(false), [])
+
+  useEffect(() => {
+    if (!aberto) return
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setAberto(false)
+    const onResize = () => window.innerWidth >= LARGURA_MENU_FIXO && setAberto(false)
+    document.body.style.overflow = 'hidden'
+    window.addEventListener('keydown', onKey)
+    window.addEventListener('resize', onResize)
+    return () => {
+      document.body.style.overflow = ''
+      window.removeEventListener('keydown', onKey)
+      window.removeEventListener('resize', onResize)
+    }
+  }, [aberto])
+
   return (
-    <motion.header
-      initial={{ y: -40, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6 }}
-      className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-forest/70 border-b border-mint/10"
-    >
-      <div className="mx-auto max-w-6xl px-6 py-4 flex items-center justify-between">
-        <a href="#top" className="flex items-center gap-2 group">
-          <span className="text-2xl font-display font-bold tracking-tight text-mint">g·r</span>
-          {/* só a partir de lg: abaixo disso o texto quebra e encosta nos links */}
-          <span className="text-xs uppercase tracking-[0.3em] text-cream/50 whitespace-nowrap hidden lg:inline">
-            tech lead, cientista e engenheiro de dados
-          </span>
-        </a>
-        <nav className="hidden md:flex items-center gap-1 sm:gap-3">
-          {links.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              className="relative px-2 py-1 text-xs sm:text-sm text-cream/70 hover:text-cream transition-colors"
-            >
-              {l.label}
-            </a>
-          ))}
-        </nav>
-        <nav className="md:hidden flex items-center gap-3 text-xs text-cream/70">
-          <a href="#projetos" className="hover:text-cream">projetos</a>
-          <a href="#contato" className="hover:text-cream">contato</a>
-        </nav>
-      </div>
-    </motion.header>
+    <>
+      <motion.header
+        initial={{ y: -40, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6 }}
+        className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-forest/70 border-b border-mint/10 pt-[env(safe-area-inset-top)]"
+      >
+        <div className="mx-auto max-w-6xl pl-[max(1.25rem,env(safe-area-inset-left))] pr-[max(1.25rem,env(safe-area-inset-right))] sm:px-6 h-16 flex items-center justify-between">
+          <a href="#top" onClick={fechar} className="flex items-center gap-2 group min-h-[44px] min-w-[44px]">
+            <span className="text-2xl font-display font-bold tracking-tight text-mint">g·r</span>
+            {/* só a partir de lg: abaixo disso o texto quebra e encosta nos links */}
+            <span className="text-xs uppercase tracking-[0.3em] text-cream/50 whitespace-nowrap hidden lg:inline">
+              tech lead, cientista e engenheiro de dados
+            </span>
+          </a>
+
+          <nav aria-label="Seções" className="hidden md:flex items-center gap-3">
+            {links.map((l) => (
+              <a
+                key={l.href}
+                href={l.href}
+                className="relative px-2 py-1 text-sm text-cream/70 hover:text-cream transition-colors"
+              >
+                {l.label}
+              </a>
+            ))}
+          </nav>
+
+          <button
+            type="button"
+            className="md:hidden -mr-2 w-12 h-12 grid place-items-center rounded-full text-cream"
+            aria-label={aberto ? 'Fechar menu' : 'Abrir menu'}
+            aria-expanded={aberto}
+            aria-controls="menu-celular"
+            onClick={() => setAberto((v) => !v)}
+          >
+            <span className="relative block w-6 h-[18px]" aria-hidden>
+              <span
+                className={`absolute left-0 w-6 h-0.5 rounded bg-current transition-all duration-300 ${
+                  aberto ? 'top-2 rotate-45' : 'top-0'
+                }`}
+              />
+              <span
+                className={`absolute left-0 top-2 w-6 h-0.5 rounded bg-current transition-opacity duration-200 ${
+                  aberto ? 'opacity-0' : 'opacity-100'
+                }`}
+              />
+              <span
+                className={`absolute left-0 w-6 h-0.5 rounded bg-current transition-all duration-300 ${
+                  aberto ? 'top-2 -rotate-45' : 'top-4'
+                }`}
+              />
+            </span>
+          </button>
+        </div>
+      </motion.header>
+
+      <AnimatePresence>
+        {aberto && (
+          <motion.nav
+            id="menu-celular"
+            aria-label="Menu"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="md:hidden fixed inset-0 z-40 bg-forest/95 backdrop-blur-xl pt-[calc(4rem+env(safe-area-inset-top))] pb-[env(safe-area-inset-bottom)] overflow-y-auto"
+          >
+            <ul className="px-5 pt-4">
+              {links.map((l, i) => (
+                <motion.li
+                  key={l.href}
+                  initial={{ opacity: 0, x: -16 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.05 * i + 0.05, duration: 0.35 }}
+                  className="border-b border-mint/10"
+                >
+                  <a
+                    href={l.href}
+                    onClick={fechar}
+                    className="flex items-baseline gap-4 min-h-[64px] py-4 font-display text-3xl text-cream active:text-mint"
+                  >
+                    <span className="font-body text-xs tracking-[0.3em] text-gold w-6">0{i + 1}</span>
+                    {l.label}
+                  </a>
+                </motion.li>
+              ))}
+            </ul>
+          </motion.nav>
+        )}
+      </AnimatePresence>
+    </>
   )
 }
