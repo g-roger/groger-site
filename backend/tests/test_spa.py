@@ -9,7 +9,7 @@ class TestSpa:
         assert "spa-index" in r.text
         assert r.headers["content-type"].startswith("text/html")
 
-    @pytest.mark.parametrize("path", ["/admin", "/qualquer/rota/do/front", "/api"])
+    @pytest.mark.parametrize("path", ["/admin", "/en", "/en/", "/qualquer/rota/do/front", "/api"])
     def test_rotas_do_front_caem_no_index(self, client, path):
         r = client.get(path)
         assert r.status_code == 200

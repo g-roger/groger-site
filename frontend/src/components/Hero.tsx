@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { useCallback, useState } from 'react'
+import { useStrings } from '../lib/i18n'
 import { useToquesSecretos } from '../lib/surpresa'
 import { Mascot, StarBurst, ArrowScribble, LeafSprig, DotGrid, ConcentricRings, Sparkles, BlobShape } from './Illustrations'
 import Surprise from './Surprise'
@@ -14,6 +15,8 @@ const fadeUp = {
 }
 
 export default function Hero() {
+  const ui = useStrings()
+  const t = ui.hero
   const [surpresa, setSurpresa] = useState(false)
   const abrir = useCallback(() => setSurpresa(true), [])
   const fechar = useCallback(() => setSurpresa(false), [])
@@ -71,7 +74,7 @@ export default function Hero() {
             custom={0}
             className="uppercase tracking-[0.3em] text-[11px] sm:text-xs text-gold mb-4 sm:mb-6"
           >
-            Olá, eu sou o Gabriel
+            {t.greeting}
           </motion.p>
           <motion.h1
             variants={fadeUp}
@@ -80,8 +83,8 @@ export default function Hero() {
             custom={1}
             className="section-heading text-balance text-[12.5vw] sm:text-[7vw] lg:text-[5.25rem] text-cream"
           >
-            Tech lead,{' '}
-            <span className="text-mint italic font-normal">cientista e engenheiro de dados.</span>
+            {t.titleLead}{' '}
+            <span className="text-mint italic font-normal">{t.titleAccent}</span>
           </motion.h1>
 
           <motion.p
@@ -91,9 +94,7 @@ export default function Hero() {
             custom={2}
             className="mt-6 sm:mt-8 max-w-xl text-base sm:text-lg text-cream/80 leading-relaxed"
           >
-            Hoje sou tech lead na CERC, em projetos de arranjos de pagamento e modelos de
-            fraude. Antes passei cinco anos no PagBank, com segurança de contas e modelos de
-            crédito.
+            {t.intro}
           </motion.p>
 
           <motion.div
@@ -104,18 +105,18 @@ export default function Hero() {
             className="mt-8 sm:mt-10 flex flex-wrap items-center gap-4"
           >
             <a
-              href="#projetos"
+              href={`#${ui.anchors.projects}`}
               className="group inline-flex items-center gap-3 rounded-full bg-jade text-cream px-6 py-3 text-sm font-medium hover:bg-jade/90 transition"
             >
-              Ver projetos
+              {t.seeProjects}
               <span className="w-6 h-px bg-cream group-hover:w-10 transition-all" />
             </a>
             <a
-              href="#expertise"
+              href={`#${ui.anchors.expertise}`}
               className="inline-flex items-center gap-2 min-h-[44px] text-sm text-cream/70 hover:text-cream transition"
             >
               <span className="w-8 h-px bg-cream/40" />
-              O que eu faço
+              {t.whatIDo}
             </a>
           </motion.div>
 
@@ -127,7 +128,7 @@ export default function Hero() {
             custom={4}
             className="mt-10 sm:mt-14 grid grid-cols-2 gap-x-4 gap-y-3 sm:flex sm:flex-wrap sm:items-center sm:gap-x-6 text-cream/55 text-[11px] sm:text-xs uppercase tracking-widest"
           >
-            {['Tech lead na CERC', 'PagBank', 'Mastertech', 'MBA na FIAP'].map((texto, i, todos) => (
+            {t.places.map((texto, i, todos) => (
               <li key={texto} className="flex items-center gap-4 sm:gap-6">
                 <span>{texto}</span>
                 {i < todos.length - 1 && <span className="hidden sm:block w-8 h-px bg-cream/20" />}
@@ -159,14 +160,14 @@ export default function Hero() {
           </div>
           <div className="absolute -bottom-6 -left-6 text-cream/60 flex items-center gap-2">
             <ArrowScribble className="w-16 h-8 text-mint" />
-            <span className="text-xs italic font-display">eu, em desenho</span>
+            <span className="text-xs italic font-display">{t.portraitCaption}</span>
           </div>
         </motion.div>
       </div>
 
       {/* no celular o hero já é mais alto que a tela, então o aviso só atrapalharia */}
       <div className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 hidden sm:flex flex-col items-center text-cream/40 text-xs">
-        <span className="uppercase tracking-[0.4em]">rolar</span>
+        <span className="uppercase tracking-[0.4em]">{t.scroll}</span>
         <motion.div
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 1.6, repeat: Infinity }}

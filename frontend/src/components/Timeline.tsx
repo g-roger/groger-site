@@ -1,10 +1,12 @@
 import { motion } from 'framer-motion'
-import { timeline } from '../data'
+import { useContent, useStrings } from '../lib/i18n'
 import { BarChart, LeafSprig, Sparkles } from './Illustrations'
 
 export default function TimelineSection() {
+  const ui = useStrings()
+  const { timeline } = useContent()
   return (
-    <section id="trajetoria" className="relative py-14 sm:py-32">
+    <section id={ui.anchors.career} className="relative py-14 sm:py-32">
       <div className="absolute top-24 right-4 w-16 h-24 sm:w-20 sm:h-32 text-jade/30 pointer-events-none">
         <LeafSprig className="w-full h-full" />
       </div>
@@ -19,10 +21,10 @@ export default function TimelineSection() {
         <div className="mb-10 sm:mb-14 max-w-2xl">
           <span className="block text-gold uppercase tracking-[0.4em] text-[11px] sm:text-xs mb-3">04</span>
           <h2 className="section-heading text-4xl sm:text-6xl text-cream">
-            Minha <span className="italic text-mint">trajetória</span>
+            {ui.career.heading.lead} <span className="italic text-mint">{ui.career.heading.accent}</span>
           </h2>
           <p className="mt-4 sm:mt-5 text-cream/60 text-sm sm:text-base">
-            Onde trabalhei e o que fiz em cada lugar.
+            {ui.career.intro}
           </p>
         </div>
 
@@ -67,7 +69,7 @@ export default function TimelineSection() {
                 {t.clients && t.clients.length > 0 && (
                   <div className="mt-5">
                     <p className="text-[11px] uppercase tracking-[0.3em] text-gold/80 mb-2">
-                      Clientes e parceiros
+                      {ui.career.clients}
                     </p>
                     <ul className="flex flex-wrap gap-1.5">
                       {t.clients.map((c) => (

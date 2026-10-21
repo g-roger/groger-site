@@ -1,10 +1,12 @@
 import { motion } from 'framer-motion'
-import { techStack } from '../data'
+import { useContent, useStrings } from '../lib/i18n'
 import { CircuitLines, Chip, DotGrid, WaveScribble } from './Illustrations'
 
 export default function TechStack() {
+  const ui = useStrings()
+  const { techStack } = useContent()
   return (
-    <section id="stack" className="relative py-14 sm:py-32">
+    <section id={ui.anchors.stack} className="relative py-14 sm:py-32">
       <div className="absolute top-24 right-4 w-32 h-32 sm:w-40 sm:h-40 text-jade/20 pointer-events-none">
         <DotGrid className="w-full h-full" />
       </div>
@@ -19,18 +21,18 @@ export default function TechStack() {
         <div className="mb-10 sm:mb-14 max-w-2xl">
           <span className="block text-gold uppercase tracking-[0.4em] text-[11px] sm:text-xs mb-3">03</span>
           <h2 className="section-heading text-4xl sm:text-6xl text-cream">
-            O que eu <span className="italic text-mint">uso</span>
+            {ui.stack.heading.lead} <span className="italic text-mint">{ui.stack.heading.accent}</span>
           </h2>
           <WaveScribble className="mt-4 w-32 sm:w-40 text-jade" />
           <p className="mt-4 sm:mt-5 text-cream/60 text-sm sm:text-base">
-            Linguagens, bibliotecas e plataformas com as quais trabalho, separadas por área.
+            {ui.stack.intro}
           </p>
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {techStack.map((cat, i) => (
             <motion.div
-              key={cat.name}
+              key={i}
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.15 }}

@@ -3,6 +3,8 @@ import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { projectCategories, projects } from '../data'
 import { trackEvent } from '../lib/track'
+import { LangProvider } from '../lib/i18n'
+import * as dataEn from '../data.en'
 import Projects, { PRIMEIROS } from './Projects'
 
 vi.mock('../lib/track', () => ({ trackEvent: vi.fn(), trackPageview: vi.fn() }))
@@ -156,3 +158,47 @@ describe('Projects', () => {
     })
   })
 })
+
+describe('Projects em inglês', () => {
+  const em = (lang: 'pt' | 'en') => (
+    <LangProvider lang={lang}>
+      <Projects />
+    </LangProvider>
+  )
+
+  it('mostra os textos em inglês, com os mesmos primeiros projetos', () => {
+    render(em('en'))
+    expect(screen.getByRole('heading', { level: 2, name: 'Selected projects' })).toBeInTheDocument()
+    expect(titulosVisiveis()).toEqual(dataEn.projects.slice(0, PRIMEIROS).map((p) => p.name))
+    expect(screen.getByRole('button', { name: `Show all ${dataEn.projects.length} projects` })).toBeInTheDocument()
+  })
+
+  it('ao trocar de idioma os cartões continuam os mesmos, só com o texto novo (sem sair e entrar)', () => {
+    const { rerender } = render(em('pt'))
+    const antes = screen.getAllByRole('heading', { level: 4 }).map((h) => h.closest('div')?.parentElement)
+    expect(antes).toHaveLength(PRIMEIROS)
+
+    rerender(em('en'))
+
+    // sem esperar animação nenhuma: já são exatamente os mesmos elementos, e nenhum a mais
+    const depois = screen.getAllByRole('heading', { level: 4 }).map((h) => h.closest('div')?.parentElement)
+    expect(depois).toHaveLength(PRIMEIROS)
+    depois.forEach((el, i) => expect(el).toBe(antes[i]))
+    expect(titulosVisiveis()).toEqual(dataEn.projects.slice(0, PRIMEIROS).map((p) => p.name))
+  })
+
+  it('o filtro escolhido continua depois de trocar de idioma', async () => {
+    const user = userEvent.setup()
+    const { rerender } = render(em('pt'))
+    await user.click(screen.getByRole('button', { name: /^Crédito/ }))
+    await waitFor(() => expect(titulosVisiveis()).toHaveLength(5))
+
+    rerender(em('en'))
+
+    expect(screen.getByRole('button', { name: /^Credit \(/ })).toHaveAttribute('aria-pressed', 'true')
+    expect(titulosVisiveis()).toEqual(
+      dataEn.projects.filter((p) => p.categories.includes('credito')).map((p) => p.name),
+    )
+  })
+})
+

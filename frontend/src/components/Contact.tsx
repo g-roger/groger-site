@@ -1,10 +1,12 @@
 import { motion } from 'framer-motion'
+import { useStrings } from '../lib/i18n'
 import { trackEvent } from '../lib/track'
 import { WaveScribble } from './Illustrations'
 
 export default function Contact() {
+  const ui = useStrings()
   return (
-    <section id="contato" className="relative py-32">
+    <section id={ui.anchors.contact} className="relative py-32">
       <div className="mx-auto max-w-4xl px-6 text-center">
         <motion.span
           initial={{ opacity: 0, y: 10 }}
@@ -22,7 +24,7 @@ export default function Contact() {
           transition={{ duration: 0.8 }}
           className="section-heading text-5xl sm:text-7xl text-cream"
         >
-          Fale <span className="italic text-mint">comigo</span>
+          {ui.contact.heading.lead} <span className="italic text-mint">{ui.contact.heading.accent}</span>
         </motion.h2>
         <WaveScribble className="mt-6 w-56 mx-auto text-jade" />
         <motion.p
@@ -32,7 +34,7 @@ export default function Contact() {
           transition={{ duration: 0.8, delay: 0.15 }}
           className="mt-6 text-cream/70 text-lg max-w-xl mx-auto"
         >
-          O melhor jeito de falar comigo é pelo LinkedIn. Os projetos abertos estão no GitHub.
+          {ui.contact.intro}
         </motion.p>
 
         <motion.div
@@ -53,7 +55,7 @@ export default function Contact() {
               <path d="M4.98 3.5C4.98 4.88 3.88 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.24 8h4.52V24H.24V8zm7.4 0h4.34v2.19h.06c.6-1.14 2.07-2.34 4.26-2.34 4.56 0 5.4 3 5.4 6.9V24h-4.52v-7.13c0-1.7-.03-3.89-2.37-3.89-2.37 0-2.73 1.85-2.73 3.77V24H7.64V8z" />
             </svg>
             {/* no celular o endereço inteiro não cabe na pílula: mostra um texto curto */}
-            <span className="sm:hidden">Abrir meu LinkedIn</span>
+            <span className="sm:hidden">{ui.contact.linkedinShort}</span>
             <span className="hidden sm:inline">linkedin.com/in/gabriel-roger</span>
             <span className="w-6 h-px bg-current group-hover:w-10 transition-all" />
           </a>
@@ -78,7 +80,7 @@ export default function Contact() {
           transition={{ delay: 0.6 }}
           className="mt-16 text-cream/40 text-xs uppercase tracking-widest"
         >
-          São Paulo, Brasil
+          {ui.contact.location}
         </motion.p>
       </div>
     </section>

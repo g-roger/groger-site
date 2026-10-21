@@ -1,14 +1,19 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
-import { expertises, type Expertise } from '../data'
+import type { Expertise } from '../data'
+import { useContent, useStrings } from '../lib/i18n'
 import { IllustrationFor, Sparkles, BlobShape } from './Illustrations'
 import { trackEvent } from '../lib/track'
 
 export default function ExpertiseSection() {
-  const [active, setActive] = useState<Expertise | null>(null)
+  const ui = useStrings()
+  const { expertises } = useContent()
+  // guarda só a chave: se o idioma mudar com o modal aberto, ele mostra o texto do idioma novo
+  const [activeKey, setActive] = useState<string | null>(null)
+  const active = expertises.find((e) => e.key === activeKey) ?? null
 
   useEffect(() => {
-    if (!active) return
+    if (!activeKey) return
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setActive(null)
     document.body.style.overflow = 'hidden'
     window.addEventListener('keydown', onKey)
@@ -16,10 +21,10 @@ export default function ExpertiseSection() {
       document.body.style.overflow = ''
       window.removeEventListener('keydown', onKey)
     }
-  }, [active])
+  }, [activeKey])
 
   return (
-    <section id="expertise" className="relative py-14 sm:py-32">
+    <section id={ui.anchors.expertise} className="relative py-14 sm:py-32">
       <div className="absolute top-16 right-4 w-14 h-14 sm:w-20 sm:h-20 text-gold/40 pointer-events-none">
         <Sparkles className="w-full h-full" />
       </div>
@@ -32,11 +37,11 @@ export default function ExpertiseSection() {
           <div>
             <span className="block text-gold uppercase tracking-[0.4em] text-[11px] sm:text-xs mb-3">02</span>
             <h2 className="section-heading text-4xl sm:text-6xl text-cream">
-              O que eu <span className="italic text-mint">faço</span>
+              {ui.expertise.heading.lead} <span className="italic text-mint">{ui.expertise.heading.accent}</span>
             </h2>
           </div>
           <p className="text-cream/50 text-sm max-w-xs">
-            Clique em uma área para ver a animação e uma explicação rápida.
+            {ui.expertise.hint}
           </p>
         </div>
 
@@ -50,7 +55,7 @@ export default function ExpertiseSection() {
               transition={{ delay: 0.06 * i, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               whileHover={{ y: -6 }}
               onClick={() => {
-                setActive(e)
+                setActive(e.key)
                 void trackEvent('expertise_open', { key: e.key })
               }}
               className="group relative text-left rounded-3xl border border-mint/15 bg-moss/40 sm:backdrop-blur p-5 sm:p-6 overflow-hidden hover:border-mint/40 transition"
@@ -83,7 +88,7 @@ export default function ExpertiseSection() {
                 ))}
               </div>
               <div className="mt-4 sm:mt-5 flex items-center gap-2 text-xs uppercase tracking-widest text-cream/50 group-hover:text-cream transition">
-                <span>abrir</span>
+                <span>{ui.expertise.open}</span>
                 <span className="w-6 h-px bg-cream/40 group-hover:w-10 transition-all" />
               </div>
             </motion.button>
@@ -97,6 +102,7 @@ export default function ExpertiseSection() {
 }
 
 function ExpertiseModal({ item, onClose }: { item: Expertise; onClose: () => void }) {
+  const ui = useStrings()
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -122,7 +128,7 @@ function ExpertiseModal({ item, onClose }: { item: Expertise; onClose: () => voi
         />
         <button
           onClick={onClose}
-          aria-label="fechar"
+          aria-label={ui.expertise.close}
           className="absolute top-3 right-3 sm:top-4 sm:right-4 z-10 w-11 h-11 rounded-full border border-mint/25 text-cream/70 hover:bg-mint hover:text-forest transition grid place-items-center"
         >
           ✕
@@ -145,7 +151,7 @@ function ExpertiseModal({ item, onClose }: { item: Expertise; onClose: () => voi
               className="uppercase tracking-[0.35em] text-[11px] sm:text-xs mb-2 sm:mb-3"
               style={{ color: item.color }}
             >
-              área
+              {ui.expertise.area}
             </motion.p>
             <motion.h3
               initial={{ opacity: 0, y: 10 }}

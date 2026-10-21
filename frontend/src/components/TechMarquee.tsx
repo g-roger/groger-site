@@ -1,13 +1,8 @@
 import { motion } from 'framer-motion'
-
-const words = [
-  'Python', 'PySpark', 'Databricks', 'Delta Lake', 'Airflow', 'Kafka',
-  'FastAPI', 'scikit-learn', 'TensorFlow', 'Keras', 'SHAP', 'AWS SageMaker',
-  'Redshift', 'MongoDB', 'Vertex AI', 'Agentes de IA', 'Docker', 'Fly.dev',
-  'Power BI', 'React', 'TypeScript',
-]
+import { useStrings } from '../lib/i18n'
 
 export default function TechMarquee() {
+  const { marquee: words } = useStrings()
   const items = [...words, ...words]
   return (
     <div className="relative py-8 overflow-hidden border-y border-mint/10 bg-forest/40 sm:backdrop-blur">

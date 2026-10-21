@@ -1,19 +1,22 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useCallback, useEffect, useState } from 'react'
+import { useStrings } from '../lib/i18n'
+import type { Strings } from '../strings'
+import LanguageSwitch from './LanguageSwitch'
 
-export const links = [
-  { href: '#about', label: 'sobre' },
-  { href: '#expertise', label: 'áreas' },
-  { href: '#stack', label: 'ferramentas' },
-  { href: '#trajetoria', label: 'trajetória' },
-  { href: '#projetos', label: 'projetos' },
-  { href: '#contato', label: 'contato' },
-]
+// na ordem em que as seções aparecem na página
+const SECOES = ['about', 'expertise', 'stack', 'career', 'projects', 'contact'] as const
+
+export function navLinks(ui: Strings) {
+  return SECOES.map((k) => ({ href: `#${ui.anchors[k]}`, label: ui.nav.links[k] }))
+}
 
 // largura a partir da qual o menu de links aparece direto na barra (classe md do Tailwind)
 const LARGURA_MENU_FIXO = 768
 
 export default function Nav() {
+  const ui = useStrings()
+  const links = navLinks(ui)
   const [aberto, setAberto] = useState(false)
   const fechar = useCallback(() => setAberto(false), [])
 
@@ -42,50 +45,54 @@ export default function Nav() {
         <div className="mx-auto max-w-6xl pl-[max(1.25rem,env(safe-area-inset-left))] pr-[max(1.25rem,env(safe-area-inset-right))] sm:px-6 h-16 flex items-center justify-between">
           <a href="#top" onClick={fechar} className="flex items-center gap-2 group min-h-[44px] min-w-[44px]">
             <span className="text-2xl font-display font-bold tracking-tight text-mint">g·r</span>
-            {/* só a partir de lg: abaixo disso o texto quebra e encosta nos links */}
-            <span className="text-xs uppercase tracking-[0.3em] text-cream/50 whitespace-nowrap hidden lg:inline">
-              tech lead, cientista e engenheiro de dados
+            {/* só a partir de xl: abaixo disso o texto encosta nos links e no seletor de idioma */}
+            <span className="text-xs uppercase tracking-[0.3em] text-cream/50 whitespace-nowrap hidden xl:inline">
+              {ui.nav.brandRole}
             </span>
           </a>
 
-          <nav aria-label="Seções" className="hidden md:flex items-center gap-3">
-            {links.map((l) => (
-              <a
-                key={l.href}
-                href={l.href}
-                className="relative px-2 py-1 text-sm text-cream/70 hover:text-cream transition-colors"
-              >
-                {l.label}
-              </a>
-            ))}
-          </nav>
+          <div className="flex items-center gap-2 sm:gap-4 md:gap-6">
+            <nav aria-label={ui.nav.sections} className="hidden md:flex items-center gap-3">
+              {links.map((l) => (
+                <a
+                  key={l.href}
+                  href={l.href}
+                  className="relative px-2 py-1 text-sm text-cream/70 hover:text-cream transition-colors"
+                >
+                  {l.label}
+                </a>
+              ))}
+            </nav>
 
-          <button
-            type="button"
-            className="md:hidden -mr-2 w-12 h-12 grid place-items-center rounded-full text-cream"
-            aria-label={aberto ? 'Fechar menu' : 'Abrir menu'}
-            aria-expanded={aberto}
-            aria-controls="menu-celular"
-            onClick={() => setAberto((v) => !v)}
-          >
-            <span className="relative block w-6 h-[18px]" aria-hidden>
-              <span
-                className={`absolute left-0 w-6 h-0.5 rounded bg-current transition-all duration-300 ${
-                  aberto ? 'top-2 rotate-45' : 'top-0'
-                }`}
-              />
-              <span
-                className={`absolute left-0 top-2 w-6 h-0.5 rounded bg-current transition-opacity duration-200 ${
-                  aberto ? 'opacity-0' : 'opacity-100'
-                }`}
-              />
-              <span
-                className={`absolute left-0 w-6 h-0.5 rounded bg-current transition-all duration-300 ${
-                  aberto ? 'top-2 -rotate-45' : 'top-4'
-                }`}
-              />
-            </span>
-          </button>
+            <LanguageSwitch />
+
+            <button
+              type="button"
+              className="md:hidden -mr-2 w-12 h-12 grid place-items-center rounded-full text-cream"
+              aria-label={aberto ? ui.nav.closeMenu : ui.nav.openMenu}
+              aria-expanded={aberto}
+              aria-controls="menu-celular"
+              onClick={() => setAberto((v) => !v)}
+            >
+              <span className="relative block w-6 h-[18px]" aria-hidden>
+                <span
+                  className={`absolute left-0 w-6 h-0.5 rounded bg-current transition-all duration-300 ${
+                    aberto ? 'top-2 rotate-45' : 'top-0'
+                  }`}
+                />
+                <span
+                  className={`absolute left-0 top-2 w-6 h-0.5 rounded bg-current transition-opacity duration-200 ${
+                    aberto ? 'opacity-0' : 'opacity-100'
+                  }`}
+                />
+                <span
+                  className={`absolute left-0 w-6 h-0.5 rounded bg-current transition-all duration-300 ${
+                    aberto ? 'top-2 -rotate-45' : 'top-4'
+                  }`}
+                />
+              </span>
+            </button>
+          </div>
         </div>
       </motion.header>
 
@@ -93,7 +100,7 @@ export default function Nav() {
         {aberto && (
           <motion.nav
             id="menu-celular"
-            aria-label="Menu"
+            aria-label={ui.nav.menu}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useStrings } from '../lib/i18n'
 
 const stroke = {
   fill: 'none',
@@ -9,8 +10,9 @@ const stroke = {
 }
 
 export function Mascot({ className = '' }: { className?: string }) {
+  const { portraitLabel } = useStrings().hero
   return (
-    <svg viewBox="0 0 320 360" className={className} aria-label="Retrato ilustrado">
+    <svg viewBox="0 0 320 360" className={className} aria-label={portraitLabel}>
       <defs>
         <linearGradient id="skin" x1="0" x2="1" y1="0" y2="1">
           <stop offset="0" stopColor="#f0c9a4" />

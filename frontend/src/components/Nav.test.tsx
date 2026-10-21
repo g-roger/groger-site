@@ -1,7 +1,9 @@
 import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it } from 'vitest'
-import Nav, { links } from './Nav'
+import { LangProvider } from '../lib/i18n'
+import { strings } from '../strings'
+import Nav, { navLinks } from './Nav'
 
 const SECOES = [
   ['sobre', '#about'],
@@ -28,7 +30,7 @@ describe('Nav', () => {
   })
 
   it('a lista de seções tem as seis seções, na ordem da página', () => {
-    expect(links.map((l) => [l.label, l.href])).toEqual(SECOES.map((s) => [...s]))
+    expect(navLinks(strings.pt).map((l) => [l.label, l.href])).toEqual(SECOES.map((s) => [...s]))
   })
 
   it.each(SECOES)('o link "%s" da barra aponta para %s', (nome, href) => {
@@ -116,5 +118,64 @@ describe('Nav: menu do celular', () => {
     const botao = screen.getByRole('button', { name: 'Abrir menu' })
     expect(botao.className).toContain('w-12')
     expect(botao.className).toContain('h-12')
+  })
+})
+
+describe('Nav em inglês', () => {
+  const SECOES_EN = [
+    ['about', '#about'],
+    ['expertise', '#expertise'],
+    ['tools', '#stack'],
+    ['career', '#career'],
+    ['projects', '#projects'],
+    ['contact', '#contact'],
+  ] as const
+
+  const renderEn = () =>
+    render(
+      <LangProvider lang="en">
+        <Nav />
+      </LangProvider>,
+    )
+
+  it('a lista de seções usa os nomes e os ids em inglês', () => {
+    expect(navLinks(strings.en).map((l) => [l.label, l.href])).toEqual(SECOES_EN.map((s) => [...s]))
+  })
+
+  it('mostra o cargo em inglês ao lado da marca', () => {
+    renderEn()
+    expect(screen.getByText('tech lead, data scientist and data engineer')).toBeInTheDocument()
+  })
+
+  it.each(SECOES_EN)('o link "%s" da barra aponta para %s', (nome, href) => {
+    renderEn()
+    const barra = screen.getByRole('navigation', { name: 'Sections' })
+    expect(within(barra).getByRole('link', { name: nome })).toHaveAttribute('href', href)
+  })
+
+  it('o menu do celular tem rótulos e itens em inglês', async () => {
+    const user = userEvent.setup()
+    renderEn()
+    await user.click(screen.getByRole('button', { name: 'Open menu' }))
+    const painel = screen.getByRole('navigation', { name: 'Menu' })
+    expect(within(painel).getAllByRole('link').map((a) => a.textContent)).toEqual(
+      SECOES_EN.map(([nome], i) => `0${i + 1}${nome}`),
+    )
+    expect(screen.getByRole('button', { name: 'Close menu' })).toHaveAttribute('aria-expanded', 'true')
+  })
+
+  it('o seletor de idioma fica na barra, ao lado do botão do menu', () => {
+    renderEn()
+    const barra = screen.getByRole('banner')
+    expect(within(barra).getByRole('group', { name: 'Language' })).toBeInTheDocument()
+  })
+})
+
+describe('Nav: seletor de idioma no topo', () => {
+  it('aparece na barra em português também, antes do botão do menu', () => {
+    render(<Nav />)
+    const grupo = screen.getByRole('group', { name: 'Idioma' })
+    const botao = screen.getByRole('button', { name: 'Abrir menu' })
+    expect(grupo.compareDocumentPosition(botao) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
   })
 })

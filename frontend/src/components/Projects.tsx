@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
-import { projectCategories, projects, type Project, type ProjectCategory } from '../data'
+import type { Project, ProjectCategory } from '../data'
+import { useContent, useStrings } from '../lib/i18n'
 import { trackEvent } from '../lib/track'
 import { CircuitLines, Sparkles } from './Illustrations'
 
@@ -9,11 +10,9 @@ type Filtro = 'todos' | ProjectCategory
 // quantos cartões aparecem antes do "ver todos" quando nenhum filtro está ativo
 export const PRIMEIROS = 9
 
-function contar(filtro: Filtro) {
-  return filtro === 'todos' ? projects.length : projects.filter((p) => p.categories.includes(filtro)).length
-}
-
 export default function Projects() {
+  const ui = useStrings()
+  const { projects, projectCategories } = useContent()
   const [filtro, setFiltro] = useState<Filtro>('todos')
   const [expandido, setExpandido] = useState(false)
 
@@ -27,10 +26,11 @@ export default function Projects() {
     void trackEvent('project_filter', { category: novo })
   }
 
-  const opcoes: { key: Filtro; label: string }[] = [{ key: 'todos', label: 'Todos' }, ...projectCategories]
+  const contar = (f: Filtro) => (f === 'todos' ? projects.length : projects.filter((p) => p.categories.includes(f)).length)
+  const opcoes: { key: Filtro; label: string }[] = [{ key: 'todos', label: ui.projects.all }, ...projectCategories]
 
   return (
-    <section id="projetos" className="relative py-14 sm:py-32">
+    <section id={ui.anchors.projects} className="relative py-14 sm:py-32">
       <div className="absolute top-10 left-4 w-24 h-24 sm:w-32 sm:h-32 text-mint/20 pointer-events-none hidden sm:block">
         <CircuitLines className="w-full h-full" />
       </div>
@@ -42,11 +42,10 @@ export default function Projects() {
         <div className="mb-8 sm:mb-10 max-w-2xl">
           <span className="block text-gold uppercase tracking-[0.4em] text-[11px] sm:text-xs mb-3">05</span>
           <h2 className="section-heading text-4xl sm:text-6xl text-cream">
-            Alguns <span className="italic text-mint">projetos</span>
+            {ui.projects.heading.lead} <span className="italic text-mint">{ui.projects.heading.accent}</span>
           </h2>
           <p className="mt-4 text-cream/60 text-sm sm:text-base">
-            Os do trabalho aparecem só com a descrição, porque o código é das empresas. Os que têm
-            seta levam ao repositório no GitHub.
+            {ui.projects.intro}
           </p>
         </div>
 
@@ -54,7 +53,7 @@ export default function Projects() {
             do sm em diante os filtros quebram linha */}
         <div
           role="group"
-          aria-label="Filtrar projetos por tema"
+          aria-label={ui.projects.filterLabel}
           className="mb-8 -mx-5 px-5 sm:mx-0 sm:px-0 flex gap-2 overflow-x-auto sm:overflow-visible sm:flex-wrap pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           {opcoes.map((o) => {
@@ -84,8 +83,10 @@ export default function Projects() {
           {/* sem mode="popLayout": ele injeta uma tag <style>, que a CSP (style-src 'self') bloqueia */}
           <AnimatePresence initial={false}>
             {visiveis.map((p, i) => (
+              // chave pela posição na lista completa, igual nos dois idiomas: ao trocar de idioma
+              // o cartão só troca o texto, em vez de sair e entrar de novo
               <motion.div
-                key={p.name}
+                key={projects.indexOf(p)}
                 layout
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -105,7 +106,7 @@ export default function Projects() {
               onClick={() => setExpandido(true)}
               className="group inline-flex items-center gap-3 rounded-full border border-mint/40 px-6 py-3 text-sm text-cream/85 hover:border-mint hover:text-cream transition"
             >
-              Ver todos os {filtrados.length} projetos
+              {ui.projects.showAll(filtrados.length)}
               <span className="w-6 h-px bg-cream/60 group-hover:w-10 transition-all" />
             </button>
           </div>

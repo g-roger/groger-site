@@ -1,14 +1,14 @@
 import { motion, useInView, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { useEffect, useRef } from 'react'
-import { careerStats } from '../data'
+import { useContent, useStrings } from '../lib/i18n'
 import { ConcentricRings, Sparkles } from './Illustrations'
 
-function Counter({ to, suffix = '' }: { to: number; suffix?: string }) {
+function Counter({ to, suffix = '', locale }: { to: number; suffix?: string; locale: string }) {
   const ref = useRef<HTMLSpanElement>(null)
   const inView = useInView(ref, { once: true, amount: 0.6 })
   const mv = useMotionValue(0)
   const spring = useSpring(mv, { stiffness: 40, damping: 22 })
-  const display = useTransform(spring, (n) => `${Math.round(n).toLocaleString('pt-BR')}${suffix}`)
+  const display = useTransform(spring, (n) => `${Math.round(n).toLocaleString(locale)}${suffix}`)
 
   useEffect(() => {
     if (inView) mv.set(to)
@@ -25,6 +25,8 @@ function Counter({ to, suffix = '' }: { to: number; suffix?: string }) {
 }
 
 export default function Numbers() {
+  const { careerStats } = useContent()
+  const { numbersLocale } = useStrings()
   const items = careerStats()
 
   return (
@@ -45,7 +47,7 @@ export default function Numbers() {
             transition={{ delay: i * 0.1, duration: 0.7 }}
             className="rounded-2xl border border-mint/15 bg-moss/40 sm:backdrop-blur p-5 sm:p-6"
           >
-            <Counter to={it.n} suffix={it.suffix} />
+            <Counter to={it.n} suffix={it.suffix} locale={numbersLocale} />
             <p className="mt-3 text-cream/70 text-[11px] sm:text-xs uppercase tracking-widest leading-relaxed">
               {it.label}
             </p>
