@@ -52,27 +52,53 @@ describe('Illustrations', () => {
   describe('retrato: parecido com o Gabriel', () => {
     const parte = (container: HTMLElement, nome: string) => container.querySelector(`[data-parte="${nome}"]`)
 
-    it('o cabelo é arrepiado: o contorno de cima tem várias mechas', () => {
+    // pares (x, y) de um atributo d, para medir o desenho
+    const pontos = (d: string) => {
+      const n = (d.match(/-?\d+(\.\d+)?/g) ?? []).map(Number)
+      return Array.from({ length: Math.floor(n.length / 2) }, (_, i) => ({ x: n[2 * i], y: n[2 * i + 1] }))
+    }
+
+    it('o cabelo é alto em cima, com várias mechas, e curto nos lados', () => {
       const { container } = render(<Mascot />)
       const contorno = parte(container, 'cabelo')?.querySelector('path')?.getAttribute('d') ?? ''
-      // cada mecha são duas curvas (sobe até a ponta e desce até o vão)
-      expect((contorno.match(/C/g) ?? []).length).toBeGreaterThanOrEqual(14)
+      expect((contorno.match(/C/g) ?? []).length).toBeGreaterThanOrEqual(12)
+      const ys = pontos(contorno).map((p) => p.y)
+      // o topo sobe bem acima da linha da testa (y ~ 120)
+      expect(Math.min(...ys)).toBeLessThanOrEqual(70)
     })
 
-    it('tem barba cheia com fios desenhados e bigode', () => {
+    it('tem olhos grandes, com íris castanha e brilho', () => {
+      const { container } = render(<Mascot />)
+      const olhos = parte(container, 'olhos')
+      const iris = Array.from(olhos?.querySelectorAll('circle') ?? []).filter((c) => (c.getAttribute('fill') ?? '').startsWith('url(#iris'))
+      expect(iris).toHaveLength(2)
+      for (const c of iris) expect(Number(c.getAttribute('r'))).toBeGreaterThanOrEqual(9)
+      const brilhos = Array.from(olhos?.querySelectorAll('circle[fill="#fff"]') ?? [])
+      expect(brilhos.length).toBeGreaterThanOrEqual(4)
+    })
+
+    it('tem nariz pequeno', () => {
+      const { container } = render(<Mascot />)
+      const xs = Array.from(parte(container, 'nariz')?.querySelectorAll('path') ?? []).flatMap((p) =>
+        pontos(p.getAttribute('d') ?? '').map((q) => q.x),
+      )
+      expect(Math.max(...xs) - Math.min(...xs)).toBeLessThanOrEqual(20)
+    })
+
+    it('tem barba cheia, das costeletas até abaixo do queixo, e bigode', () => {
       const { container } = render(<Mascot />)
       const barba = parte(container, 'barba')
-      expect(barba).not.toBeNull()
-      const fios = Array.from(barba?.querySelectorAll('path') ?? []).map((p) => (p.getAttribute('d')?.match(/M/g) ?? []).length)
-      expect(Math.max(...fios)).toBeGreaterThanOrEqual(100)
+      const contorno = barba?.querySelector('path')?.getAttribute('d') ?? ''
+      const ys = pontos(contorno).map((p) => p.y)
+      expect(Math.min(...ys)).toBeLessThanOrEqual(182)
+      expect(Math.max(...ys)).toBeGreaterThanOrEqual(290)
+      expect(barba?.querySelectorAll('path').length).toBeGreaterThanOrEqual(3)
     })
 
-    it('tem sobrancelhas grossas, olhos sorrindo e o sorriso mostra os dentes', () => {
+    it('tem sobrancelhas grossas e o sorriso mostra os dentes de cima', () => {
       const { container } = render(<Mascot />)
       expect(parte(container, 'sobrancelhas')?.querySelectorAll('path')).toHaveLength(2)
-      expect(parte(container, 'olhos')).not.toBeNull()
-      const sorriso = parte(container, 'sorriso')
-      expect(sorriso?.querySelector('path[fill="#fbf6ee"]')).not.toBeNull()
+      expect(parte(container, 'sorriso')?.querySelector('path[fill="#fbf6ee"]')).not.toBeNull()
     })
 
     it('não usa óculos', () => {
@@ -110,7 +136,9 @@ describe('Illustrations', () => {
       // e cada retrato só aponta para os próprios gradientes
       for (const svg of Array.from(container.querySelectorAll('svg'))) {
         const proprios = new Set(Array.from(svg.querySelectorAll('[id]')).map((el) => el.id))
-        const usados = Array.from(svg.querySelectorAll('[fill^="url(#"]')).map((el) => (el.getAttribute('fill') ?? '').slice(5, -1))
+        const usados = Array.from(svg.querySelectorAll('[fill^="url(#"], [clip-path^="url(#"]')).map((el) =>
+          (el.getAttribute('fill')?.startsWith('url(#') ? el.getAttribute('fill') : el.getAttribute('clip-path'))!.slice(5, -1),
+        )
         expect(usados.length).toBeGreaterThan(0)
         for (const u of usados) expect(proprios.has(u)).toBe(true)
       }
