@@ -29,23 +29,23 @@ export default function TechStack() {
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           {techStack.map((cat, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 24 }}
+              initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.15 }}
-              transition={{ delay: i * 0.05, duration: 0.6 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ delay: (i % 4) * 0.05, duration: 0.5 }}
               whileHover={{ y: -4 }}
-              className="relative rounded-2xl border border-mint/15 bg-moss/40 sm:backdrop-blur p-5 overflow-hidden"
+              className="relative rounded-2xl border border-mint/15 bg-moss/40 sm:backdrop-blur p-4 sm:p-5 overflow-hidden"
             >
               <div
                 className="absolute -top-10 -right-10 w-32 h-32 rounded-full blur-3xl opacity-30"
                 style={{ background: cat.color }}
               />
               <div className="relative">
-                <div className="flex items-center gap-2 mb-4">
+                <div className="flex items-center gap-2 mb-3 sm:mb-4">
                   <span className="w-2.5 h-2.5 rounded-full" style={{ background: cat.color }} />
                   <h3 className="font-display text-lg text-cream">{cat.name}</h3>
                 </div>

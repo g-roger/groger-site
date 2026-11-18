@@ -25,7 +25,9 @@ export default function LanguageSwitch() {
     <div
       role="group"
       aria-label={ui.language.group}
-      className="flex items-center rounded-full border border-mint/25 p-0.5 text-xs font-medium uppercase tracking-widest"
+      // o contorno é desenhado por trás (before:) e é mais baixo que a área de toque de 44 px de cada opção,
+      // para o seletor não pesar na barra do celular
+      className="relative flex items-center text-[11px] font-medium uppercase tracking-widest before:absolute before:inset-x-1 before:inset-y-1.5 before:rounded-full before:border before:border-mint/25 before:pointer-events-none"
     >
       {LANGS.map((l) => {
         const ativo = l === lang
@@ -38,11 +40,15 @@ export default function LanguageSwitch() {
             aria-label={ui.language[l]}
             aria-current={ativo ? 'true' : undefined}
             onClick={(e) => escolher(e, l)}
-            className={`grid place-items-center min-w-[44px] min-h-[44px] rounded-full transition-colors ${
-              ativo ? 'bg-mint text-forest' : 'text-cream/70 hover:text-cream'
-            }`}
+            className="group relative grid place-items-center min-w-[44px] min-h-[44px]"
           >
-            {l}
+            <span
+              className={`grid place-items-center w-[34px] h-7 rounded-full transition-colors ${
+                ativo ? 'bg-mint text-forest' : 'text-cream/70 group-hover:text-cream'
+              }`}
+            >
+              {l}
+            </span>
           </a>
         )
       })}

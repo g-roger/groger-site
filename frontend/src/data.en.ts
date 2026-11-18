@@ -1,4 +1,4 @@
-import type { Expertise, ProjectCategory, Project, Stat, TechCategory, TimelineItem } from './data'
+import type { Course, Degree, Expertise, Language, ProjectCategory, Project, Stat, TechCategory, TimelineItem } from './data'
 
 // Versão em inglês de data.ts. Mesma estrutura, mesmos itens e mesma ordem: só o texto muda.
 // O data.en.test.ts compara as duas versões para que uma não fique para trás da outra.
@@ -437,6 +437,46 @@ export const timeline: TimelineItem[] = [
       "I taught Microsoft Office (with a focus on Excel), hardware, programming logic and website building. I also created the class content and adapted the teaching to each student's profile.",
     tags: ['Teaching', 'Excel', 'Programming logic'],
   },
+]
+
+export const degrees: Degree[] = [
+  {
+    period: '2021 to 2022',
+    title: 'MBA in Artificial Intelligence and Machine Learning',
+    school: 'FIAP, Faculdade de Informática e Administração Paulista',
+    detail:
+      'Graduate specialization (lato sensu). I built a solid theoretical foundation in neural networks and machine learning, with applied projects in computer vision, fraud detection and behavioral biometrics.',
+    projects: ['analise-vegetativa-bemagro', 'fraud-pix-model', 'mouse_dynamics'],
+  },
+  {
+    period: '2014 to 2017',
+    title: "Bachelor's degree in Information Systems",
+    school: 'Universidade Municipal de São Caetano do Sul',
+    detail:
+      'I did my degree alongside the computer classes I taught at Grupo All Net. In 2017, the last year of the program, I started my software development internship at Ponte21.',
+  },
+]
+
+export const courses: Course[] = [
+  { year: '2026', name: 'Vertex AI: Generative AI and MLOps on Google Cloud', school: 'Google Cloud Skills Boost' },
+  { year: '2026', name: 'Credit Analysis and Risk', school: 'PagBank' },
+  { year: '2022', name: 'Structuring Machine Learning Projects', school: 'DeepLearning.AI (Coursera)' },
+  { year: '2022', name: 'Hackathon Computer Vision in Digital Agriculture', school: 'Bemagro' },
+  { year: '2021', name: 'Neural Networks and Deep Learning', school: 'DeepLearning.AI (Coursera)' },
+  {
+    year: '2021',
+    name: 'Improving Deep Neural Networks: Hyperparameter Tuning, Regularization and Optimization',
+    school: 'DeepLearning.AI (Coursera)',
+  },
+  { year: '2021', name: 'NLP: Natural Language Processing with Python', school: 'Udemy' },
+  { year: '2021', name: 'Data Pipelines with Apache Airflow', school: 'Alura' },
+  { year: '2020', name: 'Machine Learning: Introduction to Classification with SKLearn', school: 'Alura' },
+]
+
+export const languages: Language[] = [
+  { name: 'Portuguese', level: 'native' },
+  { name: 'English', level: 'full professional' },
+  { name: 'Spanish', level: 'basic' },
 ]
 
 // Mesmos números de data.ts: só os rótulos mudam.

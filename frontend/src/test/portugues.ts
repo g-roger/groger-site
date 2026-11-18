@@ -1,7 +1,13 @@
 // Ajuda dos testes: acha trechos em português num texto que deveria estar todo em inglês.
 
-// nomes próprios que mantêm a grafia original, com acento
-const NOMES_PROPRIOS = ['Itaú', 'São Paulo', 'Estação Hack']
+// nomes próprios que mantêm a grafia original, com acento (as instituições de ensino têm nome oficial em português)
+const NOMES_PROPRIOS = [
+  'Itaú',
+  'São Paulo',
+  'Estação Hack',
+  'Faculdade de Informática e Administração Paulista',
+  'Universidade Municipal de São Caetano do Sul',
+]
 
 const ACENTOS = /[ãõçáéíóúâêôà]/gi
 

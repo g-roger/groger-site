@@ -5,7 +5,7 @@ import type { Strings } from '../strings'
 import LanguageSwitch from './LanguageSwitch'
 
 // na ordem em que as seções aparecem na página
-const SECOES = ['about', 'expertise', 'stack', 'career', 'projects', 'contact'] as const
+const SECOES = ['about', 'expertise', 'stack', 'career', 'education', 'projects', 'contact'] as const
 
 export function navLinks(ui: Strings) {
   return SECOES.map((k) => ({ href: `#${ui.anchors[k]}`, label: ui.nav.links[k] }))
@@ -46,13 +46,13 @@ export default function Nav() {
           <a href="#top" onClick={fechar} className="flex items-center gap-2 group min-h-[44px] min-w-[44px]">
             <span className="text-2xl font-display font-bold tracking-tight text-mint">g·r</span>
             {/* só a partir de xl: abaixo disso o texto encosta nos links e no seletor de idioma */}
-            <span className="text-xs uppercase tracking-[0.3em] text-cream/50 whitespace-nowrap hidden xl:inline">
+            <span className="text-[11px] uppercase tracking-[0.18em] text-cream/50 whitespace-nowrap hidden xl:inline">
               {ui.nav.brandRole}
             </span>
           </a>
 
           <div className="flex items-center gap-2 sm:gap-4 md:gap-6">
-            <nav aria-label={ui.nav.sections} className="hidden md:flex items-center gap-3">
+            <nav aria-label={ui.nav.sections} className="hidden md:flex items-center gap-1">
               {links.map((l) => (
                 <a
                   key={l.href}

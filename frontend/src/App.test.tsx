@@ -4,7 +4,7 @@ import App from './App'
 
 vi.mock('./lib/track', () => ({ trackEvent: vi.fn(), trackPageview: vi.fn() }))
 
-const SECOES = ['top', 'about', 'expertise', 'stack', 'trajetoria', 'projetos', 'contato']
+const SECOES = ['top', 'about', 'expertise', 'stack', 'trajetoria', 'formacao', 'projetos', 'contato']
 
 function normalizar(texto: string | null) {
   return (texto ?? '').replace(/\s+/g, ' ').trim()
@@ -24,6 +24,7 @@ describe('App, a página inteira', () => {
       'O que eu faço',
       'O que eu uso',
       'Minha trajetória',
+      'Minha formação',
       'Alguns projetos',
       'Fale comigo',
     ])
@@ -34,7 +35,7 @@ describe('App, a página inteira', () => {
     const numeros = Array.from(document.querySelectorAll('span'))
       .map((s) => normalizar(s.textContent))
       .filter((t) => /^0[1-9]$/.test(t))
-    expect(numeros).toEqual(['01', '02', '03', '04', '05', '06'])
+    expect(numeros).toEqual(['01', '02', '03', '04', '05', '06', '07'])
   })
 
   it('todo link do menu leva a uma seção que existe', () => {

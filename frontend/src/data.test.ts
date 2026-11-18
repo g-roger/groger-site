@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { careerStats, expertises, projectCategories, projects, techStack, timeline } from './data'
+import { careerStats, courses, degrees, expertises, languages, projectCategories, projects, techStack, timeline } from './data'
 
 // campos que não são texto de tela (identificadores, cores, links e sufixo numérico opcional)
 const NAO_E_TEXTO = new Set(['key', 'color', 'illustration', 'url', 'suffix'])
@@ -18,7 +18,7 @@ function startYear(period: string): number {
 }
 
 describe('estilo dos textos', () => {
-  const textos = collectStrings([expertises, projects, timeline, techStack, careerStats()])
+  const textos = collectStrings([expertises, projects, timeline, techStack, careerStats(), degrees, courses, languages])
 
   it('não usa travessão nem meia-risca', () => {
     expect(textos.filter((t) => /[—–]/.test(t))).toEqual([])
@@ -266,5 +266,45 @@ describe('números da carreira', () => {
 
   it('tem um rótulo para cada número', () => {
     for (const s of careerStats()) expect(s.label.length).toBeGreaterThan(10)
+  })
+})
+
+describe('formação', () => {
+  it('tem o MBA na FIAP e o bacharelado em Sistemas de Informação, do mais recente para o mais antigo', () => {
+    expect(degrees.map((d) => [d.period, d.title])).toEqual([
+      ['2021 a 2022', 'MBA em Inteligência Artificial e Machine Learning'],
+      ['2014 a 2017', 'Bacharelado em Sistemas de Informação'],
+    ])
+    expect(degrees[0].school).toContain('FIAP')
+    expect(degrees[1].school).toBe('Universidade Municipal de São Caetano do Sul')
+  })
+
+  it('os projetos do MBA são repositórios que aparecem na seção de projetos, com link', () => {
+    const comLink = projects.filter((p) => p.url).map((p) => p.name)
+    for (const nome of degrees[0].projects ?? []) expect(comLink).toContain(nome)
+  })
+
+  it('lista os cursos do currículo, do mais recente para o mais antigo, sem repetir', () => {
+    expect(courses).toHaveLength(9)
+    const anos = courses.map((c) => Number(c.year))
+    expect(anos).toEqual([...anos].sort((a, b) => b - a))
+    expect(new Set(courses.map((c) => c.name)).size).toBe(courses.length)
+    for (const c of courses) {
+      expect(c.year).toMatch(/^\d{4}$/)
+      expect(c.school.length).toBeGreaterThan(2)
+    }
+  })
+
+  it('o curso de Vertex AI de 2026 bate com o que a área de IA conta', () => {
+    expect(courses[0]).toMatchObject({ year: '2026', school: 'Google Cloud Skills Boost' })
+    expect(courses[0].name).toContain('Vertex AI')
+  })
+
+  it('tem os três idiomas do currículo', () => {
+    expect(languages).toEqual([
+      { name: 'Português', level: 'nativo' },
+      { name: 'Inglês', level: 'profissional pleno' },
+      { name: 'Espanhol', level: 'básico' },
+    ])
   })
 })

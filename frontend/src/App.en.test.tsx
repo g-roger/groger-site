@@ -8,7 +8,7 @@ import * as en from './data.en'
 
 vi.mock('./lib/track', () => ({ trackEvent: vi.fn(), trackPageview: vi.fn() }))
 
-const SECOES = ['top', 'about', 'expertise', 'stack', 'career', 'projects', 'contact']
+const SECOES = ['top', 'about', 'expertise', 'stack', 'career', 'education', 'projects', 'contact']
 
 const normalizar = (texto: string | null) => (texto ?? '').replace(/\s+/g, ' ').trim()
 
@@ -33,13 +33,13 @@ describe('App em inglês, a página inteira', () => {
   it('tem todas as seções, cada uma uma única vez, com ids em inglês', () => {
     pagina()
     for (const id of SECOES) expect(document.querySelectorAll(`#${id}`)).toHaveLength(1)
-    for (const idAntigo of ['trajetoria', 'projetos', 'contato']) expect(document.getElementById(idAntigo)).toBeNull()
+    for (const idAntigo of ['trajetoria', 'formacao', 'projetos', 'contato']) expect(document.getElementById(idAntigo)).toBeNull()
   })
 
   it('os títulos das seções estão na ordem certa', () => {
     pagina()
     const titulos = screen.getAllByRole('heading', { level: 2 }).map((h) => normalizar(h.textContent))
-    expect(titulos).toEqual(['About me', 'What I do', 'What I use', 'My journey', 'Selected projects', 'Get in touch'])
+    expect(titulos).toEqual(['About me', 'What I do', 'What I use', 'My journey', 'My education', 'Selected projects', 'Get in touch'])
   })
 
   it('a numeração das seções é sequencial, sem pular número', () => {
@@ -47,7 +47,7 @@ describe('App em inglês, a página inteira', () => {
     const numeros = Array.from(document.querySelectorAll('span'))
       .map((s) => normalizar(s.textContent))
       .filter((t) => /^0[1-9]$/.test(t))
-    expect(numeros).toEqual(['01', '02', '03', '04', '05', '06'])
+    expect(numeros).toEqual(['01', '02', '03', '04', '05', '06', '07'])
   })
 
   it('todo link de seção, no menu e no hero, leva a uma seção que existe', () => {

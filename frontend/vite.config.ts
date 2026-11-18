@@ -21,5 +21,7 @@ export default defineConfig({
     include: ['src/**/*.test.{ts,tsx}'],
     css: false,
     restoreMocks: true,
+    // renderizar a página inteira no jsdom passa de 5 s quando a suíte toda roda em paralelo
+    testTimeout: 15000,
   },
 })

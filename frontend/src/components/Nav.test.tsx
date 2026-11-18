@@ -10,6 +10,7 @@ const SECOES = [
   ['áreas', '#expertise'],
   ['ferramentas', '#stack'],
   ['trajetória', '#trajetoria'],
+  ['formação', '#formacao'],
   ['projetos', '#projetos'],
   ['contato', '#contato'],
 ] as const
@@ -29,7 +30,7 @@ describe('Nav', () => {
     expect(screen.getByRole('link', { name: /g·r/ })).toHaveAttribute('href', '#top')
   })
 
-  it('a lista de seções tem as seis seções, na ordem da página', () => {
+  it('a lista de seções tem as sete seções, na ordem da página', () => {
     expect(navLinks(strings.pt).map((l) => [l.label, l.href])).toEqual(SECOES.map((s) => [...s]))
   })
 
@@ -49,7 +50,7 @@ describe('Nav: menu do celular', () => {
     expect(screen.queryByRole('navigation', { name: 'Menu' })).toBeNull()
   })
 
-  it('abre com as seis seções numeradas, todas com alvo de toque grande', async () => {
+  it('abre com as sete seções numeradas, todas com alvo de toque grande', async () => {
     const user = userEvent.setup()
     render(<Nav />)
     await user.click(screen.getByRole('button', { name: 'Abrir menu' }))
@@ -127,6 +128,7 @@ describe('Nav em inglês', () => {
     ['expertise', '#expertise'],
     ['tools', '#stack'],
     ['career', '#career'],
+    ['education', '#education'],
     ['projects', '#projects'],
     ['contact', '#contact'],
   ] as const

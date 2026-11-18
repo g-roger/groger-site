@@ -731,3 +731,24 @@ export function BlobShape({ className = '' }: { className?: string }) {
     </svg>
   )
 }
+
+export function GradCap({ className = '' }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 120 100" className={className} aria-hidden>
+      <path d="M60 18 L112 40 L60 62 L8 40 Z" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+      <path d="M28 49 L28 70 C28 80 44 88 60 88 C76 88 92 80 92 70 L92 49" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+      <path d="M60 40 L100 46 L100 72" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+      <motion.path
+        d="M100 72 C98 78 98 84 100 90 M100 72 C102 78 104 84 102 90"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+        animate={{ rotate: [0, 6, 0, -4, 0] }}
+        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+        style={{ transformOrigin: '100px 72px' }}
+      />
+      <circle cx="60" cy="40" r="2.5" fill="currentColor" />
+    </svg>
+  )
+}

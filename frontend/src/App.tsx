@@ -6,6 +6,7 @@ import TechStack from './components/TechStack'
 import TechMarquee from './components/TechMarquee'
 import TimelineSection from './components/Timeline'
 import Projects from './components/Projects'
+import Education from './components/Education'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
 import Spotlight from './components/Spotlight'
@@ -24,6 +25,7 @@ export default function App() {
         <TechMarquee />
         <TechStack />
         <TimelineSection />
+        <Education />
         <Projects />
         <Contact />
       </main>

@@ -17,6 +17,7 @@ const pt = {
     expertise: 'expertise',
     stack: 'stack',
     career: 'trajetoria',
+    education: 'formacao',
     projects: 'projetos',
     contact: 'contato',
   },
@@ -32,6 +33,7 @@ const pt = {
       expertise: 'áreas',
       stack: 'ferramentas',
       career: 'trajetória',
+      education: 'formação',
       projects: 'projetos',
       contact: 'contato',
     },
@@ -93,6 +95,16 @@ const pt = {
     heading: { lead: 'Minha', accent: 'trajetória' },
     intro: 'Onde trabalhei e o que fiz em cada lugar.',
     clients: 'Clientes e parceiros',
+    showDetails: 'Ver o que fiz',
+    hideDetails: 'Mostrar menos',
+  },
+
+  education: {
+    heading: { lead: 'Minha', accent: 'formação' },
+    intro: 'A graduação, o MBA e os cursos que fiz pelo caminho.',
+    courseProjects: 'Projetos do curso',
+    courses: 'Cursos e certificações',
+    languages: 'Idiomas',
   },
 
   projects: {
@@ -127,6 +139,7 @@ const en: Strings = {
     expertise: 'expertise',
     stack: 'stack',
     career: 'career',
+    education: 'education',
     projects: 'projects',
     contact: 'contact',
   },
@@ -142,6 +155,7 @@ const en: Strings = {
       expertise: 'expertise',
       stack: 'tools',
       career: 'career',
+      education: 'education',
       projects: 'projects',
       contact: 'contact',
     },
@@ -203,6 +217,16 @@ const en: Strings = {
     heading: { lead: 'My', accent: 'journey' },
     intro: "Where I've worked and what I did at each place.",
     clients: 'Clients and partners',
+    showDetails: 'What I did',
+    hideDetails: 'Show less',
+  },
+
+  education: {
+    heading: { lead: 'My', accent: 'education' },
+    intro: 'My degree, my MBA and the courses I took along the way.',
+    courseProjects: 'Course projects',
+    courses: 'Courses and certificates',
+    languages: 'Languages',
   },
 
   projects: {

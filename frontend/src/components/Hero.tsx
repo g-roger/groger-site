@@ -53,7 +53,7 @@ export default function Hero() {
           initial={{ opacity: 0, scale: 0.9, rotate: -4 }}
           animate={{ opacity: 1, scale: 1, rotate: 0 }}
           transition={{ delay: 0.2, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          className="relative mx-auto w-40 sm:w-52 lg:hidden"
+          className="relative mx-auto w-48 sm:w-56 lg:hidden"
         >
           <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-jade/40 via-mint/10 to-forest/40 blur-2xl" />
           <div

@@ -17,7 +17,7 @@ function Counter({ to, suffix = '', locale }: { to: number; suffix?: string; loc
   return (
     <motion.span
       ref={ref}
-      className="section-heading text-5xl sm:text-6xl text-cream"
+      className="section-heading text-[2.6rem] sm:text-6xl text-cream"
     >
       <motion.span>{display}</motion.span>
     </motion.span>
@@ -44,11 +44,11 @@ export default function Numbers() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
-            transition={{ delay: i * 0.1, duration: 0.7 }}
-            className="rounded-2xl border border-mint/15 bg-moss/40 sm:backdrop-blur p-5 sm:p-6"
+            transition={{ delay: (i % 2) * 0.08, duration: 0.6 }}
+            className="rounded-2xl border border-mint/15 bg-moss/40 sm:backdrop-blur p-4 sm:p-6"
           >
             <Counter to={it.n} suffix={it.suffix} locale={numbersLocale} />
-            <p className="mt-3 text-cream/70 text-[11px] sm:text-xs uppercase tracking-widest leading-relaxed">
+            <p className="mt-2 sm:mt-3 text-cream/70 text-[13px] leading-snug sm:text-xs sm:uppercase sm:tracking-widest sm:leading-relaxed">
               {it.label}
             </p>
           </motion.div>

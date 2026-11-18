@@ -470,6 +470,68 @@ export const timeline: TimelineItem[] = [
   },
 ]
 
+export type Degree = {
+  period: string
+  title: string
+  school: string
+  detail: string
+  /** projetos feitos durante o curso (repositórios no GitHub) */
+  projects?: string[]
+}
+
+// Formação acadêmica, do currículo (Lattes), da mais recente para a mais antiga.
+export const degrees: Degree[] = [
+  {
+    period: '2021 a 2022',
+    title: 'MBA em Inteligência Artificial e Machine Learning',
+    school: 'FIAP, Faculdade de Informática e Administração Paulista',
+    detail:
+      'Pós-graduação lato sensu. Consolidei a base teórica em redes neurais e aprendizado de máquina, com projetos aplicados de visão computacional, detecção de fraude e biometria comportamental.',
+    projects: ['analise-vegetativa-bemagro', 'fraud-pix-model', 'mouse_dynamics'],
+  },
+  {
+    period: '2014 a 2017',
+    title: 'Bacharelado em Sistemas de Informação',
+    school: 'Universidade Municipal de São Caetano do Sul',
+    detail:
+      'Fiz a graduação em paralelo às aulas de informática que dava no Grupo All Net. Em 2017, último ano do curso, comecei o estágio em desenvolvimento na Ponte21.',
+  },
+]
+
+export type Course = {
+  year: string
+  name: string
+  school: string
+}
+
+// Formação complementar do currículo, da mais recente para a mais antiga.
+export const courses: Course[] = [
+  { year: '2026', name: 'Vertex AI: IA Generativa e MLOps na Google Cloud', school: 'Google Cloud Skills Boost' },
+  { year: '2026', name: 'Análise e Risco de Crédito', school: 'PagBank' },
+  { year: '2022', name: 'Structuring Machine Learning Projects', school: 'DeepLearning.AI (Coursera)' },
+  { year: '2022', name: 'Hackathon Computer Vision in Digital Agriculture', school: 'Bemagro' },
+  { year: '2021', name: 'Neural Networks and Deep Learning', school: 'DeepLearning.AI (Coursera)' },
+  {
+    year: '2021',
+    name: 'Improving Deep Neural Networks: Hyperparameter Tuning, Regularization and Optimization',
+    school: 'DeepLearning.AI (Coursera)',
+  },
+  { year: '2021', name: 'NLP: Natural Language Processing with Python', school: 'Udemy' },
+  { year: '2021', name: 'Data Pipelines com Apache Airflow', school: 'Alura' },
+  { year: '2020', name: 'Machine Learning: Introdução à Classificação com SKLearn', school: 'Alura' },
+]
+
+export type Language = {
+  name: string
+  level: string
+}
+
+export const languages: Language[] = [
+  { name: 'Português', level: 'nativo' },
+  { name: 'Inglês', level: 'profissional pleno' },
+  { name: 'Espanhol', level: 'básico' },
+]
+
 export type Stat = {
   n: number
   suffix: string

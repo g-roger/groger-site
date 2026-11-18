@@ -49,10 +49,11 @@ export default function ExpertiseSection() {
           {expertises.map((e, i) => (
             <motion.button
               key={e.key}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.15 }}
-              transition={{ delay: 0.06 * i, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              viewport={{ once: true, amount: 0.1 }}
+              // atraso só entre cartões da mesma linha (até 3 no desktop): no celular cada um entra na hora
+              transition={{ delay: (i % 3) * 0.06, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
               whileHover={{ y: -6 }}
               onClick={() => {
                 setActive(e.key)

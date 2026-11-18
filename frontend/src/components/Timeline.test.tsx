@@ -1,4 +1,5 @@
 import { render, screen, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { describe, expect, it } from 'vitest'
 import { timeline } from '../data'
 import TimelineSection from './Timeline'
@@ -58,3 +59,51 @@ describe('Timeline', () => {
     }
   })
 })
+
+describe('Timeline no celular', () => {
+  it('cada cargo com destaques tem um botão "Ver o que fiz", só no celular', () => {
+    render(<TimelineSection />)
+    const botoes = screen.getAllByRole('button', { name: 'Ver o que fiz' })
+    expect(botoes).toHaveLength(timeline.filter((t) => t.bullets?.length || t.tags?.length).length)
+    for (const b of botoes) {
+      expect(b.className).toContain('sm:hidden')
+      expect(b.className).toContain('min-h-[44px]')
+      expect(b).toHaveAttribute('aria-expanded', 'false')
+    }
+  })
+
+  it('os destaques começam recolhidos no celular e sempre visíveis do sm em diante', () => {
+    render(<TimelineSection />)
+    const botao = screen.getAllByRole('button', { name: 'Ver o que fiz' })[0]
+    const detalhes = document.getElementById(botao.getAttribute('aria-controls') as string) as HTMLElement
+    expect(detalhes).toContainElement(screen.getByText('Liderança técnica dos projetos de dados'))
+    expect(detalhes.className).toContain('hidden')
+    expect(detalhes.className).toContain('sm:block')
+  })
+
+  it('tocar no botão abre e fecha os destaques daquele cargo', async () => {
+    const user = userEvent.setup()
+    render(<TimelineSection />)
+    const botao = screen.getAllByRole('button', { name: 'Ver o que fiz' })[0]
+    const detalhes = document.getElementById(botao.getAttribute('aria-controls') as string) as HTMLElement
+
+    await user.click(botao)
+    expect(botao).toHaveAttribute('aria-expanded', 'true')
+    expect(botao).toHaveTextContent('Mostrar menos')
+    expect(detalhes.className).not.toContain('hidden')
+    // os outros cargos continuam recolhidos
+    expect(screen.getAllByRole('button', { name: 'Ver o que fiz' }).length).toBeGreaterThan(0)
+
+    await user.click(botao)
+    expect(botao).toHaveAttribute('aria-expanded', 'false')
+    expect(detalhes.className).toContain('hidden')
+  })
+
+  it('os clientes da Mastertech ficam à vista mesmo com os destaques recolhidos', () => {
+    render(<TimelineSection />)
+    const clientes = screen.getByText('Clientes e parceiros').parentElement as HTMLElement
+    expect(clientes.closest('.hidden')).toBeNull()
+    expect(within(clientes).getByText('Itaú')).toBeInTheDocument()
+  })
+})
+

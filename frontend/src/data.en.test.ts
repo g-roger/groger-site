@@ -23,7 +23,16 @@ function periodoEmPortugues(period: string): string {
 const ONDE: Record<string, string> = { 'Personal project': 'Projeto pessoal' }
 
 describe('estilo dos textos em inglês', () => {
-  const textos = collectStrings([en.expertises, en.projects, en.timeline, en.techStack, en.careerStats()])
+  const textos = collectStrings([
+    en.expertises,
+    en.projects,
+    en.timeline,
+    en.techStack,
+    en.careerStats(),
+    en.degrees,
+    en.courses,
+    en.languages,
+  ])
 
   it('não usa travessão nem meia-risca', () => {
     expect(textos.filter((t) => /[—–]/.test(t))).toEqual([])
@@ -136,6 +145,22 @@ describe('inglês acompanha o português', () => {
       expect(e.items.map((item) => item)).toEqual(c.items.map((item) => (item === 'Agentes de IA' ? 'AI agents' : item)))
     })
     expect(new Set(en.techStack.map((c) => c.name)).size).toBe(en.techStack.length)
+  })
+
+  it('formação: os mesmos cursos, na mesma ordem, com períodos, instituições e projetos iguais', () => {
+    expect(en.degrees).toHaveLength(pt.degrees.length)
+    pt.degrees.forEach((d, i) => {
+      const e = en.degrees[i]
+      expect(periodoEmPortugues(e.period)).toBe(d.period)
+      expect(e.school).toBe(d.school)
+      expect(e.projects).toEqual(d.projects)
+    })
+    expect(en.courses).toHaveLength(pt.courses.length)
+    pt.courses.forEach((c, i) => {
+      expect(en.courses[i].year).toBe(c.year)
+      expect(en.courses[i].school).toBe(c.school)
+    })
+    expect(en.languages.map((l) => l.name)).toEqual(['Portuguese', 'English', 'Spanish'])
   })
 
   it('números da carreira: os mesmos valores, com rótulos em inglês', () => {

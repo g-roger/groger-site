@@ -79,6 +79,7 @@ describe('strings: português e inglês', () => {
       expertise: 'expertise',
       stack: 'stack',
       career: 'trajetoria',
+      education: 'formacao',
       projects: 'projetos',
       contact: 'contato',
     })
