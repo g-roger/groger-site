@@ -89,13 +89,33 @@ describe('Illustrations', () => {
       expect(caminhos.length).toBeGreaterThanOrEqual(10)
     })
 
-    it('os olhos são apertados de quem está rindo, com pupila e brilho', () => {
+    it('os olhos são abertos, em amêndoa, com a dobra da pálpebra, a íris inteira e o brilho', () => {
       const { container } = render(<Mascot />)
       const olhos = parte(container, 'olhos')!
       const aberturas = Array.from(olhos.querySelectorAll('clipPath path')).map((p) => caixa(p.getAttribute('d') ?? ''))
       expect(aberturas).toHaveLength(2)
-      for (const a of aberturas) expect((a.y1 - a.y0) / (a.x1 - a.x0)).toBeLessThan(0.35)
+      for (const a of aberturas) {
+        // nem fenda (parecia outro rosto) nem olho arregalado
+        const proporcao = (a.y1 - a.y0) / (a.x1 - a.x0)
+        expect(proporcao).toBeGreaterThan(0.3)
+        expect(proporcao).toBeLessThan(0.6)
+      }
+      // a íris cabe inteira na abertura do olho
+      const iris = Array.from(olhos.querySelectorAll('circle[fill="#6a3f22"]'))
+      expect(iris).toHaveLength(2)
+      iris.forEach((c, i) => expect(2 * Number(c.getAttribute('r'))).toBeLessThanOrEqual(aberturas[i].y1 - aberturas[i].y0 + 1))
       expect(olhos.querySelectorAll('circle[fill="#fff"]')).toHaveLength(2)
+    })
+
+    it('os cantos de fora dos olhos não sobem', () => {
+      const { container } = render(<Mascot />)
+      for (const p of Array.from(parte(container, 'olhos')!.querySelectorAll('clipPath path'))) {
+        // o contorno começa no canto de dentro e passa pelo canto de fora no fim da 4ª curva
+        const [inicio, ...curvas] = (p.getAttribute('d') ?? '').replace('Z', '').split('C')
+        const dentro = pontos(inicio)[0]
+        const fora = pontos(curvas[3]).at(-1)!
+        expect(fora.y).toBeGreaterThanOrEqual(dentro.y - 0.5)
+      }
     })
 
     it('o nariz é discreto: mais estreito que um quarto do rosto', () => {
@@ -117,9 +137,15 @@ describe('Illustrations', () => {
       expect(parte(container, 'bigode')).not.toBeNull()
     })
 
-    it('o sorriso é aberto e mostra os dentes de cima', () => {
+    it('o sorriso mostra os dentes de cima numa forma só, limpa, sem riscos entre eles', () => {
       const { container } = render(<Mascot />)
-      expect(parte(container, 'sorriso')!.querySelector('path[fill="#f4ecdf"]')).not.toBeNull()
+      const sorriso = parte(container, 'sorriso')!
+      expect(sorriso.querySelectorAll('path[fill="#f3ebdf"]')).toHaveLength(1)
+      expect(sorriso.querySelectorAll('[stroke]')).toHaveLength(0)
+      const dentes = caixa(sorriso.querySelector('path[fill="#f3ebdf"]')!.getAttribute('d') ?? '')
+      const boca = caixa(sorriso.querySelector('path')!.getAttribute('d') ?? '')
+      // os dentes ocupam boa parte da boca aberta, não uma linha fina
+      expect((dentes.y1 - dentes.y0) / (boca.y1 - boca.y0)).toBeGreaterThan(0.55)
     })
 
     it('tem sobrancelhas grossas', () => {
