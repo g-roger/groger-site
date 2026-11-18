@@ -161,6 +161,7 @@ describe('inglês acompanha o português', () => {
       expect(en.courses[i].school).toBe(c.school)
     })
     expect(en.languages.map((l) => l.name)).toEqual(['Portuguese', 'English', 'Spanish'])
+    expect(en.languages.find((l) => l.name === 'English')?.level).toBe('advanced')
   })
 
   it('números da carreira: os mesmos valores, com rótulos em inglês', () => {

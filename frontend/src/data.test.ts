@@ -303,7 +303,7 @@ describe('formação', () => {
   it('tem os três idiomas do currículo', () => {
     expect(languages).toEqual([
       { name: 'Português', level: 'nativo' },
-      { name: 'Inglês', level: 'profissional pleno' },
+      { name: 'Inglês', level: 'avançado' },
       { name: 'Espanhol', level: 'básico' },
     ])
   })

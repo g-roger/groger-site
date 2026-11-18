@@ -528,7 +528,7 @@ export type Language = {
 
 export const languages: Language[] = [
   { name: 'Português', level: 'nativo' },
-  { name: 'Inglês', level: 'profissional pleno' },
+  { name: 'Inglês', level: 'avançado' },
   { name: 'Espanhol', level: 'básico' },
 ]
 

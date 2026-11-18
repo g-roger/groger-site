@@ -475,7 +475,7 @@ export const courses: Course[] = [
 
 export const languages: Language[] = [
   { name: 'Portuguese', level: 'native' },
-  { name: 'English', level: 'full professional' },
+  { name: 'English', level: 'advanced' },
   { name: 'Spanish', level: 'basic' },
 ]
 
