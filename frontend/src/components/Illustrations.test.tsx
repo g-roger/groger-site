@@ -49,62 +49,87 @@ describe('Illustrations', () => {
     expect(container.querySelector('svg')).toHaveAttribute('aria-label', 'Retrato ilustrado')
   })
 
-  describe('retrato: parecido com o Gabriel', () => {
+  describe('retrato: parecido com o Gabriel e com cara de desenho feito à mão', () => {
     const parte = (container: HTMLElement, nome: string) => container.querySelector(`[data-parte="${nome}"]`)
-
     // pares (x, y) de um atributo d, para medir o desenho
     const pontos = (d: string) => {
       const n = (d.match(/-?\d+(\.\d+)?/g) ?? []).map(Number)
       return Array.from({ length: Math.floor(n.length / 2) }, (_, i) => ({ x: n[2 * i], y: n[2 * i + 1] }))
     }
+    const caixa = (d: string) => {
+      const ps = pontos(d)
+      const xs = ps.map((p) => p.x)
+      const ys = ps.map((p) => p.y)
+      return { x0: Math.min(...xs), x1: Math.max(...xs), y0: Math.min(...ys), y1: Math.max(...ys) }
+    }
 
-    it('o cabelo é alto em cima, com várias mechas, e curto nos lados', () => {
+    it('é montado por partes, do fundo para a frente', () => {
       const { container } = render(<Mascot />)
-      const contorno = parte(container, 'cabelo')?.querySelector('path')?.getAttribute('d') ?? ''
-      expect((contorno.match(/C/g) ?? []).length).toBeGreaterThanOrEqual(12)
-      const ys = pontos(contorno).map((p) => p.y)
-      // o topo sobe bem acima da linha da testa (y ~ 120)
-      expect(Math.min(...ys)).toBeLessThanOrEqual(70)
+      const nomes = Array.from(container.querySelectorAll('[data-parte]')).map((g) => g.getAttribute('data-parte'))
+      expect(nomes).toEqual(['fundo', 'corpo', 'orelhas', 'rosto', 'barba', 'sorriso', 'bigode', 'nariz', 'olhos', 'sobrancelhas', 'cabelo'])
     })
 
-    it('tem olhos grandes, com íris castanha e brilho', () => {
+    it('não usa degradês: cores chapadas, como ilustração impressa', () => {
       const { container } = render(<Mascot />)
-      const olhos = parte(container, 'olhos')
-      const iris = Array.from(olhos?.querySelectorAll('circle') ?? []).filter((c) => (c.getAttribute('fill') ?? '').startsWith('url(#iris'))
-      expect(iris).toHaveLength(2)
-      for (const c of iris) expect(Number(c.getAttribute('r'))).toBeGreaterThanOrEqual(9)
-      const brilhos = Array.from(olhos?.querySelectorAll('circle[fill="#fff"]') ?? [])
-      expect(brilhos.length).toBeGreaterThanOrEqual(4)
+      expect(container.querySelectorAll('linearGradient, radialGradient, filter')).toHaveLength(0)
     })
 
-    it('tem nariz pequeno', () => {
+    it('o traço é de pincel: contornos são formas cheias, não linhas de espessura fixa', () => {
       const { container } = render(<Mascot />)
-      const xs = Array.from(parte(container, 'nariz')?.querySelectorAll('path') ?? []).flatMap((p) =>
-        pontos(p.getAttribute('d') ?? '').map((q) => q.x),
-      )
-      expect(Math.max(...xs) - Math.min(...xs)).toBeLessThanOrEqual(20)
+      const comStroke = Array.from(parte(container, 'cabelo')!.querySelectorAll('path')).filter((p) => p.getAttribute('stroke'))
+      expect(comStroke).toHaveLength(0)
     })
 
-    it('tem barba cheia, das costeletas até abaixo do queixo, e bigode', () => {
+    it('o cabelo é alto em cima e tem mechas desenhadas', () => {
       const { container } = render(<Mascot />)
-      const barba = parte(container, 'barba')
-      const contorno = barba?.querySelector('path')?.getAttribute('d') ?? ''
-      const ys = pontos(contorno).map((p) => p.y)
-      expect(Math.min(...ys)).toBeLessThanOrEqual(182)
-      expect(Math.max(...ys)).toBeGreaterThanOrEqual(290)
-      expect(barba?.querySelectorAll('path').length).toBeGreaterThanOrEqual(3)
+      const caminhos = Array.from(parte(container, 'cabelo')!.querySelectorAll('path'))
+      const contorno = caminhos[0].getAttribute('d') ?? ''
+      expect((contorno.match(/C/g) ?? []).length).toBeGreaterThanOrEqual(20)
+      expect(caixa(contorno).y0).toBeLessThanOrEqual(40)
+      expect(caminhos.length).toBeGreaterThanOrEqual(10)
     })
 
-    it('tem sobrancelhas grossas e o sorriso mostra os dentes de cima', () => {
+    it('os olhos são apertados de quem está rindo, com pupila e brilho', () => {
       const { container } = render(<Mascot />)
-      expect(parte(container, 'sobrancelhas')?.querySelectorAll('path')).toHaveLength(2)
-      expect(parte(container, 'sorriso')?.querySelector('path[fill="#fbf6ee"]')).not.toBeNull()
+      const olhos = parte(container, 'olhos')!
+      const aberturas = Array.from(olhos.querySelectorAll('clipPath path')).map((p) => caixa(p.getAttribute('d') ?? ''))
+      expect(aberturas).toHaveLength(2)
+      for (const a of aberturas) expect((a.y1 - a.y0) / (a.x1 - a.x0)).toBeLessThan(0.35)
+      expect(olhos.querySelectorAll('circle[fill="#fff"]')).toHaveLength(2)
+    })
+
+    it('o nariz é discreto: mais estreito que um quarto do rosto', () => {
+      const { container } = render(<Mascot />)
+      const rosto = caixa(parte(container, 'rosto')!.querySelector('path')!.getAttribute('d') ?? '')
+      const xs = Array.from(parte(container, 'nariz')!.querySelectorAll('path')).flatMap((p) => pontos(p.getAttribute('d') ?? '').map((q) => q.x))
+      expect(Math.max(...xs) - Math.min(...xs)).toBeLessThan((rosto.x1 - rosto.x0) / 4)
+    })
+
+    it('a barba é cheia: das costeletas até abaixo da boca, com centenas de fios', () => {
+      const { container } = render(<Mascot />)
+      const barba = parte(container, 'barba')!
+      const contorno = caixa(barba.querySelector('path')!.getAttribute('d') ?? '')
+      const boca = caixa(parte(container, 'sorriso')!.querySelector('path')!.getAttribute('d') ?? '')
+      expect(contorno.y0).toBeLessThan(boca.y0 - 40)
+      expect(contorno.y1).toBeGreaterThan(boca.y1 + 30)
+      const fios = Array.from(barba.querySelectorAll('path')).reduce((n, p) => n + (p.getAttribute('d')?.match(/M/g) ?? []).length, 0)
+      expect(fios).toBeGreaterThanOrEqual(300)
+      expect(parte(container, 'bigode')).not.toBeNull()
+    })
+
+    it('o sorriso é aberto e mostra os dentes de cima', () => {
+      const { container } = render(<Mascot />)
+      expect(parte(container, 'sorriso')!.querySelector('path[fill="#f4ecdf"]')).not.toBeNull()
+    })
+
+    it('tem sobrancelhas grossas', () => {
+      const { container } = render(<Mascot />)
+      expect(parte(container, 'sobrancelhas')!.querySelectorAll('path').length).toBeGreaterThanOrEqual(2)
     })
 
     it('não usa óculos', () => {
       const { container } = render(<Mascot />)
       expect(parte(container, 'oculos')).toBeNull()
-      // nada de aro: nenhum círculo vazado em volta dos olhos
       const aros = Array.from(container.querySelectorAll('circle')).filter((c) => {
         const r = Number(c.getAttribute('r'))
         return c.getAttribute('fill') === 'none' && r > 10 && r < 30
@@ -112,10 +137,12 @@ describe('Illustrations', () => {
       expect(aros).toHaveLength(0)
     })
 
-    it('usa a jaqueta verde com frisos brancos e a alça da bolsa', () => {
+    it('veste a jaqueta verde com frisos claros e a alça da bolsa', () => {
       const { container } = render(<Mascot />)
-      expect(parte(container, 'jaqueta')?.querySelectorAll('path[stroke="#f2ead8"]')).toHaveLength(2)
-      expect(parte(container, 'alca')).not.toBeNull()
+      const corpo = parte(container, 'corpo')!
+      expect(corpo.querySelector('path[fill="#1f4d3b"]')).not.toBeNull()
+      expect(corpo.querySelectorAll('path[fill="#f2ead8"]').length).toBeGreaterThanOrEqual(6)
+      expect(corpo.querySelector('path[fill="#141414"]')).not.toBeNull()
     })
 
     it('é uma imagem para leitores de tela', () => {
@@ -123,7 +150,7 @@ describe('Illustrations', () => {
       expect(container.querySelector('svg')).toHaveAttribute('role', 'img')
     })
 
-    it('dois retratos na mesma página não dividem os ids dos gradientes', () => {
+    it('dois retratos na mesma página não dividem os ids dos recortes dos olhos', () => {
       const { container } = render(
         <div>
           <Mascot />
@@ -131,15 +158,12 @@ describe('Illustrations', () => {
         </div>,
       )
       const ids = Array.from(container.querySelectorAll('[id]')).map((el) => el.id)
-      expect(ids.length).toBeGreaterThan(0)
+      expect(ids).toHaveLength(4)
       expect(new Set(ids).size).toBe(ids.length)
-      // e cada retrato só aponta para os próprios gradientes
       for (const svg of Array.from(container.querySelectorAll('svg'))) {
         const proprios = new Set(Array.from(svg.querySelectorAll('[id]')).map((el) => el.id))
-        const usados = Array.from(svg.querySelectorAll('[fill^="url(#"], [clip-path^="url(#"]')).map((el) =>
-          (el.getAttribute('fill')?.startsWith('url(#') ? el.getAttribute('fill') : el.getAttribute('clip-path'))!.slice(5, -1),
-        )
-        expect(usados.length).toBeGreaterThan(0)
+        const usados = Array.from(svg.querySelectorAll('[clip-path^="url(#"]')).map((el) => (el.getAttribute('clip-path') ?? '').slice(5, -1))
+        expect(usados).toHaveLength(2)
         for (const u of usados) expect(proprios.has(u)).toBe(true)
       }
     })

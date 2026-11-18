@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from 'framer-motion'
-import { useId } from 'react'
+import { createElement, useId } from 'react'
 import { useStrings } from '../lib/i18n'
+import { INCLINACAO, PARTES, type Traco } from './retratoTracos'
 
 const stroke = {
   fill: 'none',
@@ -10,69 +11,26 @@ const stroke = {
   strokeLinejoin: 'round' as const,
 }
 
-// Retrato do Gabriel em estilo de animação, a partir de uma foto dele: cabelo castanho-escuro curto
-// nos lados e alto em cima, puxado para trás; sobrancelhas grossas; olhos grandes e castanhos; nariz
-// pequeno; barba cheia ligada ao bigode; sorriso largo; jaqueta verde com frisos brancos e a alça
-// da bolsa. Sem óculos.
+function desenhar(tr: Traco, key: number) {
+  return createElement(tr.t, { key, ...tr.a })
+}
+
+// Retrato do Gabriel, em traço de pincel e cores chapadas (o desenho em si fica em retratoTracos.ts).
+// Os anéis giram em volta e os olhos piscam de vez em quando.
 export function Mascot({ className = '' }: { className?: string }) {
   const { portraitLabel } = useStrings().hero
   // o retrato aparece duas vezes na página (celular e desktop): cada um precisa dos próprios ids
   const id = useId().replace(/:/g, '')
-  const url = (nome: string) => `url(#${nome}-${id})`
   const reduzir = useReducedMotion()
   const piscar = reduzir
     ? {}
     : {
-        animate: { scaleY: [1, 1, 0.08, 1] },
+        animate: { scaleY: [1, 1, 0.1, 1] },
         transition: { duration: 5, times: [0, 0.93, 0.96, 1], repeat: Infinity, ease: 'easeInOut' as const },
       }
 
   return (
     <svg viewBox="0 0 320 360" className={className} role="img" aria-label={portraitLabel}>
-      <defs>
-        <radialGradient id={`pele-${id}`} cx="0.42" cy="0.38" r="0.7">
-          <stop offset="0" stopColor="#f7d5b4" />
-          <stop offset="1" stopColor="#e0a47f" />
-        </radialGradient>
-        <linearGradient id={`jaqueta-${id}`} x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0" stopColor="#1f4d3b" />
-          <stop offset="1" stopColor="#123326" />
-        </linearGradient>
-        <linearGradient id={`cabelo-${id}`} x1="0" x2="1" y1="0" y2="1">
-          <stop offset="0" stopColor="#4a3324" />
-          <stop offset="0.6" stopColor="#2a1c14" />
-        </linearGradient>
-        <radialGradient id={`barba-${id}`} cx="0.4" cy="0.25" r="0.85">
-          <stop offset="0" stopColor="#4a3326" />
-          <stop offset="0.55" stopColor="#33231a" />
-          <stop offset="1" stopColor="#1e140d" />
-        </radialGradient>
-        <radialGradient id={`iris-${id}`} cx="0.5" cy="0.6" r="0.55">
-          <stop offset="0" stopColor="#a8703f" />
-          <stop offset="0.55" stopColor="#6b4224" />
-          <stop offset="1" stopColor="#2e1a0d" />
-        </radialGradient>
-        <radialGradient id={`luzBarba-${id}`} cx="0.5" cy="0.5" r="0.5">
-          <stop offset="0" stopColor="#7a5a43" stopOpacity="0.55" />
-          <stop offset="1" stopColor="#7a5a43" stopOpacity="0" />
-        </radialGradient>
-        <radialGradient id={`rubor-${id}`} cx="0.5" cy="0.5" r="0.5">
-          <stop offset="0" stopColor="#ef8f74" stopOpacity="0.55" />
-          <stop offset="1" stopColor="#ef8f74" stopOpacity="0" />
-        </radialGradient>
-        <radialGradient id={`halo-${id}`} cx="0.5" cy="0.45" r="0.5">
-          <stop offset="0" stopColor="#3f7a5b" stopOpacity="0.45" />
-          <stop offset="1" stopColor="#3f7a5b" stopOpacity="0" />
-        </radialGradient>
-        <clipPath id={`olhoE-${id}`}>
-          <path d="M115 179 C118 169 127 164 136 164 C146 164 152 170 154 177 C149 184 141 187 133 187 C125 187 119 184 115 179 Z" />
-        </clipPath>
-        <clipPath id={`olhoD-${id}`}>
-          <path d="M205 179 C202 169 193 164 184 164 C174 164 168 170 166 177 C171 184 179 187 187 187 C195 187 201 184 205 179 Z" />
-        </clipPath>
-      </defs>
-
-      <circle cx="160" cy="160" r="130" fill={url('halo')} />
       <motion.circle
         cx="160"
         cy="155"
@@ -100,109 +58,33 @@ export function Mascot({ className = '' }: { className?: string }) {
         style={{ transformOrigin: '160px 155px' }}
       />
 
-      {/* jaqueta verde com frisos brancos, camiseta por baixo e a alça da bolsa */}
-      <g data-parte="jaqueta">
-        <path d="M24 360 C28 316 64 296 116 288 L204 288 C256 296 292 316 296 360 Z" fill={url('jaqueta')} stroke="#2a1a10" strokeWidth="1.8" />
-        <path d="M124 288 Q160 330 196 288 Z" fill="#f2ead8" stroke="#2a1a10" strokeWidth="1.4" />
-        <path d="M130 292 Q160 322 190 292" fill="none" stroke="#cfc4b0" strokeWidth="1.4" />
-        <path d="M116 288 L138 304 L146 360 M204 288 L182 304 L174 360" fill="none" stroke="#2a1a10" strokeWidth="1.4" strokeLinejoin="round" />
-        <path d="M116 288 L138 304 L124 316 Z M204 288 L182 304 L196 316 Z" fill="#123326" stroke="#2a1a10" strokeWidth="1.2" strokeLinejoin="round" />
-        <path d="M110 294 C76 302 48 324 38 360 M118 298 C86 306 58 328 50 360" fill="none" stroke="#f2ead8" strokeWidth="3.4" strokeLinecap="round" />
-        <path d="M210 294 C244 302 272 324 282 360 M202 298 C234 306 262 328 270 360" fill="none" stroke="#f2ead8" strokeWidth="3.4" strokeLinecap="round" />
-        <path d="M160 322 L160 360" stroke="#2a1a10" strokeWidth="1.2" strokeDasharray="2 2.5" />
-        <rect x="157" y="322" width="6" height="11" rx="1.5" fill="#cfd3d1" stroke="#2a1a10" strokeWidth="1" />
-        <path d="M72 330 q10 6 14 18 M248 330 q-10 6 -14 18" fill="none" stroke="#0b1f17" strokeWidth="1.4" strokeLinecap="round" opacity="0.8" />
-      </g>
-      <g data-parte="alca">
-        <path d="M214 292 L225 289 C236 312 244 336 250 360 L239 360 C233 336 225 314 214 292 Z" fill="#161616" stroke="#2a1a10" strokeWidth="1.2" />
-        <rect x="226" y="322" width="16" height="10" rx="2" transform="rotate(-20 234 327)" fill="none" stroke="#cfd3d1" strokeWidth="2.2" />
-      </g>
-
-      {/* pescoço e orelhas */}
-      <path d="M136 248 L134 300 Q160 312 186 300 L184 248 Z" fill={url('pele')} stroke="#2a1a10" strokeWidth="1.6" />
-      <path d="M135 270 Q160 296 185 270 L185 254 L135 254 Z" fill="#c98563" opacity="0.5" />
-      <path d="M102 172 C90 166 86 182 89 195 C92 206 98 211 105 207 Z" fill={url('pele')} stroke="#2a1a10" strokeWidth="1.6" />
-      <path d="M98 180 C93 181 93 192 96 198" fill="none" stroke="#c98563" strokeWidth="1.6" strokeLinecap="round" />
-      <path d="M218 172 C230 166 234 182 231 195 C228 206 222 211 215 207 Z" fill={url('pele')} stroke="#2a1a10" strokeWidth="1.6" />
-      <path d="M222 180 C227 181 227 192 224 198" fill="none" stroke="#c98563" strokeWidth="1.6" strokeLinecap="round" />
-
-      {/* rosto redondo, com luz na testa e bochechas coradas */}
-      <g data-parte="rosto">
-        <path d="M98 150 C98 108 128 88 160 88 C192 88 222 108 222 150 L223 186 C223 228 198 262 160 266 C122 262 97 228 97 186 Z" fill={url('pele')} stroke="#2a1a10" strokeWidth="1.8" />
-        <path d="M210 132 C220 154 222 182 218 206 C214 228 202 246 188 256 C204 234 210 206 208 180 C207 160 206 146 210 132 Z" fill="#c98563" opacity="0.3" />
-        <ellipse cx="150" cy="134" rx="24" ry="8" fill="#fff8ee" opacity="0.35" />
-        <ellipse cx="121" cy="204" rx="15" ry="9" fill={url('rubor')} />
-        <ellipse cx="199" cy="204" rx="15" ry="9" fill={url('rubor')} />
-      </g>
-
-      {/* barba cheia e macia, com brilhos suaves, e o bigode ligado a ela */}
-      <g data-parte="barba">
-        <path d="M97 180 C97 200 104 214 117 220 C127 224 137 224 144 222 C152 219 168 219 176 222 C183 224 193 224 203 220 C216 214 223 200 223 180 C230 220 223 258 202 278 C196 284 190 286 184 286 C180 292 170 296 160 296 C150 296 140 292 136 286 C130 286 124 284 118 278 C97 258 90 220 97 180 Z" fill={url('barba')} stroke="#2a1a10" strokeWidth="1.6" strokeLinejoin="round" />
-        <ellipse cx="126" cy="242" rx="17" ry="26" fill={url('luzBarba')} />
-        <ellipse cx="160" cy="276" rx="22" ry="11" fill={url('luzBarba')} />
-        <path d="M126 276 q4 6 10 8 M144 286 q6 5 13 6 M194 276 q-4 6 -10 8 M176 286 q-6 5 -13 6 M108 250 q2 8 7 14 M212 250 q-2 8 -7 14" fill="none" stroke="#6a4c37" strokeWidth="1.5" strokeLinecap="round" opacity="0.5" />
-        <path d="M136 230 C142 220 153 218 160 223 C167 218 178 220 184 230 C177 228 168 227 160 229 C152 227 143 228 136 230 Z" fill="#33231a" stroke="#2a1a10" strokeWidth="1.3" strokeLinejoin="round" />
-        <path d="M144 224 C148 222 152 222 155 223 M165 223 C168 222 172 222 176 224" fill="none" stroke="#6a4c37" strokeWidth="1.4" strokeLinecap="round" opacity="0.7" />
-      </g>
-
-      {/* sorriso largo e suave, mostrando os dentes de cima */}
-      <g data-parte="sorriso">
-        <path d="M140 231 C150 237 170 237 180 231 C177 243 169 249 160 249 C151 249 143 243 140 231 Z" fill="#4a1717" stroke="#2a1a10" strokeWidth="1.3" strokeLinejoin="round" />
-        <path d="M142 232 C151 237.5 169 237.5 178 232 C177 237 173 240.5 168 241.5 C163 242.5 157 242.5 152 241.5 C147 240.5 143 237 142 232 Z" fill="#fbf6ee" />
-        <path d="M150 244.5 C155 247 165 247 170 244.5" fill="none" stroke="#c46a5a" strokeWidth="2" strokeLinecap="round" opacity="0.7" />
-        <path d="M147 252 C153 255 167 255 173 252" fill="none" stroke="#b9705e" strokeWidth="1.4" strokeLinecap="round" opacity="0.6" />
-      </g>
-
-      {/* nariz pequeno */}
-      <g data-parte="nariz">
-        <path d="M157 184 C156 192 154 198 153 202" fill="none" stroke="#c98563" strokeWidth="1.4" strokeLinecap="round" opacity="0.6" />
-        <path d="M151 206 C154 211 166 211 169 206" fill="none" stroke="#2a1a10" strokeWidth="1.7" strokeLinecap="round" />
-        <ellipse cx="161" cy="202" rx="5" ry="3.2" fill="#fff8ee" opacity="0.6" />
-      </g>
-
-      {/* olhos grandes, com a pálpebra cobrindo um pouco a íris; piscam de vez em quando */}
-      <g data-parte="olhos">
-        <motion.g {...piscar}>
-          <path d="M115 179 C118 169 127 164 136 164 C146 164 152 170 154 177 C149 184 141 187 133 187 C125 187 119 184 115 179 Z" fill="#fffaf3" />
-          <g clipPath={url('olhoE')}>
-          <circle cx="135" cy="176.5" r="9.2" fill={url('iris')} />
-          <circle cx="135" cy="176.5" r="4.4" fill="#140b05" />
-          <path d="M112 164 C124 160 146 160 158 166 L158 172 C146 167 124 167 112 173 Z" fill="#000" opacity="0.14" />
-          </g>
-          <circle cx="138.4" cy="173" r="2.7" fill="#fff" />
-          <circle cx="131.6" cy="180" r="1.2" fill="#fff" opacity="0.9" />
-          <path d="M115 179 C118 168 127 162 136 162 C146 162 153 169 154 177 C150 171 144 166.5 136 166.5 C128 166.5 120 171 115 179 Z" fill="#2a1a10" />
-        </motion.g>
-        <motion.g {...piscar}>
-          <path d="M205 179 C202 169 193 164 184 164 C174 164 168 170 166 177 C171 184 179 187 187 187 C195 187 201 184 205 179 Z" fill="#fffaf3" />
-          <g clipPath={url('olhoD')}>
-          <circle cx="185" cy="176.5" r="9.2" fill={url('iris')} />
-          <circle cx="185" cy="176.5" r="4.4" fill="#140b05" />
-          <path d="M208 164 C196 160 174 160 162 166 L162 172 C174 167 196 167 208 173 Z" fill="#000" opacity="0.14" />
-          </g>
-          <circle cx="188.4" cy="173" r="2.7" fill="#fff" />
-          <circle cx="181.6" cy="180" r="1.2" fill="#fff" opacity="0.9" />
-          <path d="M205 179 C202 168 193 162 184 162 C174 162 167 169 166 177 C170 171 176 166.5 184 166.5 C192 166.5 200 171 205 179 Z" fill="#2a1a10" />
-        </motion.g>
-        <path d="M121 185.5 C127 188.5 139 189 147 185" fill="none" stroke="#c98563" strokeWidth="1.2" strokeLinecap="round" opacity="0.8" />
-        <path d="M199 185.5 C193 188.5 181 189 173 185" fill="none" stroke="#c98563" strokeWidth="1.2" strokeLinecap="round" opacity="0.8" />
-      </g>
-
-      {/* sobrancelhas grossas */}
-      <g data-parte="sobrancelhas" transform="translate(0 3)">
-        <path d="M114 156 C120 145 136 141 150 146 C152 149 151 152 149 153 C137 150 126 152 117 159 C114 160 113 158 114 156 Z" fill="#2a1c14" stroke="#2a1a10" strokeWidth="0.8" strokeLinejoin="round" />
-        <path d="M206 156 C200 145 184 141 170 146 C168 149 169 152 171 153 C183 150 194 152 203 159 C206 160 207 158 206 156 Z" fill="#2a1c14" stroke="#2a1a10" strokeWidth="0.8" strokeLinejoin="round" />
-      </g>
-
-      {/* cabelo em ondas grandes: laterais curtas, alto e puxado para trás em cima */}
-      <g data-parte="cabelo">
-        <path d="M96 182 C92 152 94 128 104 114 C102 92 116 72 140 66 C136 74 137 80 142 85 C150 67 168 56 190 58 C184 64 184 72 188 79 C202 71 218 73 229 83 C224 87 224 93 226 99 C234 101 238 109 236 120 C234 138 230 160 224 182 L219 178 C220 152 214 134 204 126 C188 118 172 120 160 122 C148 120 132 118 116 126 C106 134 101 152 101 178 Z" fill={url('cabelo')} stroke="#1b130d" strokeWidth="1.8" strokeLinejoin="round" />
-        <path d="M99 176 C97 156 99 140 106 128 L113 130 C107 142 104 158 103 176 Z" fill="#4b3729" opacity="0.85" />
-        <path d="M221 176 C223 156 221 140 214 128 L207 130 C213 142 216 158 217 176 Z" fill="#4b3729" opacity="0.85" />
-        <path d="M114 110 C118 92 130 80 146 74 C136 84 130 96 128 110 Z" fill="#7a5840" opacity="0.55" />
-        <path d="M150 98 C158 82 172 72 190 68 C178 78 170 88 166 100 Z" fill="#7a5840" opacity="0.5" />
-        <path d="M190 98 C198 88 210 84 222 86 C212 92 204 98 200 106 Z" fill="#7a5840" opacity="0.45" />
-        <path d="M122 116 C138 106 152 102 166 102 M172 104 C188 104 202 108 214 116" fill="none" stroke="#7a5840" strokeWidth="1.2" strokeLinecap="round" opacity="0.6" />
+      <g transform={INCLINACAO}>
+        {PARTES.map((parte) =>
+          parte.olhos ? (
+            <g key={parte.nome} data-parte={parte.nome}>
+              {parte.olhos.map((olho, i) => {
+                const recorte = `olho${i}-${id}`
+                return (
+                  <g key={i}>
+                    <motion.g {...piscar}>
+                      <path d={olho.abertura} fill={olho.branco} />
+                      <clipPath id={recorte}>
+                        <path d={olho.abertura} />
+                      </clipPath>
+                      <g clipPath={`url(#${recorte})`}>{olho.dentro.map(desenhar)}</g>
+                      {olho.pisca.map(desenhar)}
+                    </motion.g>
+                    {olho.fixo.map(desenhar)}
+                  </g>
+                )
+              })}
+            </g>
+          ) : (
+            <g key={parte.nome} data-parte={parte.nome}>
+              {parte.tracos?.map(desenhar)}
+            </g>
+          ),
+        )}
       </g>
     </svg>
   )
