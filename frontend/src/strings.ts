@@ -46,6 +46,10 @@ const pt = {
   },
 
   hero: {
+    eyebrow: 'Engenharia, dados e inteligência artificial',
+    dataLabel: 'Engenharia de dados',
+    aiLabel: 'IA aplicada',
+    pathLabel: 'Parte da minha trajetória',
     greeting: 'Olá, eu sou o Gabriel',
     titleLead: 'Tech lead,',
     titleAccent: 'cientista e engenheiro de dados.',
@@ -54,13 +58,18 @@ const pt = {
     seeProjects: 'Ver projetos',
     whatIDo: 'O que eu faço',
     places: ['Tech lead na CERC', 'PagBank', 'Mastertech', 'MBA na FIAP'],
-    portraitCaption: 'eu, em desenho',
+    portraitCaption: 'Tecnologia com um olhar humano.',
     portraitLabel: 'Retrato ilustrado',
     scroll: 'rolar',
   },
 
   about: {
     heading: { lead: 'Sobre', accent: 'mim' },
+    eyebrow: 'A pessoa por trás dos dados',
+    statement: 'Conecto engenharia, ciência de dados e IA para resolver problemas reais.',
+    currentLabel: 'O que construo hoje',
+    teachingLabel: 'Aprender e compartilhar',
+    storyLabel: 'Como cheguei até aqui',
     paragraphs: [
       'Sou *tech lead*, cientista e engenheiro de dados, e cheguei aqui passo a passo. Comecei em 2013 dando aula de informática, fiz estágio em desenvolvimento na Ponte21 e, na Mastertech, cresci até engenheiro de software sênior, em projetos de consultoria dentro de grandes empresas. Em 2021 mudei para dados: entrei no PagBank como engenheiro de dados pleno e me tornei cientista de dados sênior, trabalhando com *crédito e segurança de contas*.',
       'Hoje, na CERC, sou tech lead, cientista e engenheiro de dados, em projetos de *arranjos de pagamento* que envolvem grandes clientes de crédito do Brasil. Desenvolvo *modelos de fraude*, faço análises e reports para esses clientes, modelagem sobre os dados da CERC, como duplicata e arranjos, e uso *agentes de IA* em projetos com LLM.',
@@ -168,6 +177,10 @@ const en: Strings = {
   },
 
   hero: {
+    eyebrow: 'Engineering, data and artificial intelligence',
+    dataLabel: 'Data engineering',
+    aiLabel: 'Applied AI',
+    pathLabel: 'Along my journey',
     greeting: "Hi, I'm Gabriel",
     titleLead: 'Tech lead,',
     titleAccent: 'data scientist and data engineer.',
@@ -176,13 +189,18 @@ const en: Strings = {
     seeProjects: 'See projects',
     whatIDo: 'What I do',
     places: ['Tech lead at CERC', 'PagBank', 'Mastertech', 'MBA at FIAP'],
-    portraitCaption: 'me, in a drawing',
+    portraitCaption: 'Technology with a human perspective.',
     portraitLabel: 'Illustrated portrait',
     scroll: 'scroll',
   },
 
   about: {
     heading: { lead: 'About', accent: 'me' },
+    eyebrow: 'The person behind the data',
+    statement: 'I connect engineering, data science and AI to solve real problems.',
+    currentLabel: 'What I build today',
+    teachingLabel: 'Learning and sharing',
+    storyLabel: 'How I got here',
     paragraphs: [
       "I'm a *tech lead*, data scientist and data engineer, and I got here step by step. I started in 2013 teaching computer classes, did a software development internship at Ponte21 and, at Mastertech, grew into a senior software engineer, on consulting projects inside large companies. In 2021 I moved into data: I joined PagBank as a mid-level data engineer and became a senior data scientist, working on *credit and account security*.",
       "Today, at CERC, I'm a tech lead, data scientist and data engineer, on *payment arrangements* projects that involve large credit clients in Brazil. I build *fraud models*, run analyses and reports for those clients, model CERC's data, such as trade receivables (duplicatas) and arrangements, and use *AI agents* in LLM projects.",

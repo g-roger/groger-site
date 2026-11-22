@@ -44,7 +44,7 @@ export default function Nav() {
       >
         <div className="mx-auto max-w-6xl pl-[max(1.25rem,env(safe-area-inset-left))] pr-[max(1.25rem,env(safe-area-inset-right))] sm:px-6 h-16 flex items-center justify-between">
           <a href="#top" onClick={fechar} className="flex items-center gap-2 group min-h-[44px] min-w-[44px]">
-            <span className="text-2xl font-display font-bold tracking-tight text-mint">g·r</span>
+            <span className="text-2xl font-mono font-bold tracking-tight text-mint">g·r</span>
             {/* só a partir de xl: abaixo disso o texto encosta nos links e no seletor de idioma */}
             <span className="text-[11px] uppercase tracking-[0.18em] text-cream/50 whitespace-nowrap hidden xl:inline">
               {ui.nav.brandRole}

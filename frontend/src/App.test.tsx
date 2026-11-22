@@ -30,14 +30,6 @@ describe('App, a página inteira', () => {
     ])
   })
 
-  it('a numeração das seções é sequencial, sem pular número', () => {
-    render(<App />)
-    const numeros = Array.from(document.querySelectorAll('span'))
-      .map((s) => normalizar(s.textContent))
-      .filter((t) => /^0[1-9]$/.test(t))
-    expect(numeros).toEqual(['01', '02', '03', '04', '05', '06', '07'])
-  })
-
   it('todo link do menu leva a uma seção que existe', () => {
     render(<App />)
     const ancoras = Array.from(document.querySelectorAll('header a[href^="#"]')).map((a) => a.getAttribute('href') as string)

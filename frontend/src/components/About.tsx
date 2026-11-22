@@ -1,51 +1,43 @@
 import { motion } from 'framer-motion'
 import { useStrings } from '../lib/i18n'
 import Rich from './Rich'
-import { ArrowScribble, LeafSprig, Sparkles, ConcentricRings } from './Illustrations'
 
 export default function About() {
   const ui = useStrings()
+  const t = ui.about
   return (
-    <section id={ui.anchors.about} className="relative py-14 sm:py-32">
-      <div className="absolute top-10 right-4 w-14 h-20 sm:w-16 sm:h-24 text-jade/40 pointer-events-none">
-        <LeafSprig className="w-full h-full" />
-      </div>
-      <div className="absolute bottom-10 left-4 w-14 h-14 text-gold/40 pointer-events-none hidden sm:block">
-        <Sparkles className="w-full h-full" />
-      </div>
-      <div className="absolute top-1/2 -right-8 w-32 h-32 text-mint/15 pointer-events-none hidden lg:block">
-        <ConcentricRings className="w-full h-full" />
-      </div>
-
-      <div className="mx-auto max-w-5xl px-5 sm:px-6 grid md:grid-cols-[auto_1fr] gap-8 md:gap-10 items-start">
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.7 }}
-          className="md:sticky md:top-32"
-        >
-          <span className="block text-gold uppercase tracking-[0.4em] text-[11px] sm:text-xs mb-3">01</span>
-          <h2 className="section-heading text-4xl sm:text-6xl text-cream">
-            {ui.about.heading.lead}{' '}
-            <br />
-            <span className="italic text-mint">{ui.about.heading.accent}</span>
-          </h2>
-          <ArrowScribble className="mt-4 w-20 sm:w-24 h-10 text-cream/40" />
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.9 }}
-          className="space-y-5 sm:space-y-6 text-base sm:text-lg leading-relaxed text-cream/85 font-body"
-        >
-          {ui.about.paragraphs.map((texto, i) => (
-            <p key={i}>
-              <Rich text={texto} />
-            </p>
-          ))}
+    <section id={ui.anchors.about} className="about-shell relative py-16 sm:py-28">
+      <div className="mx-auto max-w-6xl px-5 sm:px-6">
+        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true, amount: 0.1 }}>
+          <p className="section-kicker">{t.eyebrow}</p>
+          <div className="grid gap-8 lg:grid-cols-[0.7fr_1.3fr] lg:gap-20">
+            <div>
+              <h2 className="section-heading text-4xl sm:text-6xl text-cream">
+                {t.heading.lead}{' '}<span className="text-mint">{t.heading.accent}</span>
+              </h2>
+              <p className="about-statement mt-6 text-2xl sm:text-3xl leading-snug text-cream/90">{t.statement}</p>
+              <div className="about-signature mt-8 font-mono text-sm text-mint" aria-hidden="true">Gabriel Roger<span>_</span></div>
+            </div>
+            <div className="about-narrative">
+              <div className="about-current">
+                <h3 className="font-mono text-sm text-mint mb-4">{t.currentLabel}</h3>
+                <p className="text-base sm:text-lg leading-relaxed text-cream/80"><Rich text={t.paragraphs[1]} /></p>
+              </div>
+              <div className="about-teaching">
+                <h3 className="font-mono text-sm text-mint mb-4">{t.teachingLabel}</h3>
+                <p className="text-base sm:text-lg leading-relaxed text-cream/75"><Rich text={t.paragraphs[3]} /></p>
+              </div>
+              <details className="about-story">
+                <summary className="flex items-center justify-between gap-4 text-base font-medium text-cream">
+                  {t.storyLabel}<span className="story-plus text-mint text-2xl" aria-hidden="true">+</span>
+                </summary>
+                <div className="space-y-5 pt-6 text-base leading-relaxed text-cream/75">
+                  <p><Rich text={t.paragraphs[0]} /></p>
+                  <p><Rich text={t.paragraphs[2]} /></p>
+                </div>
+              </details>
+            </div>
+          </div>
         </motion.div>
       </div>
     </section>

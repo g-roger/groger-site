@@ -4,20 +4,20 @@ export default {
   theme: {
     extend: {
       colors: {
-        forest: '#0b1a12',   // fundo mais escuro
-        pine:   '#0f2418',   // fundo médio
-        moss:   '#163024',   // superfícies
-        sage:   '#2b4a38',   // borders
-        mint:   '#8fb8a2',   // acento suave
-        jade:   '#3f7a5b',   // acento vivo
-        cream:  '#f2ead8',   // texto
-        gold:   '#e8c37a',   // destaque quente
-        ochre:  '#d4a15a',   // destaque quente 2
-        rust:   '#b85c3d',   // destaque escuro
-        rose:   '#c6807a',
+        forest: '#080d18',   // fundo mais escuro
+        pine:   '#0e1728',   // fundo médio
+        moss:   '#152239',   // superfícies
+        sage:   '#2a4059',   // borders
+        mint:   '#75e6dc',   // ciano claro
+        jade:   '#136a78',   // ciano profundo
+        cream:  '#edf4ff',   // texto
+        gold:   '#b2a4ff',   // violeta
+        ochre:  '#98b8ff',   // violeta 2
+        rust:   '#e68e87',   // destaque escuro
+        rose:   '#c6a1e8',
       },
       fontFamily: {
-        display: ['"Fraunces Variable"', 'ui-serif', 'Georgia', 'serif'],
+        display: ['"Inter Variable"', 'ui-sans-serif', 'system-ui'],
         body: ['"Inter Variable"', 'ui-sans-serif', 'system-ui'],
         mono: ['"JetBrains Mono Variable"', 'ui-monospace', 'monospace'],
       },

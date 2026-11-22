@@ -8,15 +8,6 @@ export default function Contact() {
   return (
     <section id={ui.anchors.contact} className="relative py-16 sm:py-32">
       <div className="mx-auto max-w-4xl px-5 sm:px-6 text-center">
-        <motion.span
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="block text-gold uppercase tracking-[0.4em] text-xs mb-3"
-        >
-          07
-        </motion.span>
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

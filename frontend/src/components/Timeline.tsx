@@ -21,7 +21,6 @@ export default function TimelineSection() {
 
       <div className="mx-auto max-w-5xl px-5 sm:px-6">
         <div className="mb-10 sm:mb-14 max-w-2xl">
-          <span className="block text-gold uppercase tracking-[0.4em] text-[11px] sm:text-xs mb-3">04</span>
           <h2 className="section-heading text-4xl sm:text-6xl text-cream">
             {ui.career.heading.lead} <span className="italic text-mint">{ui.career.heading.accent}</span>
           </h2>

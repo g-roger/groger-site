@@ -1,3 +1,4 @@
+import { MotionConfig } from 'framer-motion'
 import Nav from './components/Nav'
 import Hero from './components/Hero'
 import About from './components/About'
@@ -14,22 +15,24 @@ import Numbers from './components/Numbers'
 
 export default function App() {
   return (
-    <div className="relative">
-      <Spotlight />
-      <Nav />
-      <main>
-        <Hero />
-        <About />
-        <Numbers />
-        <ExpertiseSection />
-        <TechMarquee />
-        <TechStack />
-        <TimelineSection />
-        <Education />
-        <Projects />
-        <Contact />
-      </main>
-      <Footer />
-    </div>
+    <MotionConfig reducedMotion="user">
+      <div className="portfolio relative">
+        <Spotlight />
+        <Nav />
+        <main>
+          <Hero />
+          <About />
+          <Numbers />
+          <ExpertiseSection />
+          <TechMarquee />
+          <TechStack />
+          <TimelineSection />
+          <Education />
+          <Projects />
+          <Contact />
+        </main>
+        <Footer />
+      </div>
+    </MotionConfig>
   )
 }

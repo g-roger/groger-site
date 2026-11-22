@@ -42,14 +42,6 @@ describe('App em inglês, a página inteira', () => {
     expect(titulos).toEqual(['About me', 'What I do', 'What I use', 'My journey', 'My education', 'Selected projects', 'Get in touch'])
   })
 
-  it('a numeração das seções é sequencial, sem pular número', () => {
-    pagina()
-    const numeros = Array.from(document.querySelectorAll('span'))
-      .map((s) => normalizar(s.textContent))
-      .filter((t) => /^0[1-9]$/.test(t))
-    expect(numeros).toEqual(['01', '02', '03', '04', '05', '06', '07'])
-  })
-
   it('todo link de seção, no menu e no hero, leva a uma seção que existe', () => {
     pagina()
     const ancoras = Array.from(document.querySelectorAll('a[href^="#"]')).map((a) => a.getAttribute('href') as string)
@@ -118,7 +110,7 @@ describe('App em inglês, seção por seção', () => {
     for (const texto of ['Tech lead at CERC', 'PagBank', 'Mastertech', 'MBA at FIAP']) {
       expect(within(hero).getByText(texto)).toBeInTheDocument()
     }
-    expect(within(hero).getByText('me, in a drawing')).toBeInTheDocument()
+    expect(within(hero).getAllByText('Technology with a human perspective.')).toHaveLength(2)
     expect(document.querySelectorAll('svg[aria-label="Illustrated portrait"]').length).toBeGreaterThanOrEqual(1)
   })
 

@@ -36,11 +36,11 @@ export function Mascot({ className = '' }: { className?: string }) {
         cy="155"
         r="132"
         fill="none"
-        stroke="#e8c37a"
+        stroke="#75e6dc"
         strokeWidth="1.2"
         strokeDasharray="3 6"
         initial={{ rotate: 0 }}
-        animate={{ rotate: 360 }}
+        animate={reduzir ? undefined : { rotate: 360 }}
         transition={{ duration: 60, repeat: Infinity, ease: 'linear' }}
         style={{ transformOrigin: '160px 155px' }}
       />
@@ -49,11 +49,11 @@ export function Mascot({ className = '' }: { className?: string }) {
         cy="155"
         r="108"
         fill="none"
-        stroke="#8fb8a2"
+        stroke="#b2a4ff"
         strokeWidth="0.8"
         strokeDasharray="1 8"
         initial={{ rotate: 0 }}
-        animate={{ rotate: -360 }}
+        animate={reduzir ? undefined : { rotate: -360 }}
         transition={{ duration: 90, repeat: Infinity, ease: 'linear' }}
         style={{ transformOrigin: '160px 155px' }}
       />

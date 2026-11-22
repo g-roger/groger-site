@@ -35,7 +35,6 @@ export default function ExpertiseSection() {
       <div className="mx-auto max-w-6xl px-5 sm:px-6">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-3 sm:gap-6 mb-10 sm:mb-14">
           <div>
-            <span className="block text-gold uppercase tracking-[0.4em] text-[11px] sm:text-xs mb-3">02</span>
             <h2 className="section-heading text-4xl sm:text-6xl text-cream">
               {ui.expertise.heading.lead} <span className="italic text-mint">{ui.expertise.heading.accent}</span>
             </h2>

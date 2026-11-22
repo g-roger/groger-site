@@ -13,11 +13,10 @@ const emIngles = () =>
   )
 
 describe('Education', () => {
-  it('o título é "Minha formação", com o número 05', () => {
+  it('o título é "Minha formação" e a âncora continua válida', () => {
     const { container } = render(<Education />)
     expect(screen.getByRole('heading', { level: 2, name: 'Minha formação' })).toBeInTheDocument()
     expect(container.querySelector('section')).toHaveAttribute('id', 'formacao')
-    expect(screen.getByText('05')).toBeInTheDocument()
   })
 
   it('mostra o MBA na FIAP e o bacharelado, com período e instituição', () => {

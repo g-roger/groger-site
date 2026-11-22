@@ -18,7 +18,6 @@ export default function Education() {
 
       <div className="mx-auto max-w-6xl px-5 sm:px-6">
         <div className="mb-8 sm:mb-14 max-w-2xl">
-          <span className="block text-gold uppercase tracking-[0.4em] text-[11px] sm:text-xs mb-3">05</span>
           <h2 className="section-heading text-4xl sm:text-6xl text-cream">
             {t.heading.lead} <span className="italic text-mint">{t.heading.accent}</span>
           </h2>
